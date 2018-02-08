@@ -46,13 +46,18 @@ class Exchange(BaseExchange):
             self.asyncio_loop = config['asyncio_loop']
         self.asyncio_loop = self.asyncio_loop or asyncio.get_event_loop()
         if 'session' not in config:
-            # Create out SSL context object with our CA cert file
-            context = ssl.create_default_context(cafile=certifi.where())
-            # Pass this SSL context to aiohttp and create a TCPConnector
-            connector = aiohttp.TCPConnector(ssl_context=context, loop=self.asyncio_loop)
-            self.session = aiohttp.ClientSession(loop=self.asyncio_loop, connector=connector)
+            self.init_session()
         super(Exchange, self).__init__(config)
         self.init_rest_rate_limiter()
+
+    def init_session(self):
+        if self.session:
+            self.session.close()
+        # Create out SSL context object with our CA cert file
+        context = ssl.create_default_context(cafile=certifi.where())
+        # Pass this SSL context to aiohttp and create a TCPConnector
+        connector = aiohttp.TCPConnector(ssl_context=context, loop=self.asyncio_loop)
+        self.session = aiohttp.ClientSession(loop=self.asyncio_loop, connector=connector, cookies=self.cookies)
 
     def init_rest_rate_limiter(self):
         self.throttle = throttle(self.extend({
@@ -99,7 +104,6 @@ class Exchange(BaseExchange):
         encoded_body = body.encode() if body else None
         session_method = getattr(self.session, method.lower())
         http_status_code = None
-
         try:
             async with session_method(url, data=encoded_body, headers=headers, timeout=(self.timeout / 1000), proxy=self.aiohttp_proxy) as response:
                 http_status_code = response.status

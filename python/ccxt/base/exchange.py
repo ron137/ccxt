@@ -108,6 +108,7 @@ class Exchange(object):
     parseJsonResponse = True
     exceptions = {}
     headers = {}
+    cookies = {}
     balance = {}
     orderbooks = {}
     orders = {}
