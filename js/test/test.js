@@ -963,11 +963,8 @@ let tryAllProxies = async function (exchange, proxies) {
             } else if (e instanceof ccxt.AuthenticationError) {
                 warn ('[Authentication Error] ' + e.message.slice (0, 200))
                 return
-            } else if (e instanceof ccxt.NotSupported) {
-                warn ('[Not Supported] ' + e.message.slice (0, 200))
-                return
-            } else if (e instanceof ccxt.ExchangeError) {
-                warn ('[Exchange Error] ' + e.message.slice (0, 200))
+            } else if (e instanceof ccxt.InvalidNonce) {
+                warn ('[Invalid Nonce] ' + e.message.slice (0, 200))
                 return
             } else {
                 throw e

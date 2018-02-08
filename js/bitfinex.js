@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { NotImplemented, DDoSProtection, AuthenticationError, ExchangeError, InsufficientFunds, NotSupported, InvalidOrder, OrderNotFound } = require ('./base/errors');
+const { NotImplemented, DDoSProtection, AuthenticationError, ExchangeError, InsufficientFunds, NotSupported, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -211,14 +211,6 @@ module.exports = class bitfinex extends Exchange {
                         'ZRX': 5.6442,
                         'TNB': 87.511,
                         'SNT': 32.736,
-                        'QSH': undefined,
-                        'TRX': undefined,
-                        'RCN': undefined,
-                        'RLC': undefined,
-                        'AID': undefined,
-                        'SNG': undefined,
-                        'REP': undefined,
-                        'ELF': undefined,
                     },
                 },
             },
@@ -232,9 +224,10 @@ module.exports = class bitfinex extends Exchange {
                     'Key price should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (price)
                     'Key amount should be a decimal number, e.g. "123.456"': InvalidOrder, // on isNaN (amount)
                     'ERR_RATE_LIMIT': DDoSProtection,
+                    'Nonce is too small.': InvalidNonce,
                 },
                 'broad': {
-                    'Invalid order: not enough exchange balance for ': InsufficientFunds, // when buy, cost > quote currency
+                    'Invalid order: not enough exchange balance for ': InsufficientFunds, // when buying cost is greater than the available quote currency
                     'Invalid order: minimum size for ': InvalidOrder, // when amount below limits.amount.min
                     'Invalid order': InvalidOrder, // ?
                 },
@@ -631,15 +624,19 @@ module.exports = class bitfinex extends Exchange {
             'LTC': 'litecoin',
             'ETH': 'ethereum',
             'ETC': 'ethereumc',
-            'OMNI': 'mastercoin', // left by previous author, now throws {"message":"Unknown method"}
+            'OMNI': 'mastercoin',
             'ZEC': 'zcash',
             'XMR': 'monero',
-            'USD': 'wire', // left by previous author, now throws {"message":"Unknown method"}
+            'USD': 'wire',
             'DASH': 'dash',
             'XRP': 'ripple',
             'EOS': 'eos',
-            'BCH': 'bcash',
-            'USDT': 'tetheruso',
+            'BCH': 'bcash', // undocumented
+            'USDT': 'tetheruso', // undocumented
+            'NEO': 'neo', // #1811
+            'AVT': 'aventus', // #1811
+            'QTUM': 'qtum', // #1811
+            'EDO': 'eidoo', // #1811
         };
         if (currency in names)
             return names[currency];

@@ -170,7 +170,7 @@ class liqui (Exchange):
             }
             hidden = self.safe_integer(market, 'hidden')
             active = (hidden == 0)
-            result.append(self.extend(self.fees['trading'], {
+            result.append({
                 'id': id,
                 'symbol': symbol,
                 'base': base,
@@ -181,7 +181,7 @@ class liqui (Exchange):
                 'precision': precision,
                 'limits': limits,
                 'info': market,
-            }))
+            })
         return result
 
     async def fetch_balance(self, params={}):
@@ -514,12 +514,16 @@ class liqui (Exchange):
             else:
                 order = self.orders[id]
                 if order['status'] == 'open':
-                    self.orders[id] = self.extend(order, {
+                    order = self.extend(order, {
                         'status': 'closed',
-                        'cost': order['amount'] * order['price'],
+                        'cost': None,
                         'filled': order['amount'],
                         'remaining': 0.0,
                     })
+                    if order['cost'] is None:
+                        if order['filled'] is not None:
+                            order['cost'] = order['filled'] * order['price']
+                    self.orders[id] = order
             order = self.orders[id]
             if symbol:
                 if order['symbol'] == symbol:

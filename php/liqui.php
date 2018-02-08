@@ -159,7 +159,7 @@ class liqui extends Exchange {
             );
             $hidden = $this->safe_integer($market, 'hidden');
             $active = ($hidden === 0);
-            $result[] = array_merge ($this->fees['trading'], array (
+            $result[] = array (
                 'id' => $id,
                 'symbol' => $symbol,
                 'base' => $base,
@@ -170,7 +170,7 @@ class liqui extends Exchange {
                 'precision' => $precision,
                 'limits' => $limits,
                 'info' => $market,
-            ));
+            );
         }
         return $result;
     }
@@ -538,12 +538,17 @@ class liqui extends Exchange {
             } else {
                 $order = $this->orders[$id];
                 if ($order['status'] === 'open') {
-                    $this->orders[$id] = array_merge ($order, array (
+                    $order = array_merge ($order, array (
                         'status' => 'closed',
-                        'cost' => $order['amount'] * $order['price'],
+                        'cost' => null,
                         'filled' => $order['amount'],
                         'remaining' => 0.0,
                     ));
+                    if ($order['cost'] == null) {
+                        if ($order['filled'] != null)
+                            $order['cost'] = $order['filled'] * $order['price'];
+                    }
+                    $this->orders[$id] = $order;
                 }
             }
             $order = $this->orders[$id];

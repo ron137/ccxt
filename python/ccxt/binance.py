@@ -355,7 +355,7 @@ class binance (Exchange):
             active = (market['status'] == 'TRADING')
             # lot size is deprecated as of 2018.02.06
             lot = -1 * math.log10(precision['amount'])
-            entry = self.extend(self.fees['trading'], {
+            entry = {
                 'id': id,
                 'symbol': symbol,
                 'base': base,
@@ -380,7 +380,7 @@ class binance (Exchange):
                         'max': None,
                     },
                 },
-            })
+            }
             if 'PRICE_FILTER' in filters:
                 filter = filters['PRICE_FILTER']
                 entry['precision']['price'] = self.precision_from_string(filter['tickSize'])
@@ -471,8 +471,8 @@ class binance (Exchange):
             'close': self.safe_float(ticker, 'prevClosePrice'),
             'first': None,
             'last': self.safe_float(ticker, 'lastPrice'),
-            'change': self.safe_float(ticker, 'priceChangePercent'),
-            'percentage': None,
+            'change': self.safe_float(ticker, 'priceChange'),
+            'percentage': self.safe_float(ticker, 'priceChangePercent'),
             'average': None,
             'baseVolume': self.safe_float(ticker, 'volume'),
             'quoteVolume': self.safe_float(ticker, 'quoteVolume'),
