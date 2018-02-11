@@ -137,6 +137,8 @@ class bit2c (Exchange):
 
     async def fetch_trades(self, symbol, since=None, limit=None, params={}):
         market = self.market(symbol)
+        if since:
+            params['date'] = since / 1000
         response = await self.publicGetExchangesPairTrades(self.extend({
             'pair': market['id'],
         }, params))
@@ -167,6 +169,7 @@ class bit2c (Exchange):
         url = self.urls['api'] + '/' + self.implode_params(path, params)
         if api == 'public':
             url += '.json'
+            url = self.url(url, params)
         else:
             self.check_required_credentials()
             nonce = self.nonce()

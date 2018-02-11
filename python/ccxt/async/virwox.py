@@ -259,6 +259,8 @@ class virwox (Exchange):
                         errorCode = result['errorCode']
                         if errorCode != 'OK':
                             raise ExchangeError(self.id + ' error returned: ' + body)
+                        if 'getRawTradeData' in url and not result['data']:
+                            raise ExchangeError(self.id + ' return no data')
                 else:
                     raise ExchangeError(self.id + ' malformed response: no result in response: ' + body)
             else:
