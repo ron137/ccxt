@@ -396,10 +396,9 @@ class kraken extends Exchange {
 
     public function fetch_order_book ($symbol, $limit = null, $params = array ()) {
         $this->load_markets();
-        $darkpool = mb_strpos ($symbol, '.d') !== false;
-        if ($darkpool)
-            throw new ExchangeError ($this->id . ' does not provide an order book for $darkpool $symbol ' . $symbol);
         $market = $this->market ($symbol);
+        if ($market['darkpool'])
+            throw new ExchangeError ($this->id . ' does not provide an order book for darkpool $symbol ' . $symbol);
         $request = array (
             'pair' => $market['id'],
         );
@@ -539,7 +538,9 @@ class kraken extends Exchange {
             $type = ($trade[4] === 'l') ? 'limit' : 'market';
             $price = floatval ($trade[0]);
             $amount = floatval ($trade[1]);
-            $id = $trade[6]; // artificially added as per #1794
+            $tradeLength = is_array ($trade) ? count ($trade) : 0;
+            if ($tradeLength > 6)
+                $id = $trade[6]; // artificially added as per #1794
         }
         $symbol = ($market) ? $market['symbol'] : null;
         return array (

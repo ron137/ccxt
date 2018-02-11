@@ -397,10 +397,9 @@ class kraken (Exchange):
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        darkpool = symbol.find('.d') >= 0
-        if darkpool:
-            raise ExchangeError(self.id + ' does not provide an order book for darkpool symbol ' + symbol)
         market = self.market(symbol)
+        if market['darkpool']:
+            raise ExchangeError(self.id + ' does not provide an order book for darkpool symbol ' + symbol)
         request = {
             'pair': market['id'],
         }
@@ -531,7 +530,9 @@ class kraken (Exchange):
             type = 'limit' if (trade[4] == 'l') else 'market'
             price = float(trade[0])
             amount = float(trade[1])
-            id = trade[6]  # artificially added as per  #1794
+            tradeLength = len(trade)
+            if tradeLength > 6:
+                id = trade[6]  # artificially added as per  #1794
         symbol = market['symbol'] if (market) else None
         return {
             'id': id,

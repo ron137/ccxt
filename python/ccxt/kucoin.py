@@ -56,6 +56,7 @@ class kucoin (Exchange):
                     'public': 'https://api.kucoin.com',
                     'private': 'https://api.kucoin.com',
                     'kitchen': 'https://kitchen.kucoin.com',
+                    'kitchen-2': 'https://kitchen-2.kucoin.com',
                 },
                 'www': 'https://kucoin.com',
                 'doc': 'https://kucoinapidocs.docs.apiary.io',
@@ -333,7 +334,9 @@ class kucoin (Exchange):
                 remaining = amount - filled
         side = self.safe_value(order, 'direction')
         if side is None:
-            side = order['type'].lower()
+            side = order['type']
+        if side is not None:
+            side = side.lower()
         fee = None
         if 'feeTotal' in order:
             fee = {
@@ -575,21 +578,23 @@ class kucoin (Exchange):
                 limit = 52  # 52 weeks, 1 year
             minutes = 10080
         elif limit is None:
+            # last 1440 periods, whatever the duration of the period is
+            # for 1m it equals 1 day(24 hours)
+            # for 5m it equals 5 days
+            # ...
             limit = 1440
-            minutes = 1440
-            resolution = 'D'
-        start = end - minutes * 60 * limit
+        start = end - limit * minutes * 60
+        # if 'since' has been supplied by user
         if since is not None:
-            start = int(since / 1000)
-            end = self.sum(start, minutes * 60 * limit)
+            start = int(since / 1000)  # convert milliseconds to seconds
+            end = min(end, self.sum(start, limit * minutes * 60))
         request = {
             'symbol': market['id'],
-            'type': self.timeframes[timeframe],
             'resolution': resolution,
             'from': start,
             'to': end,
         }
-        response = self.kitchenGetOpenChartHistory(self.extend(request, params))
+        response = self.publicGetOpenChartHistory(self.extend(request, params))
         return self.parse_trading_view_ohlcvs(response, market, timeframe, since, limit)
 
     def withdraw(self, code, amount, address, tag=None, params={}):
@@ -609,10 +614,7 @@ class kucoin (Exchange):
         endpoint = '/' + self.version + '/' + self.implode_params(path, params)
         url = self.urls['api'][api] + endpoint
         query = self.omit(params, self.extract_params(path))
-        if api == 'public':
-            if query:
-                url += '?' + self.urlencode(query)
-        else:
+        if api == 'private':
             self.check_required_credentials()
             # their nonce is always a calibrated synched milliseconds-timestamp
             nonce = self.milliseconds()
@@ -632,6 +634,9 @@ class kucoin (Exchange):
                 'KC-API-NONCE': nonce,
                 'KC-API-SIGNATURE': signature,
             }
+        else:
+            if query:
+                url += '?' + self.urlencode(query)
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
     def throw_exception_on_error(self, response):

@@ -25,6 +25,7 @@ module.exports = class binance extends Exchange {
                 'fetchOrder': true,
                 'fetchOrders': true,
                 'fetchOpenOrders': true,
+                'fetchClosedOrders': true,
                 'withdraw': true,
             },
             'timeframes': {
@@ -75,6 +76,8 @@ module.exports = class binance extends Exchange {
                         'depositHistory',
                         'withdrawHistory',
                         'depositAddress',
+                        'accountStatus',
+                        'systemStatus',
                     ],
                 },
                 'v3': {

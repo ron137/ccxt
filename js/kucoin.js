@@ -46,6 +46,7 @@ module.exports = class kucoin extends Exchange {
                     'public': 'https://api.kucoin.com',
                     'private': 'https://api.kucoin.com',
                     'kitchen': 'https://kitchen.kucoin.com',
+                    'kitchen-2': 'https://kitchen-2.kucoin.com',
                 },
                 'www': 'https://kucoin.com',
                 'doc': 'https://kucoinapidocs.docs.apiary.io',
@@ -337,7 +338,9 @@ module.exports = class kucoin extends Exchange {
         }
         let side = this.safeValue (order, 'direction');
         if (typeof side === 'undefined')
-            side = order['type'].toLowerCase ();
+            side = order['type'];
+        if (typeof side !== 'undefined')
+            side = side.toLowerCase ();
         let fee = undefined;
         if ('feeTotal' in order) {
             fee = {
@@ -603,23 +606,25 @@ module.exports = class kucoin extends Exchange {
                 limit = 52; // 52 weeks, 1 year
             minutes = 10080;
         } else if (typeof limit === 'undefined') {
+            // last 1440 periods, whatever the duration of the period is
+            // for 1m it equals 1 day (24 hours)
+            // for 5m it equals 5 days
+            // ...
             limit = 1440;
-            minutes = 1440;
-            resolution = 'D';
         }
-        let start = end - minutes * 60 * limit;
+        let start = end - limit * minutes * 60;
+        // if 'since' has been supplied by user
         if (typeof since !== 'undefined') {
-            start = parseInt (since / 1000);
-            end = this.sum (start, minutes * 60 * limit);
+            start = parseInt (since / 1000); // convert milliseconds to seconds
+            end = Math.min (end, this.sum (start, limit * minutes * 60));
         }
         let request = {
             'symbol': market['id'],
-            'type': this.timeframes[timeframe],
             'resolution': resolution,
             'from': start,
             'to': end,
         };
-        let response = await this.kitchenGetOpenChartHistory (this.extend (request, params));
+        let response = await this.publicGetOpenChartHistory (this.extend (request, params));
         return this.parseTradingViewOHLCVs (response, market, timeframe, since, limit);
     }
 
@@ -641,10 +646,7 @@ module.exports = class kucoin extends Exchange {
         let endpoint = '/' + this.version + '/' + this.implodeParams (path, params);
         let url = this.urls['api'][api] + endpoint;
         let query = this.omit (params, this.extractParams (path));
-        if (api === 'public') {
-            if (Object.keys (query).length)
-                url += '?' + this.urlencode (query);
-        } else {
+        if (api === 'private') {
             this.checkRequiredCredentials ();
             // their nonce is always a calibrated synched milliseconds-timestamp
             let nonce = this.milliseconds ();
@@ -666,6 +668,9 @@ module.exports = class kucoin extends Exchange {
                 'KC-API-NONCE': nonce,
                 'KC-API-SIGNATURE': signature,
             };
+        } else {
+            if (Object.keys (query).length)
+                url += '?' + this.urlencode (query);
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }

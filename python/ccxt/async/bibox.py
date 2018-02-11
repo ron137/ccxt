@@ -8,6 +8,7 @@ import hashlib
 import math
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
+from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import DDoSProtection
 
 
@@ -480,14 +481,22 @@ class bibox (Exchange):
     async def withdraw(self, code, amount, address, tag=None, params={}):
         await self.load_markets()
         currency = self.currency(code)
+        if self.password is None:
+            if not('trade_pwd' in list(params.keys())):
+                raise ExchangeError(self.id + ' withdraw() requires self.password set on the exchange instance or a trade_pwd parameter')
+        if not('totp_code' in list(params.keys())):
+            raise ExchangeError(self.id + ' withdraw() requires a totp_code parameter for 2FA authentication')
+        body = {
+            'trade_pwd': self.password,
+            'coin_symbol': currency['id'],
+            'amount': amount,
+            'addr': address,
+        }
+        if tag is not None:
+            body['address_remark'] = tag
         response = await self.privatePostTransfer({
             'cmd': 'transfer/transferOut',
-            'body': self.extend({
-                'coin_symbol': currency,
-                'amount': amount,
-                'addr': address,
-                'addr_remark': '',
-            }, params),
+            'body': self.extend(body, params),
         })
         return {
             'info': response,
@@ -498,13 +507,10 @@ class bibox (Exchange):
         url = self.urls['api'] + '/' + self.version + '/' + path
         cmds = self.json([params])
         if api == 'public':
-            if method == 'GET':
-                if params:
-                    url += '?' + self.urlencode(params)
-            else:
-                body = {
-                    'cmds': cmds,
-                }
+            if method != 'GET':
+                body = {'cmds': cmds}
+            elif params:
+                url += '?' + self.urlencode(params)
         else:
             self.check_required_credentials()
             body = {
@@ -512,8 +518,10 @@ class bibox (Exchange):
                 'apikey': self.apiKey,
                 'sign': self.hmac(self.encode(cmds), self.encode(self.secret), hashlib.md5),
             }
+        if body is not None:
+            body = self.json(body, {'convertArraysToObjects': True})
         headers = {'Content-Type': 'application/json'}
-        return {'url': url, 'method': method, 'body': self.json(body), 'headers': headers}
+        return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
     async def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = await self.fetch2(path, api, method, params, headers, body)
@@ -521,7 +529,11 @@ class bibox (Exchange):
         if 'error' in response:
             if 'code' in response['error']:
                 code = response['error']['code']
-                if code == '3012':
+                if code == '2068':
+                    # \u4e0b\u5355\u6570\u91cf\u4e0d\u80fd\u4f4e\u4e8e
+                    # The number of orders can not be less than
+                    raise InvalidOrder(message)
+                elif code == '3012':
                     raise AuthenticationError(message)  # invalid api key
                 elif code == '3025':
                     raise AuthenticationError(message)  # signature failed

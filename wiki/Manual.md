@@ -145,7 +145,7 @@ The ccxt library currently supports the following 99 cryptocurrency exchange mar
 |![southxchange](https://user-images.githubusercontent.com/1294454/27838912-4f94ec8a-60f6-11e7-9e5d-bbf9bd50a559.jpg)       | southxchange       | [SouthXchange](https://www.southxchange.com)              | *   | [API](https://www.southxchange.com/Home/Api)                                                 | Argentina                               |
 |![surbitcoin](https://user-images.githubusercontent.com/1294454/27991511-f0a50194-6481-11e7-99b5-8f02932424cc.jpg)         | surbitcoin         | [SurBitcoin](https://surbitcoin.com)                      | 1   | [API](https://blinktrade.com/docs)                                                           | Venezuela                               |
 |![therock](https://user-images.githubusercontent.com/1294454/27766869-75057fa2-5ee9-11e7-9a6f-13e641fa4707.jpg)            | therock            | [TheRockTrading](https://therocktrading.com)              | 1   | [API](https://api.therocktrading.com/doc/v1/index.html)                                      | Malta                                   |
-|![tidex](https://user-images.githubusercontent.com/1294454/30781780-03149dc4-a12e-11e7-82bb-313b269d24d4.jpg)              | tidex              | [Tidex](https://tidex.com)                                | 3   | [API](https://tidex.com/public-api)                                                          | UK                                      |
+|![tidex](https://user-images.githubusercontent.com/1294454/30781780-03149dc4-a12e-11e7-82bb-313b269d24d4.jpg)              | tidex              | [Tidex](https://tidex.com)                                | 3   | [API](https://tidex.com/exchange/public-api)                                                 | UK                                      |
 |![urdubit](https://user-images.githubusercontent.com/1294454/27991453-156bf3ae-6480-11e7-82eb-7295fe1b5bb4.jpg)            | urdubit            | [UrduBit](https://urdubit.com)                            | 1   | [API](https://blinktrade.com/docs)                                                           | Pakistan                                |
 |![vaultoro](https://user-images.githubusercontent.com/1294454/27766880-f205e870-5ee9-11e7-8fe2-0d5b15880752.jpg)           | vaultoro           | [Vaultoro](https://www.vaultoro.com)                      | 1   | [API](https://api.vaultoro.com)                                                              | Switzerland                             |
 |![vbtc](https://user-images.githubusercontent.com/1294454/27991481-1f53d1d8-6481-11e7-884e-21d17e7939db.jpg)               | vbtc               | [VBTC](https://vbtc.exchange)                             | 1   | [API](https://blinktrade.com/docs)                                                           | Vietnam                                 |
@@ -456,7 +456,7 @@ Each market is an associative array (aka dictionary) with the following keys:
 
 ### Precision And Limits
 
-**Do not confuse `limits` with `precision`!** Precision has nothing to do with min limits. A precision of 8 digits does not necessarily mean a min limit of 0.0000001. The opposite is also true: a min limit of 0.0001 does not necessarily mean a precision of 4.
+**Do not confuse `limits` with `precision`!** Precision has nothing to do with min limits. A precision of 8 digits does not necessarily mean a min limit of 0.00000001. The opposite is also true: a min limit of 0.0001 does not necessarily mean a precision of 4.
 
 Examples:
 
@@ -1844,7 +1844,7 @@ Below is an outline of exception inheritance hierarchy:
     - required parameter is missing
     - the format of parameters is incorrect
     - an exchange replies with an unclear answer
-    
+
     Other exceptions derived from `ExchangeError`:
     - `NotSupported`: This exception is raised if the endpoint is not offered/not supported by the exchange API.
     - `AuthenticationError`: Raised when an exchange requires one of the API credentials that you've missed to specify, or when there's a mistake in the keypair or an outdated nonce. Most of the time you need `apiKey` and `secret`, sometimes you also need `uid` and/or `password`.

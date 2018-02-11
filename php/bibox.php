@@ -505,14 +505,22 @@ class bibox extends Exchange {
     public function withdraw ($code, $amount, $address, $tag = null, $params = array ()) {
         $this->load_markets();
         $currency = $this->currency ($code);
+        if ($this->password === null)
+            if (!(is_array ($params) && array_key_exists ('trade_pwd', $params)))
+                throw new ExchangeError ($this->id . ' withdraw() requires $this->password set on the exchange instance or a trade_pwd parameter');
+        if (!(is_array ($params) && array_key_exists ('totp_code', $params)))
+            throw new ExchangeError ($this->id . ' withdraw() requires a totp_code parameter for 2FA authentication');
+        $body = array (
+            'trade_pwd' => $this->password,
+            'coin_symbol' => $currency['id'],
+            'amount' => $amount,
+            'addr' => $address,
+        );
+        if ($tag !== null)
+            $body['address_remark'] = $tag;
         $response = $this->privatePostTransfer (array (
             'cmd' => 'transfer/transferOut',
-            'body' => array_merge (array (
-                'coin_symbol' => $currency,
-                'amount' => $amount,
-                'addr' => $address,
-                'addr_remark' => '',
-            ), $params),
+            'body' => array_merge ($body, $params),
         ));
         return array (
             'info' => $response,
@@ -524,14 +532,10 @@ class bibox extends Exchange {
         $url = $this->urls['api'] . '/' . $this->version . '/' . $path;
         $cmds = $this->json (array ( $params ));
         if ($api === 'public') {
-            if ($method === 'GET') {
-                if ($params)
-                    $url .= '?' . $this->urlencode ($params);
-            } else {
-                $body = array (
-                    'cmds' => $cmds,
-                );
-            }
+            if ($method !== 'GET')
+                $body = array ( 'cmds' => $cmds );
+            else if ($params)
+                $url .= '?' . $this->urlencode ($params);
         } else {
             $this->check_required_credentials();
             $body = array (
@@ -540,8 +544,10 @@ class bibox extends Exchange {
                 'sign' => $this->hmac ($this->encode ($cmds), $this->encode ($this->secret), 'md5'),
             );
         }
+        if ($body !== null)
+            $body = $this->json ($body, array ( 'convertArraysToObjects' => true ));
         $headers = array ( 'Content-Type' => 'application/json' );
-        return array ( 'url' => $url, 'method' => $method, 'body' => $this->json ($body), 'headers' => $headers );
+        return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 
     public function request ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {
@@ -550,7 +556,11 @@ class bibox extends Exchange {
         if (is_array ($response) && array_key_exists ('error', $response)) {
             if (is_array ($response['error']) && array_key_exists ('code', $response['error'])) {
                 $code = $response['error']['code'];
-                if ($code === '3012')
+                if ($code === '2068')
+                    // \u4e0b\u5355\u6570\u91cf\u4e0d\u80fd\u4f4e\u4e8e
+                    // The number of orders can not be less than
+                    throw new InvalidOrder ($message);
+                else if ($code === '3012')
                     throw new AuthenticationError ($message); // invalid $api key
                 else if ($code === '3025')
                     throw new AuthenticationError ($message); // signature failed

@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, AuthenticationError, DDoSProtection } = require ('./base/errors');
+const { ExchangeError, AuthenticationError, DDoSProtection, InvalidOrder } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -506,14 +506,22 @@ module.exports = class bibox extends Exchange {
     async withdraw (code, amount, address, tag = undefined, params = {}) {
         await this.loadMarkets ();
         let currency = this.currency (code);
+        if (typeof this.password === 'undefined')
+            if (!('trade_pwd' in params))
+                throw new ExchangeError (this.id + ' withdraw() requires this.password set on the exchange instance or a trade_pwd parameter');
+        if (!('totp_code' in params))
+            throw new ExchangeError (this.id + ' withdraw() requires a totp_code parameter for 2FA authentication');
+        let body = {
+            'trade_pwd': this.password,
+            'coin_symbol': currency['id'],
+            'amount': amount,
+            'addr': address,
+        };
+        if (typeof tag !== 'undefined')
+            body['address_remark'] = tag;
         let response = await this.privatePostTransfer ({
             'cmd': 'transfer/transferOut',
-            'body': this.extend ({
-                'coin_symbol': currency,
-                'amount': amount,
-                'addr': address,
-                'addr_remark': '',
-            }, params),
+            'body': this.extend (body, params),
         });
         return {
             'info': response,
@@ -525,14 +533,10 @@ module.exports = class bibox extends Exchange {
         let url = this.urls['api'] + '/' + this.version + '/' + path;
         let cmds = this.json ([ params ]);
         if (api === 'public') {
-            if (method === 'GET') {
-                if (Object.keys (params).length)
-                    url += '?' + this.urlencode (params);
-            } else {
-                body = {
-                    'cmds': cmds,
-                };
-            }
+            if (method !== 'GET')
+                body = { 'cmds': cmds };
+            else if (Object.keys (params).length)
+                url += '?' + this.urlencode (params);
         } else {
             this.checkRequiredCredentials ();
             body = {
@@ -541,8 +545,10 @@ module.exports = class bibox extends Exchange {
                 'sign': this.hmac (this.encode (cmds), this.encode (this.secret), 'md5'),
             };
         }
+        if (typeof body !== 'undefined')
+            body = this.json (body, { 'convertArraysToObjects': true });
         headers = { 'Content-Type': 'application/json' };
-        return { 'url': url, 'method': method, 'body': this.json (body), 'headers': headers };
+        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
     async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
@@ -551,7 +557,11 @@ module.exports = class bibox extends Exchange {
         if ('error' in response) {
             if ('code' in response['error']) {
                 let code = response['error']['code'];
-                if (code === '3012')
+                if (code === '2068')
+                    // \u4e0b\u5355\u6570\u91cf\u4e0d\u80fd\u4f4e\u4e8e
+                    // The number of orders can not be less than
+                    throw new InvalidOrder (message);
+                else if (code === '3012')
                     throw new AuthenticationError (message); // invalid api key
                 else if (code === '3025')
                     throw new AuthenticationError (message); // signature failed
