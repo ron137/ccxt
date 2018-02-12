@@ -469,8 +469,7 @@ module.exports = class bitstamp extends Exchange {
         method += 'Post' + this.capitalize (name) + 'Withdrawal';
         let query = params;
         if (code === 'XRP') {
-            let tag = this.safeString (params, 'destination_tag');
-            if (tag) {
+            if (typeof tag !== 'undefined') {
                 request['destination_tag'] = tag;
                 query = this.omit (params, 'destination_tag');
             } else {

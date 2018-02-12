@@ -1659,7 +1659,7 @@ In most cases the ``.orders`` cache will work transparently for the user. Most o
 -  When ``fetchOrder(id)`` is emulated, the library will not be able to return a specific order, if it was not cached previously or if a change of the order' status was done bypassing ccxt. In that case the library will throw an ``OrderNotFound`` exception.
 -  If an unhandled error leads to a crash of the application and the ``.orders`` cache isn't saved and restored upon restart, the cache will be lost. Handling the exceptions properly is the responsibility of the user. One has to pay **extra care** when implementing proper `error handling <#error-handling>`__, otherwise the ``.orders`` cache may fall out of sync.
 
-*Note: the order cache functionality is to be reworked soon to obtain the order statuses from private trades history, where available. This is a work in progress, aimed at adding full-features support for order fees. More about it here: https://github.com/ccxt/ccxt/issues/569*.
+*Note: the order cache functionality is to be reworked soon to obtain the order statuses from private trades history, where available. This is a work in progress, aimed at adding full-featured support for order fees, costs and other info. More about it here: https://github.com/ccxt/ccxt/issues/569*.
 
 By Order Id
 ^^^^^^^^^^^
@@ -2128,9 +2128,13 @@ Below is an outline of exception inheritance hierarchy:
    -  ``DDoSProtection``: This exception is thrown whenever Cloudflare or Incapsula rate limiter restrictions are enforced per user or region/location. The ccxt library does a case-insensitive search in the response received from the exchange for one of the following keywords:
    -  ``cloudflare``
    -  ``incapsula``
-   -  ``RequestTimeout``: The name literally says it all. This exception is raised when the connection with the exchange fails or data is not fully received in a specified amount of time. This is controlled by the ``timeout`` option. When a ``RequestTimeout`` is raised, the user doesn't know the outcome a a request (whether it was accepted by the exchange server or not). Thus it's advised to handle this type of exception in the following manner:
+   -  ``RequestTimeout``: This exception is raised when the connection with the exchange fails or data is not fully received in a specified amount of time. This is controlled by the ``timeout`` option. When a ``RequestTimeout`` is raised, the user doesn't know the outcome of a request (whether it was accepted by the exchange server or not). Thus it's advised to handle this type of exception in the following manner:
    -  for fetching requests it is safe to retry the call
-   -  for a request to ``cancelOrder(id, symbol)`` a user is required to retry the same call the second time. If the order in question has been canceled on the first try you'll get ``OrderNotFound`` exception upon the second attempt. If instead of a retry a user calls a ``fetchOrder()``, ``fetchOrders()``, ``fetchOpenOrders()`` or ``fetchClosedOrders()`` right away without a retry to call ``cancelOrder()``, this may cause the ```.orders`` cache <#orders-cache>`__ to fall out of sync.
+   -  for a request to ``cancelOrder(id, symbol)`` a user is required to retry the same call the second time. If instead of a retry a user calls a ``fetchOrder()``, ``fetchOrders()``, ``fetchOpenOrders()`` or ``fetchClosedOrders()`` right away without a retry to call ``cancelOrder()``, this may cause the ```.orders`` cache <#orders-cache>`__ to fall out of sync. A subsequent retry will return one of the following possible results:
+
+      -  a request is completed successfully, meaning the order has been properly canceled now
+      -  an ``OrderNotFound`` exception is raised, which means the order was either already canceled on the first attempt or has been executed (filled and closed) in the meantime between the two attempts. Note, that the order will still have an ``'open'`` status in the ``.orders`` cache. To determine the actual order status you'll need to call ``fetchOrder(id)`` to update the cache properly (where available from the exchange). If the ``fetchOrder()`` method is ``'emulated'`` the ccxt library will mark the order as ``'closed'``. The user has to call ``fetchBalance()`` and set the order status to ``'canceled'`` manually if the balance hasn't changed (a trade didn't not occur).
+
    -  if a request to ``createOrder()`` fails with a ``RequestTimeout`` the user should:
 
       -  update the ``.orders`` cache with a call to ``fetchOrders()``, ``fetchOpenOrders()``, ``fetchClosedOrders()`` to check if the request to place the order has succeeded and the order is now open
