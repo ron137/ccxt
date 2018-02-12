@@ -348,6 +348,8 @@ class bitcoincoid (Exchange):
         if response is None:
             if body[0] == '{':
                 response = json.loads(body)
+        if 'trades' in url and body[0] == '[':
+            return
         if not('success' in list(response.keys())):
             return  # no 'success' property on public responses
         if response['success'] == 1:

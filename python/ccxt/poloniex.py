@@ -403,7 +403,8 @@ class poloniex (Exchange):
             'currencyPair': market['id'],
         }
         if since is not None:
-            request['start'] = int(since / 1000)
+            minimum_since = self.seconds() - 25 * 24 * 60 * 60
+            request['start'] = max(int(since / 1000),minimum_since)
             request['end'] = self.seconds()  # last 50000 trades by default
         trades = self.publicGetReturnTradeHistory(self.extend(request, params))
         return self.parse_trades(trades, market, since, limit)
