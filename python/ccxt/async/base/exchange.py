@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1093'
+__version__ = '1.10.1098'
 
 # -----------------------------------------------------------------------------
 
@@ -109,7 +109,8 @@ class Exchange(BaseExchange):
                 http_status_code = response.status
                 text = await response.text()
                 self.last_http_response = text
-                self.handle_errors(http_status_code, text, url, method, None, text)
+                self.last_response_headers = response.headers
+                self.handle_errors(http_status_code, text, url, method, self.last_response_headers, text)
                 self.handle_rest_errors(None, http_status_code, text, url, method)
 
         except socket.gaierror as e:
@@ -127,7 +128,7 @@ class Exchange(BaseExchange):
         if self.verbose:
             print(method, url, "\nResponse:", headers, text)
 
-        self.handle_errors(http_status_code, text, url, method, None, text)
+        self.handle_errors(http_status_code, text, url, method, self.last_response_headers, text)
         return self.handle_rest_response(text, url, method, headers, body)
 
     async def load_markets(self, reload=False):
