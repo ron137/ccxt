@@ -195,13 +195,25 @@ class liqui (Exchange):
             currency = currencies[c]
             uppercase = currency.upper()
             uppercase = self.common_currency_code(uppercase)
-            total = None
-            used = None
-            if balances['open_orders'] == 0:
-                total = funds[currency]
-                used = 0.0
+            free = funds[currency]
+            total = free
+            used = 0.0
+            for order_id in self.orders:
+                order = self.orders[order_id]
+                if order['status'] != 'open':
+                    continue
+                if order['side'] == 'buy':
+                    cur = order['symbol'].split('/')[1]
+                    amount = order['amount'] * order['price']
+                else:
+                    cur = order['symbol'].split('/')[0]
+                    amount = order['amount']
+                if uppercase == cur:
+                    used += amount
+                    total += amount
+
             account = {
-                'free': funds[currency],
+                'free': free,
                 'used': used,
                 'total': total,
             }

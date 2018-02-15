@@ -334,7 +334,7 @@ class bitfinex2 (bitfinex):
             'percentage': ticker[length - 5],
             'average': None,
             'baseVolume': ticker[length - 3],
-            'quoteVolume': None,
+            'quoteVolume': ticker[length - 4] * ticker[length - 3],
             'info': ticker,
         }
 

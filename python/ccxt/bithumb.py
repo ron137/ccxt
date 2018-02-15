@@ -157,7 +157,7 @@ class bithumb (Exchange):
             'open': self.safe_float(ticker, 'opening_price'),
             'close': self.safe_float(ticker, 'closing_price'),
             'first': None,
-            'last': self.safe_float(ticker, 'last_trade'),
+            'last': self.safe_float(ticker, 'closing_price'),
             'change': None,
             'percentage': None,
             'average': self.safe_float(ticker, 'average_price'),
@@ -201,8 +201,7 @@ class bithumb (Exchange):
         timestamp = self.parse8601(transaction_date + ' ' + transaction_time)
         timestamp -= 9 * 3600000  # they report UTC + 9 hours(server in list(Korean timezone.keys()))
         side = 'sell' if (trade['type'] == 'ask') else 'buy'
-        return {
-            'id': None,
+        trade = {
             'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
@@ -213,6 +212,12 @@ class bithumb (Exchange):
             'price': float(trade['price']),
             'amount': float(trade['units_traded']),
         }
+        trade_id = ''
+        for key in trade:
+            trade_id += str(trade[key])
+        trade_id = abs(hash(trade_id))
+        trade['id'] = trade_id
+        return trade
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()

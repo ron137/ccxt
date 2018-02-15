@@ -378,10 +378,25 @@ class okcoinusd (Exchange):
         params = self.omit(params, 'cost')
         method += 'Trade'
         response = getattr(self, method)(self.extend(order, params))
+        timestamp = self.milliseconds()
         return {
             'info': response,
             'id': str(response['order_id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'average': None,
+            'cost': None,
+            'amount': amount,
+            'filled': None,
+            'remaining': None,
+            'status': 0,
+            'fee': None,
         }
+
 
     def cancel_order(self, id, symbol=None, params={}):
         if not symbol:
@@ -546,6 +561,25 @@ class okcoinusd (Exchange):
             'status': closed,
         }, params))
         return self.filter_by(orders, 'status', 'closed')
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+        orders = self.fetch_closed_orders(symbol, since, limit, params)
+        trades = []
+        for order in orders:
+            trade = {
+                'id': order['id'],
+                'info': order['info'],
+                'timestamp': order['timestamp'],
+                'datetime': order['datetime'],
+                'symbol': order['symbol'],
+                'type': order['type'],
+                'side': order['side'],
+                'price': order['price'],
+                'amount': order['amount'],
+            }
+            trades.append(trade)
+        return trades
+
 
     def withdraw(self, code, amount, address, tag=None, params={}):
         self.load_markets()
