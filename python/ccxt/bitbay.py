@@ -304,13 +304,33 @@ class bitbay (Exchange):
         if type != 'limit':
             raise ExchangeError(self.id + ' allows limit orders only')
         market = self.market(symbol)
-        return self.privatePostTrade(self.extend({
+        response = self.privatePostTrade(self.extend({
             'type': side,
             'currency': market['baseId'],
             'amount': amount,
             'payment_currency': market['quoteId'],
             'rate': price,
         }, params))
+        order_id = str(response['order_id'])
+        timestamp = self.milliseconds()
+        order = {
+            'id': order_id,
+            'info': response,
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'average': price,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': amount,
+            'status': 'open',
+            'fee': None,
+        }
+        return order
 
     def cancel_order(self, id, symbol=None, params={}):
         return self.privatePostCancel({'id': id})
