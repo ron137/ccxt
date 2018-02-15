@@ -19,6 +19,7 @@ class wex (liqui):
             'name': 'WEX',
             'countries': 'NZ',  # New Zealand
             'version': '3',
+            '_nonce': 1,
             'has': {
                 'CORS': False,
                 'fetchTickers': True,
@@ -130,11 +131,18 @@ class wex (liqui):
                     if error == 'no orders':
                         # returned by fetchOpenOrders if no open orders(fix for  #489) -> not an error
                         return
+                    elif 'invalid nonce parameter' in error:
+                        self._nonce = int(error.split('you should send:')[1])
                     feedback = self.id + ' ' + self.json(response)
-                    messages = self.exceptions.messages
+                    messages = self.exceptions['messages']
                     if error in messages:
                         raise messages[error](feedback)
                     if error.find('It is not enough') >= 0:
                         raise InsufficientFunds(feedback)
                     else:
                         raise ExchangeError(feedback)
+
+    def nonce(self):
+        nonce = self._nonce
+        self._nonce += 1
+        return nonce

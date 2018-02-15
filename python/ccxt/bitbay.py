@@ -215,6 +215,8 @@ class bitbay (Exchange):
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         market = self.market(symbol)
+        params['limit'] = 200
+        params['sort'] = 'desc'
         response = self.publicGetIdTrades(self.extend({
             'id': market['id'],
         }, params))
@@ -271,6 +273,7 @@ class bitbay (Exchange):
         url = self.urls['api'][api]
         if api == 'public':
             url += '/' + self.implode_params(path, params) + '.json'
+            url = self.url(url, params)
         else:
             self.check_required_credentials()
             body = self.urlencode(self.extend({
