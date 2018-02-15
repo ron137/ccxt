@@ -20,6 +20,7 @@ module.exports = class kucoin extends Exchange {
                 'CORS': false,
                 'cancelOrders': true,
                 'createMarketOrder': false,
+                'fetchDepositAddress': true,
                 'fetchTickers': true,
                 'fetchOHLCV': true, // see the method implementation below
                 'fetchOrder': true,
@@ -208,6 +209,24 @@ module.exports = class kucoin extends Exchange {
             });
         }
         return result;
+    }
+
+    async fetchDepositAddress (code, params = {}) {
+        await this.loadMarkets ();
+        let currency = this.currency (code);
+        let response = await this.privateGetAccountCoinWalletAddress (this.extend ({
+            'coin': currency['id'],
+        }, params));
+        let data = response['data'];
+        let address = this.safeString (data, 'address');
+        let tag = this.safeString (data, 'userOid');
+        return {
+            'currency': code,
+            'address': address,
+            'tag': tag,
+            'status': 'ok',
+            'info': response,
+        };
     }
 
     async fetchCurrencies (params = {}) {
