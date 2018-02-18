@@ -442,7 +442,7 @@ Below is a detailed description of each of the base exchange properties:
 
 -  ``has``: An assoc-array containing flags for exchange capabilities, including the following:
 
-   ::
+   .. code:: javascript
 
        'has': {
 
@@ -693,10 +693,10 @@ Most of the time users will be working with market symbols. You will get a stand
         await bitfinex.loadMarkets ()
 
         bitfinex.markets['BTC/USD']                   // symbol → market (get market by symbol)
-        bitfinex.marketsById['XRPBTC']                // id → market (get market by id)
+        bitfinex.markets_by_id['XRPBTC']              // id → market (get market by id)
 
         bitfinex.markets['BTC/USD']['id']             // symbol → id (get id by symbol)
-        bitfinex.marketsById['XRPBTC']['symbol']      // id → symbol (get symbol by id)
+        bitfinex.markets_by_id['XRPBTC']['symbol']    // id → symbol (get symbol by id)
 
     })
 
@@ -776,6 +776,14 @@ Consistency Of Base And Quote Currencies
 It depends on which exchange you are using, but some of them have a reversed (inconsistent) pairing of ``base`` and ``quote``. They actually have base and quote misplaced (switched/reversed sides). In that case you'll see a difference of parsed ``base`` and ``quote`` currency values with the unparsed ``info`` in the market substructure.
 
 For those exchanges the ccxt will do a correction, switching and normalizing sides of base and quote currencies when parsing exchange replies. This logic is financially and terminologically correct. If you want less confusion, remember the following rule: **base is always before the slash, quote is always after the slash in any symbol and with any market**.
+
+::
+
+    base currency ↓
+                 BTC / USDT
+                 ETH / BTC
+                DASH / ETH
+                        ↑ quote currency
 
 Market Cache Force Reload
 -------------------------
@@ -1073,7 +1081,7 @@ The structure of a returned order book is as follows:
 
     {
         'bids': [
-            [ price, amount ],
+            [ price, amount ], // [ float, float ]
             [ price, amount ],
             ...
         ],
@@ -1175,7 +1183,7 @@ Price Tickers
 
 A price ticker contains statistics for a particular market/symbol for some period of time in recent past, usually last 24 hours. The structure of a ticker is as follows:
 
-::
+.. code:: javascript
 
     {
         'symbol':      string symbol of the market ('BTC/USD', 'ETH/BTC', ...)
@@ -1331,16 +1339,16 @@ To get the list of available timeframes for your exchange see the ``timeframes``
 
 The fetchOHLCV method shown above returns a list (a flat array) of OHLCV candles represented by the following structure:
 
-::
+.. code:: javascript
 
     [
         [
-            1504541580000, // UTC timestamp in milliseconds
-            4235.4,        // (O)pen price
-            4240.6,        // (H)ighest price
-            4230.0,        // (L)owest price
-            4230.7,        // (C)losing price
-            37.72941911    // (V)olume (in terms of the base currency)
+            1504541580000, // UTC timestamp in milliseconds, integer
+            4235.4,        // (O)pen price, float
+            4240.6,        // (H)ighest price, float
+            4230.0,        // (L)owest price, float
+            4230.7,        // (C)losing price, float
+            37.72941911    // (V)olume (in terms of the base currency), float
         ],
         ...
     ]
@@ -1389,7 +1397,7 @@ For example, if you want to print recent trades for all symbols one by one seque
 
 The fetchTrades method shown above returns an ordered list of trades (a flat array, most recent trade first) represented by the following structure:
 
-::
+.. code:: javascript
 
     [
         {
@@ -1593,7 +1601,7 @@ The list of methods for querying orders consists of the following:
 -  ``fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {})``
 -  ``fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {})``
 
-Note that the naming of those methods indicates if the method returns a single order or multiple orders (an array/list of orders). Note, that ``fetchOrder()`` requires a mandatory order id argument (a string). Some exchanges also require a symbol to fetch an order by id, where order ids can intersect with various trading pairs. Also note that all other methods above return an array (a list) of orders. Most of them will also require a symbol, however, some exchanges allow querying with a symbol unspecified (all symbols).
+Note that the naming of those methods indicates if the method returns a single order or multiple orders (an array/list of orders). The ``fetchOrder()`` method requires a mandatory order id argument (a string). Some exchanges also require a symbol to fetch an order by id, where order ids can intersect with various trading pairs. Also, note that all other methods above return an array (a list) of orders. Most of them will require a symbol argument as well, however, some exchanges allow querying with a symbol unspecified (meaning *all symbols*).
 
 The library will throw a NotSupported exception if a user calls a method that is not available from the exchange or is not implemented in ccxt.
 
@@ -1920,13 +1928,13 @@ Deposit
 
 ::
 
-    fetchDepositAddress (code, params={})
-    createDepositAddress (code, params={})
+    fetchDepositAddress (code, params = {})
+    createDepositAddress (code, params = {})
 
--  code is the currency code
--  params contains optional extra overrides
+-  ``code`` is the currency code (uppercase string)
+-  ``params`` contains optional extra overrides
 
-::
+.. code:: javascript
 
     {
         'currency': currency, // currency code
@@ -1944,7 +1952,7 @@ Withdraw
 
 The withdraw method returns a dictionary containing the withdrawal id, which is usually the txid of the onchain transaction itself, or an internal *withdrawal request id* registered within the exchange. The returned value looks as follows:
 
-::
+.. code:: javascript
 
     {
         'info' { ... },      // unparsed reply from the exchange, as is

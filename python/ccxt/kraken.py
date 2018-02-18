@@ -265,7 +265,7 @@ class kraken (Exchange):
             base = self.common_currency_code(base)
             quote = self.common_currency_code(quote)
             darkpool = id.find('.d') >= 0
-            symbol = market['altname'] if darkpool else(base + '/' + quote)
+            symbol = market['altname'] if darkpool else (base + '/' + quote)
             maker = None
             if 'fees_maker' in market:
                 maker = float(market['fees_maker'][0][1]) / 100
@@ -603,8 +603,11 @@ class kraken (Exchange):
         if type == 'limit':
             order['price'] = self.price_to_precision(symbol, price)
         response = self.privatePostAddOrder(self.extend(order, params))
-        length = len(response['result']['txid'])
-        id = response['result']['txid'] if (length > 1) else response['result']['txid'][0]
+        id = self.safe_value(response['result'], 'txid')
+        if id is not None:
+            if isinstance(id, list):
+                length = len(id)
+                id = id if (length > 1) else id[0]
         return {
             'info': response,
             'id': id,

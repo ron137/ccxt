@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1116'
+__version__ = '1.10.1141'
 
 # -----------------------------------------------------------------------------
 
@@ -65,6 +65,9 @@ class Exchange(BaseExchange):
             'loop': self.asyncio_loop,
         }, self.tokenBucket))
 
+    def __del__(self):
+        self.asyncio_loop.run_until_complete(self.session.close())
+
     async def wait_for_token(self):
         while self.rateLimitTokens <= 1:
             # if self.verbose:
@@ -122,12 +125,9 @@ class Exchange(BaseExchange):
             self.raise_error(ExchangeError, url, method, e, None)
 
         except concurrent.futures._base.TimeoutError as e:
-            raise RequestTimeout(' '.join([self.id, method, url, 'request timeout']))
+            self.raise_error(RequestTimeout, method, url, e, None)
 
-        except aiohttp.client_exceptions.ServerDisconnectedError as e:
-            self.raise_error(ExchangeError, url, method, e, None)
-
-        except aiohttp.client_exceptions.ClientConnectorError as e:
+        except aiohttp.client_exceptions.ClientError as e:
             self.raise_error(ExchangeError, url, method, e, None)
 
         if self.verbose:
@@ -170,8 +170,8 @@ class Exchange(BaseExchange):
         tickers = await self.fetch_tickers(symbols, params)
         return tickers
 
-    async def update_order(self, id, symbol, *args):
+    async def edit_order(self, id, symbol, *args):
         if not self.enableRateLimit:
-            raise ExchangeError(self.id + ' updateOrder() requires enableRateLimit = true')
+            self.raise_error(ExchangeError, details='updateOrder() requires enableRateLimit = true')
         await self.cancel_order(id, symbol)
         return await self.create_order(symbol, *args)

@@ -6,6 +6,7 @@ from codecs import open
 from os import path
 import json
 
+
 here = path.abspath(path.dirname(__file__))
 root = path.dirname(here)
 
