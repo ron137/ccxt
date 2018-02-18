@@ -107,16 +107,16 @@ class exmo (Exchange):
                 'quote': quote,
                 'limits': {
                     'amount': {
-                        'min': market['min_quantity'],
-                        'max': market['max_quantity'],
+                        'min': float(market['min_quantity']),
+                        'max': float(market['max_quantity']),
                     },
                     'price': {
-                        'min': market['min_price'],
-                        'max': market['max_price'],
+                        'min': float(market['min_price']),
+                        'max': float(market['max_price']),
                     },
                     'cost': {
-                        'min': market['min_amount'],
-                        'max': market['max_amount'],
+                        'min': float(market['min_amount']),
+                        'max': float(market['max_amount']),
                     },
                 },
                 'precision': {
@@ -242,6 +242,67 @@ class exmo (Exchange):
             'amount': float(trade['quantity']),
         }
 
+    def parse_order(self, order, market):
+        timestamp = int(order['created']) * 1000
+        amount = float(order['quantity'])
+        remaining = amount
+        filled = 0
+        price = float(order['price'])
+        average = price
+        cost = 0
+        result = {
+            'info': order,
+            'id': str(order['order_id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': market['symbol'],
+            'type': 'limit',
+            'side': order['type'],
+            'price': price,
+            'average': average,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': remaining,
+            'status': 'open',
+            'fee': None,
+        }
+        return result
+
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        self.load_markets()
+        market = self.market(symbol)
+        response = self.privatePostUserOpenOrders(params)
+        if symbol and self.market_id(symbol) in response:
+            orders = response[self.market_id(symbol)]
+        else:
+            orders = []
+            for market_id in response:
+                for order in response[market_id]:
+                    orders.append(order)
+
+        return self.parse_orders(orders, market, since, limit)
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
+        self.load_markets()
+        market = self.market(symbol)
+        if symbol:
+            params['pair'] = self.market_id(symbol)
+        response = self.privatePostUserTrades(self.extend({
+            'limit': limit
+            },params))
+        if symbol:
+            trades = response[self.market_id(symbol)]
+        else:
+            trades = []
+            for market_id in response:
+                for trade in response[market_id]:
+                    trades.append(trade)
+
+        return self.parse_trades(trades, market, since, limit)
+
+
+
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
@@ -264,9 +325,23 @@ class exmo (Exchange):
             'type': prefix + side,
         }
         response = self.privatePostOrderCreate(self.extend(order, params))
+        timestamp = self.milliseconds()
         return {
+            'id': response['order_id'],
             'info': response,
-            'id': str(response['order_id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'average': price,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': amount,
+            'status': 'open',
+            'fee': None,
         }
 
     def cancel_order(self, id, symbol=None, params={}):
