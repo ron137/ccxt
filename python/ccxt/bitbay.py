@@ -258,7 +258,7 @@ class bitbay (Exchange):
         }, params))
         return self.parse_trades(response, market, since, limit)
 
-    def fetch_orders(self, symbol=None, since=None, limit=50, params={}):
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         if not symbol:
             raise ExchangeError(self.id + ' fetchOrders requires a symbol parameter')
         self.load_markets()
@@ -271,9 +271,6 @@ class bitbay (Exchange):
             return self.parse_orders(response, market, since, limit)
         else:
             return []
-
-    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        return self.fetch_orders(symbol, None, None, params)
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
         if not symbol:
