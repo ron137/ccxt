@@ -14,16 +14,16 @@ class bit2c (Exchange):
             'id': 'bit2c',
             'name': 'Bit2C',
             'countries': 'IL',  # Israel
-            'rateLimit': 3000,
+            'rateLimit': 1500,
             'has': {
                 'CORS': False,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766119-3593220e-5ece-11e7-8b3a-5a041f6bcc3f.jpg',
-                'api': 'https://www.bit2c.co.il',
-                'www': 'https://www.bit2c.co.il',
+                'api': 'https://bit2c.co.il',
+                'www': 'https://bit2c.co.il',
                 'doc': [
-                    'https://www.bit2c.co.il/home/api',
+                    'https://bit2c.co.il/home/api',
                     'https://github.com/OferE/bit2c',
                 ],
             },
@@ -38,7 +38,6 @@ class bit2c (Exchange):
                 'private': {
                     'post': [
                         'Account/Balance',
-                        'Account/Balance/v2',
                         'Merchant/CreateCheckout',
                         'Order/AccountHistory',
                         'Order/AddCoinFundsRequest',
@@ -47,17 +46,21 @@ class bit2c (Exchange):
                         'Order/AddOrderMarketPriceBuy',
                         'Order/AddOrderMarketPriceSell',
                         'Order/CancelOrder',
-                        'Order/MyOrders',
                         'Payment/GetMyId',
                         'Payment/Send',
+                    ],
+                    'get':[
+                        'Account/Balance/v2',
+                        'Order/MyOrders',
+                        'Order/OrderHistory'
                     ],
                 },
             },
             'markets': {
-                'BTC/NIS': {'id': 'BtcNis', 'symbol': 'BTC/NIS', 'base': 'BTC', 'quote': 'NIS'},
-                'BCH/NIS': {'id': 'BchNis', 'symbol': 'BCH/NIS', 'base': 'BCH', 'quote': 'NIS'},
-                'LTC/NIS': {'id': 'LtcNis', 'symbol': 'LTC/NIS', 'base': 'LTC', 'quote': 'NIS'},
-                'BTG/NIS': {'id': 'BtgNis', 'symbol': 'BTG/NIS', 'base': 'BTG', 'quote': 'NIS'},
+                'BTC/NIS': {'id': 'BtcNis', 'symbol': 'BTC/NIS', 'base': 'BTC', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
+                'BCH/NIS': {'id': 'BchNis', 'symbol': 'BCH/NIS', 'base': 'BCH', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
+                'LTC/NIS': {'id': 'LtcNis', 'symbol': 'LTC/NIS', 'base': 'LTC', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
+                'BTG/NIS': {'id': 'BtgNis', 'symbol': 'BTG/NIS', 'base': 'BTG', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
             },
             'fees': {
                 'trading': {
@@ -68,7 +71,7 @@ class bit2c (Exchange):
         })
 
     def fetch_balance(self, params={}):
-        balance = self.privatePostAccountBalanceV2()
+        balance = self.privateGetAccountBalanceV2()
         result = {'info': balance}
         currencies = list(self.currencies.keys())
         for i in range(0, len(currencies)):
@@ -117,6 +120,36 @@ class bit2c (Exchange):
             'info': ticker,
         }
 
+    def parse_order(self, order, market):
+        info = order
+        if 'NewOrder' in order:
+            order = order['NewOrder']
+        timestamp = int(order['created']) * 1000
+        amount = float(order['amount'])
+        remaining = amount
+        filled = 0
+        price = float(order['price'])
+        average = price
+        cost = 0
+        result = {
+            'info': info,
+            'id': str(order['id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': market['symbol'],
+            'type': 'limit',
+            'side': 'sell' if order['type'] == 1 else 'buy',
+            'price': price,
+            'average': average,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': remaining,
+            'status': 'open',
+            'fee': None,
+        }
+        return result
+
     def parse_trade(self, trade, market=None):
         timestamp = int(trade['date']) * 1000
         symbol = None
@@ -144,6 +177,52 @@ class bit2c (Exchange):
         }, params))
         return self.parse_trades(response, market, since, limit)
 
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        if not symbol:
+            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
+        self.load_markets()
+        market = self.market(symbol)
+        response = self.privateGetOrderMyOrders(self.extend({
+            'pair': self.market_id(symbol)
+            }, params))
+
+        orders = []
+        for side in response[self.market_id(symbol)]:
+            side_orders = response[self.market_id(symbol)][side]
+            if side_orders:
+                orders += side_orders
+
+        return self.parse_orders(orders, market, since, limit)
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+        if not symbol:
+            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
+        self.load_markets()
+        market = self.market(symbol)
+        response = self.privateGetOrderOrderHistory(self.extend({
+            'pair': self.market_id(symbol)
+            },params))
+
+        refined_trades = []
+        for item in response:
+            timestamp = int(item['ticks']) * 1000
+            refined_trade = {
+                'id': item['reference'],
+                'info': response,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'symbol': symbol,
+                'type': None,
+                'order': None,
+                'price': float(item['price']),
+                'side': 'sell' if item['action'] else 'buy',
+                'amount': float(item['firstAmount']) * (-1) if item['action'] else float(item['firstAmount']),
+            }
+            refined_trades.append(refined_trade)
+
+        return self.filter_by_since_limit(refined_trades, since, limit)
+
+
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         method = 'privatePostOrderAddOrder'
         order = {
@@ -157,10 +236,7 @@ class bit2c (Exchange):
             order['Total'] = amount * price
             order['IsBid'] = (side == 'buy')
         result = getattr(self, method)(self.extend(order, params))
-        return {
-            'info': result,
-            'id': result['NewOrder']['id'],
-        }
+        return self.parse_order(result, self.market(symbol))
 
     def cancel_order(self, id, symbol=None, params={}):
         return self.privatePostOrderCancelOrder({'id': id})
@@ -172,7 +248,7 @@ class bit2c (Exchange):
             url = self.url(url, params)
         else:
             self.check_required_credentials()
-            nonce = self.nonce()
+            nonce = self.nonce() * 10000000000
             query = self.extend({'nonce': nonce}, params)
             body = self.urlencode(query)
             signature = self.hmac(self.encode(body), self.encode(self.secret), hashlib.sha512, 'base64')

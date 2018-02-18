@@ -260,7 +260,7 @@ class bitbay (Exchange):
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         if not symbol:
-            raise ExchangeError(self.id + ' fetchOrders requires a symbol parameter')
+            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
         self.load_markets()
         market = self.market(symbol)
         response = self.privatePostOrders(self.extend({
