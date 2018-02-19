@@ -16,7 +16,7 @@ class yobit (liqui):
             'id': 'yobit',
             'name': 'YoBit',
             'countries': 'RU',
-            'rateLimit': 3000,  # responses are cached every 2 seconds
+            'rateLimit': 1000,  # responses are cached every 2 seconds
             'version': '3',
             'has': {
                 'createDepositAddress': True,
