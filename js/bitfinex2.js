@@ -384,28 +384,28 @@ module.exports = class bitfinex2 extends bitfinex {
         };
     }
 
-    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+    async fetchTrades (symbol, since = undefined, limit = 120, params = {}) {
         let market = this.market (symbol);
         let request = {
             'symbol': market['id'],
+            'sort': 1,
+            'limit': limit, // default = max = 120
         };
         if (typeof since !== 'undefined')
             request['start'] = since;
-        if (typeof limit !== 'undefined')
-            request['limit'] = limit;
         let response = await this.publicGetTradesSymbolHist (this.extend (request, params));
-        return this.parseTrades (response, market, since, limit);
+        let trades = this.sortBy (response, 1);
+        return this.parseTrades (trades, market, undefined, limit);
     }
 
-    async fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = undefined, params = {}) {
+    async fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = 100, params = {}) {
         let market = this.market (symbol);
         let request = {
             'symbol': market['id'],
             'timeframe': this.timeframes[timeframe],
             'sort': 1,
+            'limit': limit,
         };
-        if (typeof limit !== 'undefined')
-            request['limit'] = limit;
         if (typeof since !== 'undefined')
             request['start'] = since;
         request = this.extend (request, params);

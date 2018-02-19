@@ -383,28 +383,28 @@ class bitfinex2 extends bitfinex {
         );
     }
 
-    public function fetch_trades ($symbol, $since = null, $limit = null, $params = array ()) {
+    public function fetch_trades ($symbol, $since = null, $limit = 120, $params = array ()) {
         $market = $this->market ($symbol);
         $request = array (
             'symbol' => $market['id'],
+            'sort' => 1,
+            'limit' => $limit, // default = max = 120
         );
         if ($since !== null)
             $request['start'] = $since;
-        if ($limit !== null)
-            $request['limit'] = $limit;
         $response = $this->publicGetTradesSymbolHist (array_merge ($request, $params));
-        return $this->parse_trades($response, $market, $since, $limit);
+        $trades = $this->sort_by($response, 1);
+        return $this->parse_trades($trades, $market, null, $limit);
     }
 
-    public function fetch_ohlcv ($symbol, $timeframe = '1m', $since = null, $limit = null, $params = array ()) {
+    public function fetch_ohlcv ($symbol, $timeframe = '1m', $since = null, $limit = 100, $params = array ()) {
         $market = $this->market ($symbol);
         $request = array (
             'symbol' => $market['id'],
             'timeframe' => $this->timeframes[$timeframe],
             'sort' => 1,
+            'limit' => $limit,
         );
-        if ($limit !== null)
-            $request['limit'] = $limit;
         if ($since !== null)
             $request['start'] = $since;
         $request = array_merge ($request, $params);
