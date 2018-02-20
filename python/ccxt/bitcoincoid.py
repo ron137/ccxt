@@ -94,7 +94,7 @@ class bitcoincoid (Exchange):
                     'tierBased': False,
                     'percentage': True,
                     'maker': 0,
-                    'taker': 0.3,
+                    'taker': 0.3 / 100,
                 },
             },
         })
@@ -289,6 +289,30 @@ class bitcoincoid (Exchange):
         if symbol:
             return self.filter_orders_by_symbol(orders, symbol)
         return orders
+
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
+        if not symbol:
+            raise ExchangeError(self.id + ' fetch_my_trades requires a symbol parameter')
+        self.load_markets()
+        market = self.market(symbol)
+        market_id = self.market_id(symbol)
+        response = self.privatePostTradeHistory(self.extend({
+            'count': limit,
+            'pair': market_id
+            },params))
+
+        trades = response['return']['trades']
+        refined_trades = []
+        for trade in trades:
+            trade['tid'] = trade['trade_id']
+            trade['amount'] = trade[market_id.split('_')[0]]
+            trade['date'] = trade['trade_time']
+            refined_trades.append(trade)
+
+        return self.parse_trades(refined_trades, market, since, limit)
+
+
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         if type != 'limit':
