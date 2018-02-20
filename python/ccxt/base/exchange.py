@@ -75,6 +75,7 @@ class Exchange(object):
     enableRateLimit = False
     rateLimit = 2000  # milliseconds = seconds * 1000
     timeout = 10000   # milliseconds = seconds * 1000
+    initial_nonce = 1
     asyncio_loop = None
     aiohttp_proxy = None
     session = None  # Session () by default
