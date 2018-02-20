@@ -274,7 +274,7 @@ class bitbay (Exchange):
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
         if not symbol:
-            raise ExchangeError(self.id + ' fetchOrders requires a symbol parameter')
+            raise ExchangeError(self.id + ' fetch_my_trades requires a symbol parameter')
         transactions = self.privatePostTransactions(self.extend({
             'market': symbol.replace('/','-')
         }, params))

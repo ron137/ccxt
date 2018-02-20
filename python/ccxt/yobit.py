@@ -7,6 +7,7 @@ from ccxt.liqui import liqui
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import DDoSProtection
+import json
 
 
 class yobit (liqui):
@@ -16,7 +17,8 @@ class yobit (liqui):
             'id': 'yobit',
             'name': 'YoBit',
             'countries': 'RU',
-            'rateLimit': 1000,  # responses are cached every 2 seconds
+            '_nonce': None,
+            'rateLimit': 700,  # responses are cached every 2 seconds
             'version': '3',
             'has': {
                 'createDepositAddress': True,
@@ -179,16 +181,38 @@ class yobit (liqui):
             'id': None,
         }
 
+    def handle_errors(self, code, reason, url, method, headers, body):
+        if code == 200:
+            if body[0] != '{':
+                # response is not JSON -> resort to default error handler
+                return
+            response = json.loads(body)
+            if 'success' in response:
+                if not response['success']:
+                    if response['error'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
+                        raise InsufficientFunds(self.id + ' ' + self.json(response))
+                    elif response['error'] == 'Requests too often':
+                        raise DDoSProtection(self.id + ' ' + self.json(response))
+                    elif (response['error'] == 'not available') or (response['error'] == 'external service unavailable'):
+                        raise DDoSProtection(self.id + ' ' + self.json(response))
+                    elif response['error'] == 'invalid nonce (has already been used)':
+                        return
+                    else:
+                        raise ExchangeError(self.id + ' ' + self.json(response))
+
     def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = self.fetch2(path, api, method, params, headers, body)
         if 'success' in response:
             if not response['success']:
-                if response['error'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
-                    raise InsufficientFunds(self.id + ' ' + self.json(response))
-                elif response['error'] == 'Requests too often':
-                    raise DDoSProtection(self.id + ' ' + self.json(response))
-                elif (response['error'] == 'not available') or (response['error'] == 'external service unavailable'):
-                    raise DDoSProtection(self.id + ' ' + self.json(response))
-                else:
-                    raise ExchangeError(self.id + ' ' + self.json(response))
+                if response['error'] == 'invalid nonce (has already been used)':
+                    print('Nonce has already been used, try again. ('+str(self._nonce)+')')
+                    self._nonce += 100000
+                    return self.request(path, api=api, method=method, params=params, headers=headers, body=body)
         return response
+
+    def nonce(self):
+        if not self._nonce:
+            self._nonce = self.initial_nonce
+        nonce = self._nonce
+        self._nonce += 1
+        return nonce
