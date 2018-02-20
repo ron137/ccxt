@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1148'
+__version__ = '1.10.1166'
 
 # -----------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ class Exchange(BaseExchange):
         }, self.tokenBucket))
 
     def __del__(self):
-        self.asyncio_loop.run_until_complete(self.session.close())
+        asyncio.ensure_future(self.session.close(), loop=self.asyncio_loop)
 
     async def wait_for_token(self):
         while self.rateLimitTokens <= 1:

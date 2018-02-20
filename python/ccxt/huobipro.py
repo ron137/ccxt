@@ -162,12 +162,24 @@ class huobipro (Exchange):
             timestamp = ticker['ts']
         bid = None
         ask = None
+        bidVolume = None
+        askVolume = None
         if 'bid' in ticker:
-            if ticker['bid']:
+            if isinstance(ticker['bid'], list):
                 bid = self.safe_float(ticker['bid'], 0)
+                bidVolume = self.safe_float(ticker['bid'], 1)
         if 'ask' in ticker:
-            if ticker['ask']:
+            if isinstance(ticker['ask'], list):
                 ask = self.safe_float(ticker['ask'], 0)
+                askVolume = self.safe_float(ticker['ask'], 1)
+        open = self.safe_float(ticker, 'open')
+        close = self.safe_float(ticker, 'close')
+        change = None
+        percentage = None
+        if (open is not None) and(close is not None):
+            change = close - open
+            if (last is not None) and(last > 0):
+                percentage = (change / open) * 100
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -175,14 +187,16 @@ class huobipro (Exchange):
             'high': ticker['high'],
             'low': ticker['low'],
             'bid': bid,
+            'bidVolume': bidVolume,
             'ask': ask,
+            'askVolume': askVolume,
             'vwap': None,
             'open': ticker['open'],
             'close': ticker['close'],
             'first': None,
             'last': last,
-            'change': None,
-            'percentage': None,
+            'change': change,
+            'percentage': percentage,
             'average': None,
             'baseVolume': float(ticker['amount']),
             'quoteVolume': ticker['vol'],

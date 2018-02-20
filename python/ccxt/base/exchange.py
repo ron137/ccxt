@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1148'
+__version__ = '1.10.1166'
 
 # -----------------------------------------------------------------------------
 
@@ -29,6 +29,7 @@ import base64
 import calendar
 import collections
 import datetime
+from email.utils import parsedate
 import functools
 import gzip
 import hashlib
@@ -42,7 +43,7 @@ from requests import Session
 from requests.utils import default_user_agent
 from requests.exceptions import HTTPError, Timeout, TooManyRedirects, RequestException
 # import socket
-# import ssl
+from ssl import SSLError
 # import sys
 import time
 import uuid
@@ -357,6 +358,9 @@ class Exchange(object):
         except TooManyRedirects as e:
             self.raise_error(ExchangeError, url, method, e)
 
+        except SSLError as e:
+            self.raise_error(ExchangeError, url, method, e)
+
         except HTTPError as e:
             self.handle_errors(response.status_code, response.reason, url, method, self.last_response_headers, self.last_http_response)
             self.handle_rest_errors(e, response.status_code, self.last_http_response, url, method)
@@ -411,8 +415,11 @@ class Exchange(object):
     def safe_float(dictionary, key, default_value=None):
         value = default_value
         try:
-            value = float(dictionary[key]) if (key is not None) and (key in dictionary) and (dictionary[key] is not None) else default_value
-        except ValueError:
+            if isinstance(dictionary, list) and isinstance(key, int) and len(dictionary) > key:
+                value = float(dictionary[key])
+            else:
+                value = float(dictionary[key]) if (key is not None) and (key in dictionary) and (dictionary[key] is not None) else default_value
+        except ValueError as e:
             value = default_value
         return value
 
@@ -640,6 +647,8 @@ class Exchange(object):
 
     @staticmethod
     def iso8601(timestamp):
+        if timestamp is None:
+            return timestamp
         utc = datetime.datetime.utcfromtimestamp(int(round(timestamp / 1000)))
         return utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-6] + "{:<03d}".format(int(timestamp) % 1000) + 'Z'
 
@@ -652,6 +661,15 @@ class Exchange(object):
     def ymdhms(timestamp, infix=' '):
         utc_datetime = datetime.datetime.utcfromtimestamp(int(round(timestamp / 1000)))
         return utc_datetime.strftime('%Y-%m-%d' + infix + '%H:%M:%S')
+
+    @staticmethod
+    def parse_date(timestamp):
+        if 'GMT' in timestamp:
+            string = ''.join([str(value) for value in parsedate(timestamp)[:6]]) + '.000Z'
+            dt = datetime.datetime.strptime(string, "%Y%m%d%H%M%S.%fZ")
+            return calendar.timegm(dt.utctimetuple()) * 1000
+        else:
+            return Exchange.parse8601(timestamp)
 
     @staticmethod
     def parse8601(timestamp):
