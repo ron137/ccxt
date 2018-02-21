@@ -1048,21 +1048,20 @@ A price ticker contains statistics for a particular market/symbol for some perio
     'info':      { the original non-modified unparsed reply from exchange API },
     'timestamp':   int (64-bit Unix Timestamp in milliseconds since Epoch 1 Jan 1970)
     'datetime':    ISO8601 datetime string with milliseconds
-    'high':        float (highest price)
-    'low':         float (lowest price)
-    'bid':         float (current bid (buy) price)
-    'bidVolume':   float (current bid (buy) amount)
-    'ask':         float (current ask (sell) price)
-    'askVolume':   float (current ask (sell) amount)
-    'vwap':        float (volume weighed average price)
-    'open':        float (open price),
-    'first':       float (price of first trade),
-    'last':        float (price of last trade),
-    'change':      float (absolute change, `close - open`),
-    'percentage':  float (relative change, `(change/open) * 100`),
-    'average':     float (average),
-    'baseVolume':  float (volume of base currency),
-    'quoteVolume': float (volume of quote currency),
+    'high':        float, // highest price
+    'low':         float, // lowest price
+    'bid':         float, // orderbook's current best bid (buy) price
+    'bidVolume':   float, // orderbook's current best bid (buy) amount
+    'ask':         float, // orderbook's current best ask (sell) price
+    'askVolume':   float, // orderbook's current best ask (sell) amount
+    'vwap':        float, // volume weighed average price
+    'open':        float, // open price)
+    'last':        float, // price of last trade
+    'change':      float, // absolute change, `last - open`
+    'percentage':  float, // relative change, `(change/open) * 100`
+    'average':     float, // average price, `(last + open) / 2`
+    'baseVolume':  float, // volume of base currency
+    'quoteVolume': float, // volume of quote currency
 }
 ```
 
@@ -1312,7 +1311,7 @@ The API credentials usually include the following:
 
 In order to create API keys find the API tab or button in your user settings on the exchange website. Then create your keys and copy-paste them to your config file. Your config file permissions should be set appropriately, unreadable to anyone except the owner.
 
-**Remember to keep your secret key safe from unauthorized use, do not send or tell it to anybody. A leak of the secret key or a breach in security can cost you a fund loss.**
+**Remember to keep your apiKey and secret key safe from unauthorized use, do not send or tell it to anybody. A leak of the secret key or a breach in security can cost you a fund loss.**
 
 To set up an exchange for trading just assign the API credentials to an existing exchange instance or pass them to exchange constructor upon instantiation, like so:
 
@@ -1776,7 +1775,7 @@ A seller decides to place a sell limit order on the ask side for a price of 0.70
 
 As the price and amount of the incoming sell (ask) order cover more than one bid order (orders `b` and `i`), the following sequence of events usually happens within an exchange engine very quickly, but not immediately:
 
-1. Order `b` is matched against the incoming sell because their prices intersect. Their volumes *"mutually annihilate"* each other, so, the bidder gets 100 for a price of 0.700. Which is even better than he was going to pay initially (0.800). The seller (asker) will have his sell order partially filled by bid volume of 100.
+1. Order `b` is matched against the incoming sell because their prices intersect. Their volumes *"mutually annihilate"* each other, so, the bidder gets 100 for a price of 0.800. The seller (asker) will have his sell order partially filled by bid volume of 100.
 
 2. A trade is generated for the order `b` against the incoming sell order. That trade *"fills"* the entire order `b` and most of the sell order. One trade is generated pear each pair of matched orders, whether the amount was filled completely or partially. In this cases the amount of 100 fills order `b` completely (closed the order `b`), and also fills the selling order partially (leaves it open in the orderbook).
 
