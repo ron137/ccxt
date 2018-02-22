@@ -423,7 +423,7 @@ class okcoinusd (Exchange):
             request['contract_type'] = 'this_week'  # next_week, quarter
         else:
             method += 'CancelOrder'
-        response = getattr(self, method)(self.extend(request, params))
+        response = getattr(self, method)(request)
         return response
 
     def parse_order_status(self, status):
