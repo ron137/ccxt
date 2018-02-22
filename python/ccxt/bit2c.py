@@ -194,13 +194,14 @@ class bit2c (Exchange):
 
         return self.parse_orders(orders, market, since, limit)
 
-    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+    def fetch_my_trades(self, symbol=None, since=None, limit=100, params={}):
         if not symbol:
             raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
         self.load_markets()
         market = self.market(symbol)
         response = self.privateGetOrderOrderHistory(self.extend({
-            'pair': self.market_id(symbol)
+            'pair': self.market_id(symbol),
+            'take': limit
             },params))
 
         refined_trades = []
