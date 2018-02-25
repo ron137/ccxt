@@ -594,8 +594,8 @@ class binance (Exchange):
             'symbol': market['id'],
         }
         if since is not None:
-            request['startTime'] = since
-            request['endTime'] = since + 3600000
+            request['startTime'] = int(since)
+            request['endTime'] = int(since + 3600000)
         if limit is not None:
             request['limit'] = limit
         # 'fromId': 123,    # ID to get aggregate trades from INCLUSIVE.
