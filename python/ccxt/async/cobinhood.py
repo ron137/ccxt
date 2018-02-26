@@ -337,14 +337,14 @@ class cobinhood (Exchange):
         balances = response['result']['balances']
         for i in range(0, len(balances)):
             balance = balances[i]
-            id = balance['currency']
-            currency = self.common_currency_code(id)
+            currency = balance['currency']
+            if currency in self.currencies_by_id:
+                currency = self.currencies_by_id[currency]['code']
             account = {
-                'free': float(balance['total']),
                 'used': float(balance['on_order']),
-                'total': 0.0,
+                'total': float(balance['total']),
             }
-            account['total'] = self.sum(account['free'], account['used'])
+            account['free'] = float(account['total'] - account['used'])
             result[currency] = account
         return self.parse_balance(result)
 
@@ -390,7 +390,7 @@ class cobinhood (Exchange):
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         await self.load_markets()
         market = self.market(symbol)
-        side = (side == 'ask' if 'sell' else 'bid')
+        side = 'ask' if (side == 'sell') else 'bid'
         request = {
             'trading_pair_id': market['id'],
             # market, limit, stop, stop_limit
@@ -418,6 +418,14 @@ class cobinhood (Exchange):
             'order_id': str(id),
         }, params))
         return self.parse_order(response['result']['order'])
+
+    async def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        await self.load_markets()
+        result = await self.privateGetTradingOrders(params)
+        orders = self.parse_orders(result['result']['orders'], None, since, limit)
+        if symbol is not None:
+            return self.filter_orders_by_symbol(orders, symbol)
+        return orders
 
     async def fetch_order_trades(self, id, symbol=None, params={}):
         await self.load_markets()

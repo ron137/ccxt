@@ -351,14 +351,14 @@ module.exports = class cobinhood extends Exchange {
         let balances = response['result']['balances'];
         for (let i = 0; i < balances.length; i++) {
             let balance = balances[i];
-            let id = balance['currency'];
-            let currency = this.commonCurrencyCode (id);
+            let currency = balance['currency'];
+            if (currency in this.currencies_by_id)
+                currency = this.currencies_by_id[currency]['code'];
             let account = {
-                'free': parseFloat (balance['total']),
                 'used': parseFloat (balance['on_order']),
-                'total': 0.0,
+                'total': parseFloat (balance['total']),
             };
-            account['total'] = this.sum (account['free'], account['used']);
+            account['free'] = parseFloat (account['total'] - account['used']);
             result[currency] = account;
         }
         return this.parseBalance (result);
@@ -409,7 +409,7 @@ module.exports = class cobinhood extends Exchange {
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
         await this.loadMarkets ();
         let market = this.market (symbol);
-        side = (side === 'sell' ? 'ask' : 'bid');
+        side = (side === 'sell') ? 'ask' : 'bid';
         let request = {
             'trading_pair_id': market['id'],
             // market, limit, stop, stop_limit
@@ -439,6 +439,15 @@ module.exports = class cobinhood extends Exchange {
             'order_id': id.toString (),
         }, params));
         return this.parseOrder (response['result']['order']);
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        let result = await this.privateGetTradingOrders (params);
+        let orders = this.parseOrders (result['result']['orders'], undefined, since, limit);
+        if (typeof symbol !== 'undefined')
+            return this.filterOrdersBySymbol (orders, symbol);
+        return orders;
     }
 
     async fetchOrderTrades (id, symbol = undefined, params = {}) {

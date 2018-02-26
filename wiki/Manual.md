@@ -1179,7 +1179,7 @@ if (exchange.has.fetchOHLCV) {
 ```Python
 # Python
 import time
-if exchange.hasFetchOHLCV:
+if exchange.has['fetchOHLCV']:
     for symbol in exchange.markets:
         time.sleep (exchange.rateLimit / 1000) # time.sleep wants seconds
         print (symbol, exchange.fetch_ohlcv (symbol, '1d')) # one day
@@ -1187,7 +1187,7 @@ if exchange.hasFetchOHLCV:
 
 ```PHP
 // PHP
-if ($exchange->hasFetchOHLCV)
+if ($exchange->has['fetchOHLCV'])
     foreach ($exchange->markets as $symbol => $market) {
         usleep ($exchange.rateLimit * 1000); // usleep wants microseconds
         var_dump ($exchange->fetch_ohlcv ($symbol, '1M')); // one month
@@ -1213,6 +1213,12 @@ The fetchOHLCV method shown above returns a list (a flat array) of OHLCV candles
     ...
 ]
 ```
+
+### OHLCV Emulation
+
+Some exchanges don't offer any OHLCV method, and for those, the ccxt library will emulate OHLCV candles from [Public Trades](https://github.com/ccxt/ccxt/wiki/Manual#trades-executions-transactions). In that case you will see `exchange.has['fetchOHLCV'] = 'emulated'`. However, because the trade history is usually very limited, the emulated fetchOHLCV methods cover most recent info only and should only be used as a fallback, when no other option is available.
+
+**WARNING: the fetchOHLCV emulations is experimental!**
 
 ## Trades, Executions, Transactions
 
@@ -1522,6 +1528,41 @@ In most cases the `.orders` cache will work transparently for the user. Most oft
 - If an unhandled error leads to a crash of the application and the `.orders` cache isn't saved and restored upon restart, the cache will be lost. Handling the exceptions properly is the responsibility of the user. One has to pay **extra care** when implementing proper [error handling](#error-handling), otherwise the `.orders` cache may fall out of sync.
 
 *Note: the order cache functionality is to be reworked soon to obtain the order statuses from private trades history, where available. This is a work in progress, aimed at adding full-featured support for order fees, costs and other info. More about it here: https://github.com/ccxt/ccxt/issues/569*.
+
+#### Purging Cached Orders
+
+With some long-running instances it might be critical to free up used resources when they aren't needed anymore. Because in active trading the `.orders` cache can grow pretty big, the ccxt library offers the `purgeCachedOrders/purge_cached_orders` method for clearing old non-open orders (`(order['timestamp'] <= before) && (order['status'] != 'open')`) from cache and free used memory for other purposes. The purging method accepts one single argument named `before`:
+
+```JavaScript
+// JavaScript
+
+// keep last 24 hours of history in cache
+before = exchange.milliseconds () - 24 * 60 * 60 * 1000
+
+// purge all closed and canceled orders "older" or issued "before" that time
+exchange.purgeCachedOrders (before)
+```
+
+```Python
+# Python
+
+# keep last hour of history in cache
+before = exchange.milliseconds () - 1 * 60 * 60 * 1000;
+
+# purge all closed and canceled orders "older" or issued "before" that time
+exchange.purge_cached_orders (before)
+```
+
+```PHP
+// PHP
+
+// keep last 24 hours of history in cache
+$before = $exchange->milliseconds () - 24 * 60 * 60 * 1000;
+
+// purge all closed and canceled orders "older" or issued "before" that time
+$exchange->purge_cached_orders ($before);
+
+```
 
 #### By Order Id
 
@@ -2017,47 +2058,72 @@ Below is an outline of exception inheritance hierarchy:
     +---+ InvalidNonce
 ```
 
-- `BaseError`: Generic error class for all sorts of errors, including accessibility and request/response mismatch. Users should catch this exception at the very least, if no error differentiation is required.
+The `BaseError` class is a generic error class for all sorts of errors, including accessibility and request/response mismatch. Users should catch this exception at the very least, if no error differentiation is required.
 
-  - `ExchangeError`: This exception is thrown when an exchange server replies with an error in JSON. Possible reasons:
-    - endpoint is switched off by the exchange
-    - symbol not found on the exchange
-    - required parameter is missing
-    - the format of parameters is incorrect
-    - an exchange replies with an unclear answer
+## ExchangeError
 
-    Other exceptions derived from `ExchangeError`:
-    - `NotSupported`: This exception is raised if the endpoint is not offered/not supported by the exchange API.
-    - `AuthenticationError`: Raised when an exchange requires one of the API credentials that you've missed to specify, or when there's a mistake in the keypair or an outdated nonce. Most of the time you need `apiKey` and `secret`, sometimes you also need `uid` and/or `password`.
-    - `InsufficientFunds`: This exception is raised when you don't have enough currency on your account balance to place an order.
-    - `InvalidOrder`: This exception is the base class for all exceptions related to the unified order API.
-      - `OrderNotFound`: Raised when you are trying to fetch or cancel a non-existent order.
+This exception is thrown when an exchange server replies with an error in JSON. Possible reasons:
 
-  - `NetworkError`: All errors related to networking are usually recoverable, meaning that networking problems, traffic congestion, unavailability is usually time-dependent. Making a retry later is usually enough to recover from a NetworkError, but if it doesn't go away, then it may indicate some persistent problem with the exchange or with your connection.
-    - `DDoSProtection`: This exception is thrown whenever Cloudflare or Incapsula rate limiter restrictions are enforced per user or region/location. The ccxt library does a case-insensitive search in the response received from the exchange for one of the following keywords:
-      - `cloudflare`
-      - `incapsula`
-    - `RequestTimeout`: This exception is raised when the connection with the exchange fails or data is not fully received in a specified amount of time. This is controlled by the `timeout` option. When a `RequestTimeout` is raised, the user doesn't know the outcome of a request (whether it was accepted by the exchange server or not). Thus it's advised to handle this type of exception in the following manner:
-      - for fetching requests it is safe to retry the call
-      - for a request to `cancelOrder(id, symbol)` a user is required to retry the same call the second time. If instead of a retry a user calls a `fetchOrder()`, `fetchOrders()`, `fetchOpenOrders()` or `fetchClosedOrders()` right away without a retry to call `cancelOrder()`, this may cause the [`.orders` cache](#orders-cache) to fall out of sync. A subsequent retry will return one of the following possible results:
-        - a request is completed successfully, meaning the order has been properly canceled now
-        - an `OrderNotFound` exception is raised, which means the order was either already canceled on the first attempt or has been executed (filled and closed) in the meantime between the two attempts. Note, that the order will still have an `'open'` status in the `.orders` cache. To determine the actual order status you'll need to call `fetchOrder(id)` to update the cache properly (where available from the exchange). If the `fetchOrder()` method is `'emulated'` the ccxt library will mark the order as `'closed'`. The user has to call `fetchBalance()` and set the order status to `'canceled'` manually if the balance hasn't changed (a trade didn't not occur).
-      - if a request to `createOrder()` fails with a `RequestTimeout` the user should:
-        - update the `.orders` cache with a call to `fetchOrders()`, `fetchOpenOrders()`, `fetchClosedOrders()` to check if the request to place the order has succeeded and the order is now open
-        - if the order is not `'open'` the user should `fetchBalance()` to check if the balance has changed since the order was created on the first run, then filled and closed by the time of the second check. Note that `fetchBalance()` relies on the `.orders` cache for [balance inference](#balance-inference) and thus should only be called after updating the cache!
-    - `ExchangeNotAvailable`: The ccxt library throws this error if it detects any of the following keywords in response:
-      - `offline`
-      - `unavailable`
-      - `busy`
-      - `retry`
-      - `wait`
-      - `maintain`
-      - `maintenance`
-      - `maintenancing`
-    - `InvalidNonce`: Raised when your nonce is less than the previous nonce used with your keypair, as described in the [Authentication](https://github.com/ccxt/ccxt/wiki/Manual#authentication) section. This type of exception is thrown in these cases (in order of precedence for checking):
-      - Your API keys are not fresh and new (have been used with some different software or script already).
-      - The same keypair is shared across multiple instances of the exchange class (for example, in a multithreaded environment or in separate processes).
-      - Your system clock is out of synch. System time should be synched with UTC in a non-DST timezone at a rate of once every ten minutes or even more frequently because of the clock drifting. **Enabling time synch in Windows is usually not enough!** You have to set it up with the OS Registry (Google *"time synch frequency"* for your OS).
+  - endpoint is switched off by the exchange
+  - symbol not found on the exchange
+  - required parameter is missing
+  - the format of parameters is incorrect
+  - an exchange replies with an unclear answer
+
+Other exceptions derived from `ExchangeError`:
+
+  - `NotSupported`: This exception is raised if the endpoint is not offered/not supported by the exchange API.
+  - `AuthenticationError`: Raised when an exchange requires one of the API credentials that you've missed to specify, or when there's a mistake in the keypair or an outdated nonce. Most of the time you need `apiKey` and `secret`, sometimes you also need `uid` and/or `password`.
+  - `InsufficientFunds`: This exception is raised when you don't have enough currency on your account balance to place an order.
+  - `InvalidOrder`: This exception is the base class for all exceptions related to the unified order API.
+  - `OrderNotFound`: Raised when you are trying to fetch or cancel a non-existent order.
+
+## NetworkError
+
+All errors related to networking are usually recoverable, meaning that networking problems, traffic congestion, unavailability is usually time-dependent. Making a retry later is usually enough to recover from a NetworkError, but if it doesn't go away, then it may indicate some persistent problem with the exchange or with your connection.
+
+### DDoSProtection
+
+This exception is thrown whenever Cloudflare or Incapsula rate limiter restrictions are enforced per user or region/location. The ccxt library does a case-insensitive search in the response received from the exchange for one of the following keywords:
+
+  - `cloudflare`
+  - `incapsula`
+
+### RequestTimeout
+
+This exception is raised when the connection with the exchange fails or data is not fully received in a specified amount of time. This is controlled by the `timeout` option. When a `RequestTimeout` is raised, the user doesn't know the outcome of a request (whether it was accepted by the exchange server or not).
+
+Thus it's advised to handle this type of exception in the following manner:
+
+- for fetching requests it is safe to retry the call
+- for a request to `cancelOrder(id, symbol)` a user is required to retry the same call the second time. If instead of a retry a user calls a `fetchOrder()`, `fetchOrders()`, `fetchOpenOrders()` or `fetchClosedOrders()` right away without a retry to call `cancelOrder()`, this may cause the [`.orders` cache](#orders-cache) to fall out of sync. A subsequent retry will return one of the following possible results:
+  - a request is completed successfully, meaning the order has been properly canceled now
+  - an `OrderNotFound` exception is raised, which means the order was either already canceled on the first attempt or has been executed (filled and closed) in the meantime between the two attempts. Note, that the order will still have an `'open'` status in the `.orders` cache. To determine the actual order status you'll need to call `fetchOrder(id)` to update the cache properly (where available from the exchange). If the `fetchOrder()` method is `'emulated'` the ccxt library will mark the order as `'closed'`. The user has to call `fetchBalance()` and set the order status to `'canceled'` manually if the balance hasn't changed (a trade didn't not occur).
+- if a request to `createOrder()` fails with a `RequestTimeout` the user should:
+  - update the `.orders` cache with a call to `fetchOrders()`, `fetchOpenOrders()`, `fetchClosedOrders()` to check if the request to place the order has succeeded and the order is now open
+  - if the order is not `'open'` the user should `fetchBalance()` to check if the balance has changed since the order was created on the first run, then filled and closed by the time of the second check. Note that `fetchBalance()` relies on the `.orders` cache for [balance inference](#balance-inference) and thus should only be called after updating the cache!
+
+### ExchangeNotAvailable
+
+The ccxt library throws this error if it detects any of the following keywords in response:
+
+  - `offline`
+  - `unavailable`
+  - `busy`
+  - `retry`
+  - `wait`
+  - `maintain`
+  - `maintenance`
+  - `maintenancing`
+
+### InvalidNonce
+
+Raised when your nonce is less than the previous nonce used with your keypair, as described in the [Authentication](https://github.com/ccxt/ccxt/wiki/Manual#authentication) section. This type of exception is thrown in these cases (in order of precedence for checking):
+
+  - You are not rate-limiting your requests or sending too many of them too often.
+  - Your API keys are not fresh and new (have been used with some different software or script already).
+  - The same keypair is shared across multiple instances of the exchange class (for example, in a multithreaded environment or in separate processes).
+  - Your system clock is out of synch. System time should be synched with UTC in a non-DST timezone at a rate of once every ten minutes or even more frequently because of the clock drifting. **Enabling time synch in Windows is usually not enough!** You have to set it up with the OS Registry (Google *"time synch frequency"* for your OS).
 
 # Troubleshooting
 

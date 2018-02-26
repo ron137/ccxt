@@ -24,7 +24,8 @@ const {
     , now
     , sleep
     , timeout
-    , TimedOut } = functions
+    , TimedOut
+    , buildOHLCVC } = functions
 
 const {
     ExchangeError
@@ -83,7 +84,7 @@ module.exports = class Exchange {
                 'fetchL2OrderBook': true,
                 'fetchMarkets': true,
                 'fetchMyTrades': false,
-                'fetchOHLCV': false,
+                'fetchOHLCV': 'emulated',
                 'fetchOpenOrders': false,
                 'fetchOrder': false,
                 'fetchOrderBook': true,
@@ -541,8 +542,27 @@ module.exports = class Exchange {
         throw new NotSupported (this.id + ' fetchBidsAsks not supported yet')
     }
 
+    async fetchOHLCV (symbol, timeframe = '1m', since = undefined, limits = undefined, params = {}) {
+        if (!this.has['fetchTrades'])
+            throw new NotSupported (this.id + ' fetchOHLCV() not supported yet')
+        await this.loadMarkets ()
+        let trades = await this.fetchTrades (symbol, since, limits, params)
+        let ohlcvc = buildOHLCVC (trades, timeframe, since, limits)
+        return ohlcvc.map (c => c.slice (0, -1))
+    }
+
     fetchTickers (symbols = undefined, params = {}) {
         throw new NotSupported (this.id + ' fetchTickers not supported yet')
+    }
+
+    purgeCachedOrders (before) {
+        const orders = Object
+            .values (this.orders)
+            .filter (order =>
+                (order.status === 'open') ||
+                (order.timestamp >= before))
+        this.orders = indexBy (orders, 'id')
+        return this.orders
     }
 
     fetchOrder (id, symbol = undefined, params = {}) {

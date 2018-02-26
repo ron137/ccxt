@@ -6,6 +6,7 @@
 from ccxt.async.base.exchange import Exchange
 import json
 from ccxt.base.errors import ExchangeError
+from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import DDoSProtection
 
@@ -298,7 +299,7 @@ class bitmex (Exchange):
             ohlcv['volume'],
         ]
 
-    async def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={}):
+    async def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=100, params={}):
         await self.load_markets()
         # send JSON key/value pairs, such as {"key": "value"}
         # filter by individual fields and do advanced queries on timestamps
@@ -311,18 +312,18 @@ class bitmex (Exchange):
             'symbol': market['id'],
             'binSize': self.timeframes[timeframe],
             'partial': True,     # True == include yet-incomplete current bins
+            'count': limit,      # default 100, max 500
             # 'filter': filter,  # filter by individual fields and do advanced queries
             # 'columns': [],    # will return all columns if omitted
             # 'start': 0,       # starting point for results(wtf?)
             # 'reverse': False,  # True == newest first
             # 'endTime': '',    # ending date filter for results
         }
+        # if since is not set, they will return candles starting from 2017-01-01
         if since is not None:
             ymdhms = self.ymdhms(since)
             ymdhm = ymdhms[0:16]
             request['startTime'] = ymdhm  # starting date filter for results
-        if limit is not None:
-            request['count'] = limit  # default 100
         response = await self.publicGetTradeBucketed(self.extend(request, params))
         return self.parse_ohlcvs(response, market, timeframe, since, limit)
 
@@ -473,6 +474,10 @@ class bitmex (Exchange):
                     response = json.loads(body)
                     if 'error' in response:
                         if 'message' in response['error']:
+                            message = self.safe_value(response['error'], 'message')
+                            if message is not None:
+                                if message == 'Invalid API Key.':
+                                    raise AuthenticationError(self.id + ' ' + self.json(response))
                             # stub code, need proper handling
                             raise ExchangeError(self.id + ' ' + self.json(response))
 
