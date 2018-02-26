@@ -26,7 +26,3 @@ yarn.lock
 keys.local.json
 nbproject/
 vendor/
-
-*
-!.gitignore
-!python
