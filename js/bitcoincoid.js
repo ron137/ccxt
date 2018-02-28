@@ -17,7 +17,6 @@ module.exports = class bitcoincoid extends Exchange {
                 'CORS': false,
                 'createMarketOrder': false,
                 'fetchTickers': false,
-                'fetchOHLCV': false,
                 'fetchOrder': true,
                 'fetchOrders': false,
                 'fetchClosedOrders': true,
@@ -87,7 +86,7 @@ module.exports = class bitcoincoid extends Exchange {
                     'tierBased': false,
                     'percentage': true,
                     'maker': 0,
-                    'taker': 0.3,
+                    'taker': 0.003,
                 },
             },
         });

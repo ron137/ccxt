@@ -19,7 +19,10 @@ module.exports = class coinmarketcap extends Exchange {
                 'CORS': true,
                 'privateAPI': false,
                 'createOrder': false,
+                'createMarketOrder': false,
+                'createLimitOrder': false,
                 'cancelOrder': false,
+                'editOrder': false,
                 'fetchBalance': false,
                 'fetchOrderBook': false,
                 'fetchOHLCV': false,
@@ -90,11 +93,13 @@ module.exports = class coinmarketcap extends Exchange {
             'Bitgem': 'Bitgem',
             'BlockCAT': 'BlockCAT',
             'Catcoin': 'Catcoin',
+            'Hi Mutual Society': 'Hi Mutual Society',
             'iCoin': 'iCoin',
             'NetCoin': 'NetCoin',
             // a special case, most exchanges list it as IOTA, therefore
             // we change just the Coinmarketcap instead of changing them all
             'MIOTA': 'IOTA',
+            'Maggie': 'Maggie',
         };
         if (name in currencies)
             return currencies[name];

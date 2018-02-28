@@ -53,7 +53,7 @@ Full public and private HTTP REST APIs for all exchanges are implemented. WebSoc
 
 # Exchanges
 
-The ccxt library currently supports the following 99 cryptocurrency exchange markets and trading APIs:
+The ccxt library currently supports the following 102 cryptocurrency exchange markets and trading APIs:
 
 |                                                                                                                           | id                 | name                                                      | ver | doc                                                                                          | countries                               |
 |---------------------------------------------------------------------------------------------------------------------------|--------------------|-----------------------------------------------------------|:---:|:--------------------------------------------------------------------------------------------:|-----------------------------------------|
@@ -86,6 +86,7 @@ The ccxt library currently supports the following 99 cryptocurrency exchange mar
 |![btcchina](https://user-images.githubusercontent.com/1294454/27766368-465b3286-5ed6-11e7-9a11-0f6467e1d82b.jpg)           | btcchina           | [BTCChina](https://www.btcchina.com)                      | 1   | [API](https://www.btcchina.com/apidocs)                                                      | China                                   |
 |![btcexchange](https://user-images.githubusercontent.com/1294454/27993052-4c92911a-64aa-11e7-96d8-ec6ac3435757.jpg)        | btcexchange        | [BTCExchange](https://www.btcexchange.ph)                 | *   | [API](https://github.com/BTCTrader/broker-api-docs)                                          | Philippines                             |
 |![btcmarkets](https://user-images.githubusercontent.com/1294454/29142911-0e1acfc2-7d5c-11e7-98c4-07d9532b29d7.jpg)         | btcmarkets         | [BTC Markets](https://btcmarkets.net/)                    | *   | [API](https://github.com/BTCMarkets/API)                                                     | Australia                               |
+|![btctradeim](https://user-images.githubusercontent.com/1294454/36770531-c2142444-1c5b-11e8-91e2-a4d90dc85fe8.jpg)         | btctradeim         | [BtcTrade.im](https://www.btctrade.im)                    | *   | [API](https://www.btctrade.im/help.api.html)                                                 | Hong Kong                               |
 |![btctradeua](https://user-images.githubusercontent.com/1294454/27941483-79fc7350-62d9-11e7-9f61-ac47f28fcd96.jpg)         | btctradeua         | [BTC Trade UA](https://btc-trade.com.ua)                  | *   | [API](https://docs.google.com/document/d/1ocYA0yMy_RXd561sfG3qEPZ80kyll36HUxvCRe5GbhE/edit)  | Ukraine                                 |
 |![btcturk](https://user-images.githubusercontent.com/1294454/27992709-18e15646-64a3-11e7-9fa2-b0950ec7712f.jpg)            | btcturk            | [BTCTurk](https://www.btcturk.com)                        | *   | [API](https://github.com/BTCTrader/broker-api-docs)                                          | Turkey                                  |
 |![btcx](https://user-images.githubusercontent.com/1294454/27766385-9fdcc98c-5ed6-11e7-8f14-66d5e5cd47e6.jpg)               | btcx               | [BTCX](https://btc-x.is)                                  | 1   | [API](https://btc-x.is/custom/api-document.html)                                             | Iceland, US, EU                         |
@@ -96,6 +97,7 @@ The ccxt library currently supports the following 99 cryptocurrency exchange mar
 |![chilebit](https://user-images.githubusercontent.com/1294454/27991414-1298f0d8-647f-11e7-9c40-d56409266336.jpg)           | chilebit           | [ChileBit](https://chilebit.net)                          | 1   | [API](https://blinktrade.com/docs)                                                           | Chile                                   |
 |![cobinhood](https://user-images.githubusercontent.com/1294454/35755576-dee02e5c-0878-11e8-989f-1595d80ba47f.jpg)          | cobinhood          | [COBINHOOD](https://cobinhood.com)                        | *   | [API](https://cobinhood.github.io/api-public)                                                | Taiwan                                  |
 |![coincheck](https://user-images.githubusercontent.com/1294454/27766464-3b5c3c74-5ed9-11e7-840e-31b32968e1da.jpg)          | coincheck          | [coincheck](https://coincheck.com)                        | *   | [API](https://coincheck.com/documents/exchange/api)                                          | Japan, Indonesia                        |
+|![coinegg](https://user-images.githubusercontent.com/1294454/36770310-adfa764e-1c5a-11e8-8e09-449daac3d2fb.jpg)            | coinegg            | [CoinEgg](https://www.coinegg.com)                        | *   | [API](https://www.coinegg.com/explain.api.html)                                              | China, UK                               |
 |![coinexchange](https://user-images.githubusercontent.com/1294454/34842303-29c99fca-f71c-11e7-83c1-09d900cb2334.jpg)       | coinexchange       | [CoinExchange](https://www.coinexchange.io)               | *   | [API](https://coinexchangeio.github.io/slate/)                                               | India, Japan, South Korea, Vietnam, US  |
 |![coinfloor](https://user-images.githubusercontent.com/1294454/28246081-623fc164-6a1c-11e7-913f-bac0d5576c90.jpg)          | coinfloor          | [coinfloor](https://www.coinfloor.co.uk)                  | *   | [API](https://github.com/coinfloor/api)                                                      | UK                                      |
 |![coingi](https://user-images.githubusercontent.com/1294454/28619707-5c9232a8-7212-11e7-86d6-98fe5d15cc6e.jpg)             | coingi             | [Coingi](https://coingi.com)                              | *   | [API](http://docs.coingi.apiary.io/)                                                         | Panama, Bulgaria, China, US             |
@@ -103,6 +105,7 @@ The ccxt library currently supports the following 99 cryptocurrency exchange mar
 |![coinmate](https://user-images.githubusercontent.com/1294454/27811229-c1efb510-606c-11e7-9a36-84ba2ce412d8.jpg)           | coinmate           | [CoinMate](https://coinmate.io)                           | *   | [API](http://docs.coinmate.apiary.io)                                                        | UK, Czech Republic, EU                  |
 |![coinsecure](https://user-images.githubusercontent.com/1294454/27766472-9cbd200a-5ed9-11e7-9551-2267ad7bac08.jpg)         | coinsecure         | [Coinsecure](https://coinsecure.in)                       | 1   | [API](https://api.coinsecure.in)                                                             | India                                   |
 |![coinspot](https://user-images.githubusercontent.com/1294454/28208429-3cacdf9a-6896-11e7-854e-4c79a772a30f.jpg)           | coinspot           | [CoinSpot](https://www.coinspot.com.au)                   | *   | [API](https://www.coinspot.com.au/api)                                                       | Australia                               |
+|![coolcoin](https://user-images.githubusercontent.com/1294454/36770529-be7b1a04-1c5b-11e8-9600-d11f1996b539.jpg)           | coolcoin           | [CoolCoin](https://www.coolcoin.com)                      | *   | [API](https://www.coolcoin.com/help.api.html)                                                | Hong Kong                               |
 |![cryptopia](https://user-images.githubusercontent.com/1294454/29484394-7b4ea6e2-84c6-11e7-83e5-1fccf4b2dc81.jpg)          | cryptopia          | [Cryptopia](https://www.cryptopia.co.nz)                  | *   | [API](https://www.cryptopia.co.nz/Forum/Category/45)                                         | New Zealand                             |
 |![dsx](https://user-images.githubusercontent.com/1294454/27990275-1413158a-645a-11e7-931c-94717f7510e3.jpg)                | dsx                | [DSX](https://dsx.uk)                                     | 3   | [API](https://api.dsx.uk)                                                                    | UK                                      |
 |![exmo](https://user-images.githubusercontent.com/1294454/27766491-1b0ea956-5eda-11e7-9225-40d67b481b8d.jpg)               | exmo               | [EXMO](https://exmo.me)                                   | 1   | [API](https://exmo.me/en/api_doc)                                                            | Spain, Russia                           |
@@ -307,7 +310,7 @@ Below is a detailed description of each of the base exchange properties:
 
 - `has`: This is an associative array of exchange capabilities (e.g `fetchTickers`, `fetchOHLCV` or `CORS`).
 
-- `timeframes`: An associative array of timeframes, supported by the fetchOHLCV method of the exchange. This is only populated when `hasFetchTickers` property is true.
+- `timeframes`: An associative array of timeframes, supported by the fetchOHLCV method of the exchange. This is only populated when `has['fetchTickers']` property is true.
 
 - `timeout`: A timeout in milliseconds for a request-response roundtrip (default timeout is 10000 ms = 10 seconds). You should always set it to a reasonable value, hanging forever with no timeout is not your option, for sure.
 
@@ -1153,7 +1156,7 @@ UNDER CONSTRUCTION
 - this is under heavy development right now, contributions appreciated
 ```
 
-Most exchanges have endpoints for fetching OHLCV data, but some of them don't. The exchange boolean (true/false) property named `hasFetchOHLCV` indicates whether the exchange supports candlestick data series or not.
+Most exchanges have endpoints for fetching OHLCV data, but some of them don't. The exchange boolean (true/false) property named `has['fetchOHLCV']` indicates whether the exchange supports candlestick data series or not.
 
 The `fetchOHLCV` method is declared in the following way:
 
@@ -1194,7 +1197,7 @@ if ($exchange->has['fetchOHLCV'])
     }
 ```
 
-To get the list of available timeframes for your exchange see the `timeframes` property. Note that it is only populated when `hasFetchTickers`  is true as well.
+To get the list of available timeframes for your exchange see the `timeframes` property. Note that it is only populated when `has['fetchTickers']`  is true as well.
 
  **There's a limit on how far back in time your requests can go.** Most of exchanges will not allow to query detailed candlestick history (like those for 1-minute and 5-minute timeframes) too far in the past. They usually keep a reasonable amount of most recent candles, like 1000 last candles for any timeframe is more than enough for most of needs. You can work around that limitation by continuously fetching (aka *REST polling*) latest OHLCVs and storing them in a CSV file or in a database.
 
@@ -1531,7 +1534,7 @@ In most cases the `.orders` cache will work transparently for the user. Most oft
 
 #### Purging Cached Orders
 
-With some long-running instances it might be critical to free up used resources when they aren't needed anymore. Because in active trading the `.orders` cache can grow pretty big, the ccxt library offers the `purgeCachedOrders/purge_cached_orders` method for clearing old non-open orders (`(order['timestamp'] <= before) && (order['status'] != 'open')`) from cache and free used memory for other purposes. The purging method accepts one single argument named `before`:
+With some long-running instances it might be critical to free up used resources when they aren't needed anymore. Because in active trading the `.orders` cache can grow pretty big, the ccxt library offers the `purgeCachedOrders/purge_cached_orders` method for clearing old non-open orders from cache where `(order['timestamp'] < before) && (order['status'] != 'open')` and freeing used memory for other purposes. The purging method accepts one single argument named `before`:
 
 ```JavaScript
 // JavaScript
@@ -1547,7 +1550,7 @@ exchange.purgeCachedOrders (before)
 # Python
 
 # keep last hour of history in cache
-before = exchange.milliseconds () - 1 * 60 * 60 * 1000;
+before = exchange.milliseconds () - 1 * 60 * 60 * 1000
 
 # purge all closed and canceled orders "older" or issued "before" that time
 exchange.purge_cached_orders (before)
@@ -1648,7 +1651,7 @@ Most of methods returning orders within ccxt unified API will usually yield an o
 {
     'id':        '12345-67890:09876/54321', // string
     'datetime':  '2017-08-17 12:42:48.000', // ISO8601 datetime with milliseconds
-    'timestamp':  1502962946216, // Unix timestamp in milliseconds
+    'timestamp':  1502962946216, // order placing/opening Unix timestamp in milliseconds
     'status':    'open',         // 'open', 'closed', 'canceled'
     'symbol':    'ETH/BTC',      // symbol
     'type':      'limit',        // 'market', 'limit'
@@ -2096,12 +2099,12 @@ This exception is raised when the connection with the exchange fails or data is 
 Thus it's advised to handle this type of exception in the following manner:
 
 - for fetching requests it is safe to retry the call
-- for a request to `cancelOrder(id, symbol)` a user is required to retry the same call the second time. If instead of a retry a user calls a `fetchOrder()`, `fetchOrders()`, `fetchOpenOrders()` or `fetchClosedOrders()` right away without a retry to call `cancelOrder()`, this may cause the [`.orders` cache](#orders-cache) to fall out of sync. A subsequent retry will return one of the following possible results:
+- for a request to `cancelOrder` a user is required to retry the same call the second time. If instead of a retry a user calls a `fetchOrder`, `fetchOrders`, `fetchOpenOrders` or `fetchClosedOrders` right away without a retry to call `cancelOrder`, this may cause the [`.orders` cache](#orders-cache) to fall out of sync. A subsequent retry to `cancelOrder` will return one of the following possible results:
   - a request is completed successfully, meaning the order has been properly canceled now
-  - an `OrderNotFound` exception is raised, which means the order was either already canceled on the first attempt or has been executed (filled and closed) in the meantime between the two attempts. Note, that the order will still have an `'open'` status in the `.orders` cache. To determine the actual order status you'll need to call `fetchOrder(id)` to update the cache properly (where available from the exchange). If the `fetchOrder()` method is `'emulated'` the ccxt library will mark the order as `'closed'`. The user has to call `fetchBalance()` and set the order status to `'canceled'` manually if the balance hasn't changed (a trade didn't not occur).
-- if a request to `createOrder()` fails with a `RequestTimeout` the user should:
-  - update the `.orders` cache with a call to `fetchOrders()`, `fetchOpenOrders()`, `fetchClosedOrders()` to check if the request to place the order has succeeded and the order is now open
-  - if the order is not `'open'` the user should `fetchBalance()` to check if the balance has changed since the order was created on the first run, then filled and closed by the time of the second check. Note that `fetchBalance()` relies on the `.orders` cache for [balance inference](#balance-inference) and thus should only be called after updating the cache!
+  - an `OrderNotFound` exception is raised, which means the order was either already canceled on the first attempt or has been executed (filled and closed) in the meantime between the two attempts. Note, that the order will still have an `'open'` status in the `.orders` cache. To determine the actual order status you'll need to call `fetchOrder` to update the cache properly (where available from the exchange). If the `fetchOrder` method is `'emulated'` the ccxt library will mark the order as `'closed'`. The user has to call `fetchBalance` and set the order status to `'canceled'` manually if the balance hasn't changed (a trade didn't not occur).
+- if a request to `createOrder` fails with a `RequestTimeout` the user should:
+  - update the `.orders` cache with a call to `fetchOrders`, `fetchOpenOrders`, `fetchClosedOrders` to check if the request to place the order has succeeded and the order is now open
+  - if the order is not `'open'` the user should `fetchBalance` to check if the balance has changed since the order was created on the first run and then was filled and closed by the time of the second check. Note that `fetchBalance` relies on the `.orders` cache for [balance inference](#balance-inference) and thus should only be called after updating the cache!
 
 ### ExchangeNotAvailable
 

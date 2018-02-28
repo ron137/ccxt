@@ -115,7 +115,11 @@ class binance (Exchange):
                         'ticker/allBookTickers',
                         'ticker/price',
                         'ticker/bookTicker',
+                        'exchangeInfo',
                     ],
+                    'put': ['userDataStream'],
+                    'post': ['userDataStream'],
+                    'delete': ['userDataStream'],
                 },
                 'private': {
                     'get': [
@@ -132,11 +136,6 @@ class binance (Exchange):
                     'delete': [
                         'order',
                     ],
-                },
-                'v1': {
-                    'put': ['userDataStream'],
-                    'post': ['userDataStream'],
-                    'delete': ['userDataStream'],
                 },
             },
             'fees': {
@@ -318,6 +317,7 @@ class binance (Exchange):
             },
             # exchange-specific options
             'options': {
+                'warnOnFetchOpenOrdersWithoutSymbol': True,
                 'recvWindow': 5 * 1000,  # 5 sec, binance default
                 'timeDifference': 0,  # the difference between system clock and Binance clock
                 'adjustForTimeDifference': False,  # controls the adjustment logic upon instantiation
@@ -683,10 +683,15 @@ class binance (Exchange):
             raise ExchangeError(self.id + ' fetchOrder requires a symbol param')
         self.load_markets()
         market = self.market(symbol)
-        response = self.privateGetOrder(self.extend({
+        origClientOrderId = self.safe_value(params, 'origClientOrderId')
+        request = {
             'symbol': market['id'],
-            'orderId': int(id),
-        }, params))
+        }
+        if origClientOrderId is not None:
+            request['origClientOrderId'] = origClientOrderId
+        else:
+            request['orderId'] = int(id)
+        response = self.privateGetOrder(self.extend(request, params))
         return self.parse_order(response, market)
 
     def fetch_orders(self, symbol=None, since=None, limit=None, params={}):
@@ -703,14 +708,17 @@ class binance (Exchange):
         return self.parse_orders(response, market, since, limit)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        # if not symbol:
-        #     raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol param')
         self.load_markets()
         market = None
         request = {}
         if symbol is not None:
             market = self.market(symbol)
             request['symbol'] = market['id']
+        elif self.options['warnOnFetchOpenOrdersWithoutSymbol']:
+            symbols = self.symbols
+            numSymbols = len(symbols)
+            fetchOpenOrdersRateLimit = int(numSymbols / 2)
+            raise ExchangeError(self.id + ' fetchOpenOrders WARNING: fetching open orders without specifying a symbol is rate-limited to one call per ' + str(fetchOpenOrdersRateLimit) + ' seconds. Do not call self method frequently to avoid ban. Set ' + self.id + '.options["warnOnFetchOpenOrdersWithoutSymbol"] = False to suppress self warning message.')
         response = self.privateGetOpenOrders(self.extend(request, params))
         return self.parse_orders(response, market, since, limit)
 
@@ -773,6 +781,7 @@ class binance (Exchange):
         raise ExchangeError(self.id + ' fetchDepositAddress failed: ' + self.last_http_response)
 
     def withdraw(self, code, amount, address, tag=None, params={}):
+        self.load_markets()
         currency = self.currency(code)
         name = address[0:20]
         request = {

@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1216'
+__version__ = '1.10.1258'
 
 # -----------------------------------------------------------------------------
 
@@ -89,11 +89,10 @@ class Exchange(object):
     verbose = False
     markets = None
     symbols = None
-    precision = {}
-    limits = {}
     fees = {
         'trading': {
             'fee_loaded': False,
+            'percentage': True,  # subclasses should rarely have to redefine this
         },
         'funding': {
             'fee_loaded': False,
@@ -106,14 +105,6 @@ class Exchange(object):
     tickers = None
     api = None
     parseJsonResponse = True
-    exceptions = {}
-    headers = {}
-    cookies = {}
-    balance = {}
-    orderbooks = {}
-    orders = {}
-    trades = {}
-    currencies = {}
     proxy = ''
     origin = '*'  # CORS origin
     proxies = None
@@ -125,27 +116,16 @@ class Exchange(object):
     marketsById = None
     markets_by_id = None
     currencies_by_id = None
-    options = {}  # Python does not allow to define properties in run-time with setattr
-
-    hasPublicAPI = True
-    hasPrivateAPI = True
-    hasCORS = False
-    hasFetchTicker = True
-    hasFetchOrderBook = True
-    hasFetchTrades = True
-    hasFetchTickers = False
-    hasFetchOHLCV = False
-    hasDeposit = False
-    hasWithdraw = False
-    hasFetchBalance = True
-    hasFetchOrder = False
-    hasFetchOrders = False
-    hasFetchOpenOrders = False
-    hasFetchClosedOrders = False
-    hasFetchMyTrades = False
-    hasFetchCurrencies = False
-    hasCreateOrder = hasPrivateAPI
-    hasCancelOrder = hasPrivateAPI
+    precision = None
+    limits = None
+    exceptions = None
+    headers = None
+    balance = None
+    orderbooks = None
+    orders = None
+    trades = None
+    currencies = None
+    options = None  # Python does not allow to define properties in run-time with setattr
 
     requiredCredentials = {
         'apiKey': True,
@@ -157,11 +137,17 @@ class Exchange(object):
 
     # API method metainfo
     has = {
-        'cancelOrder': hasPrivateAPI,
+        'publicAPI': True,
+        'privateAPI': True,
+        'CORS': False,
+        'cancelOrder': True,
         'cancelOrders': False,
         'createDepositAddress': False,
-        'createOrder': hasPrivateAPI,
+        'createOrder': True,
+        'createMarketOrder': True,
+        'createLimitOrder': True,
         'deposit': False,
+        'editOrder': 'emulated',
         'fetchBalance': True,
         'fetchClosedOrders': False,
         'fetchCurrencies': False,
@@ -195,6 +181,17 @@ class Exchange(object):
     last_response_headers = None
 
     def __init__(self, config={}):
+
+        self.precision = {} if self.precision is None else self.precision
+        self.limits = {} if self.limits is None else self.limits
+        self.exceptions = {} if self.exceptions is None else self.exceptions
+        self.headers = {} if self.headers is None else self.headers
+        self.balance = {} if self.balance is None else self.balance
+        self.orderbooks = {} if self.orderbooks is None else self.orderbooks
+        self.orders = {} if self.orders is None else self.orders
+        self.trades = {} if self.trades is None else self.trades
+        self.currencies = {} if self.currencies is None else self.currencies
+        self.options = {} if self.options is None else self.options  # Python does not allow to define properties in run-time with setattr
 
         # version = '.'.join(map(str, sys.version_info[:3]))
         # self.userAgent = {
@@ -667,6 +664,8 @@ class Exchange(object):
 
     @staticmethod
     def parse_date(timestamp):
+        if timestamp is None:
+            return timestamp
         if 'GMT' in timestamp:
             string = ''.join([str(value) for value in parsedate(timestamp)[:6]]) + '.000Z'
             dt = datetime.datetime.strptime(string, "%Y%m%d%H%M%S.%fZ")
@@ -948,7 +947,7 @@ class Exchange(object):
         self.raise_error(NotSupported, details='fetch_order_trades() is not implemented yet')
 
     def parse_ohlcv(self, ohlcv, market=None, timeframe='1m', since=None, limit=None):
-        return ohlcv
+        return ohlcv[0:6] if isinstance(ohlcv, list) else ohlcv
 
     def parse_ohlcvs(self, ohlcvs, market=None, timeframe='1m', since=None, limit=None):
         ohlcvs = self.to_array(ohlcvs)

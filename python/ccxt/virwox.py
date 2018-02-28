@@ -206,10 +206,11 @@ class virwox (Exchange):
         trades = result['data']
         return self.parse_trades(trades, symbol)
 
-    def create_order(self, market, type, side, amount, price=None, params={}):
+    def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()
+        market = self.market(symbol)
         order = {
-            'instrument': self.symbol(market),
+            'instrument': market['symbol'],
             'orderType': side.upper(),
             'amount': amount,
         }
@@ -218,7 +219,7 @@ class virwox (Exchange):
         response = self.privatePostPlaceOrder(self.extend(order, params))
         return {
             'info': response,
-            'id': str(response['orderID']),
+            'id': str(response['result']['orderID']),
         }
 
     def cancel_order(self, id, symbol=None, params={}):

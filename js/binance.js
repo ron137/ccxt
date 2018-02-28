@@ -99,7 +99,11 @@ module.exports = class binance extends Exchange {
                         'ticker/allBookTickers',
                         'ticker/price',
                         'ticker/bookTicker',
+                        'exchangeInfo',
                     ],
+                    'put': [ 'userDataStream' ],
+                    'post': [ 'userDataStream' ],
+                    'delete': [ 'userDataStream' ],
                 },
                 'private': {
                     'get': [
@@ -116,11 +120,6 @@ module.exports = class binance extends Exchange {
                     'delete': [
                         'order',
                     ],
-                },
-                'v1': {
-                    'put': [ 'userDataStream' ],
-                    'post': [ 'userDataStream' ],
-                    'delete': [ 'userDataStream' ],
                 },
             },
             'fees': {
@@ -302,6 +301,7 @@ module.exports = class binance extends Exchange {
             },
             // exchange-specific options
             'options': {
+                'warnOnFetchOpenOrdersWithoutSymbol': true,
                 'recvWindow': 5 * 1000, // 5 sec, binance default
                 'timeDifference': 0, // the difference between system clock and Binance clock
                 'adjustForTimeDifference': false, // controls the adjustment logic upon instantiation
@@ -701,10 +701,15 @@ module.exports = class binance extends Exchange {
             throw new ExchangeError (this.id + ' fetchOrder requires a symbol param');
         await this.loadMarkets ();
         let market = this.market (symbol);
-        let response = await this.privateGetOrder (this.extend ({
+        let origClientOrderId = this.safeValue (params, 'origClientOrderId');
+        let request = {
             'symbol': market['id'],
-            'orderId': parseInt (id),
-        }, params));
+        };
+        if (typeof origClientOrderId !== 'undefined')
+            request['origClientOrderId'] = origClientOrderId;
+        else
+            request['orderId'] = parseInt (id);
+        let response = await this.privateGetOrder (this.extend (request, params));
         return this.parseOrder (response, market);
     }
 
@@ -723,14 +728,17 @@ module.exports = class binance extends Exchange {
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        // if (!symbol)
-        //     throw new ExchangeError (this.id + ' fetchOpenOrders requires a symbol param');
         await this.loadMarkets ();
         let market = undefined;
         let request = {};
         if (typeof symbol !== 'undefined') {
             market = this.market (symbol);
             request['symbol'] = market['id'];
+        } else if (this.options['warnOnFetchOpenOrdersWithoutSymbol']) {
+            let symbols = this.symbols;
+            let numSymbols = symbols.length;
+            let fetchOpenOrdersRateLimit = parseInt (numSymbols / 2);
+            throw new ExchangeError (this.id + ' fetchOpenOrders WARNING: fetching open orders without specifying a symbol is rate-limited to one call per ' + fetchOpenOrdersRateLimit.toString () + ' seconds. Do not call this method frequently to avoid ban. Set ' + this.id + '.options["warnOnFetchOpenOrdersWithoutSymbol"] = false to suppress this warning message.');
         }
         let response = await this.privateGetOpenOrders (this.extend (request, params));
         return this.parseOrders (response, market, since, limit);
@@ -802,6 +810,7 @@ module.exports = class binance extends Exchange {
     }
 
     async withdraw (code, amount, address, tag = undefined, params = {}) {
+        await this.loadMarkets ();
         let currency = this.currency (code);
         let name = address.slice (0, 20);
         let request = {

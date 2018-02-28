@@ -24,7 +24,6 @@ class bitcoincoid (Exchange):
                 'CORS': False,
                 'createMarketOrder': False,
                 'fetchTickers': False,
-                'fetchOHLCV': False,
                 'fetchOrder': True,
                 'fetchOrders': False,
                 'fetchClosedOrders': True,
@@ -94,7 +93,7 @@ class bitcoincoid (Exchange):
                     'tierBased': False,
                     'percentage': True,
                     'maker': 0,
-                    'taker': 0.3,
+                    'taker': 0.003,
                 },
             },
         })

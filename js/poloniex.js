@@ -265,9 +265,9 @@ module.exports = class poloniex extends Exchange {
         let last = parseFloat (ticker['last']);
         let relativeChange = parseFloat (ticker['percentChange']);
         if (relativeChange !== -1) {
-            open = last / (1 + relativeChange);
+            open = last / this.sum (1, relativeChange);
             change = last - open;
-            average = (last + open) / 2;
+            average = this.sum (last, open) / 2;
         }
         return {
             'symbol': symbol,
@@ -813,6 +813,8 @@ module.exports = class poloniex extends Exchange {
             const error = response['error'];
             const feedback = this.id + ' ' + this.json (response);
             if (error === 'Invalid order number, or you are not the person who placed the order.') {
+                throw new OrderNotFound (feedback);
+            } else if (error === 'Order not found, or you are not the person who placed it.') {
                 throw new OrderNotFound (feedback);
             } else if (error === 'Invalid API key/secret pair.') {
                 throw new AuthenticationError (feedback);

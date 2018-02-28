@@ -28,6 +28,7 @@ class huobipro (Exchange):
                 'fetchOrders': True,
                 'fetchOrder': True,
                 'fetchOpenOrders': True,
+                'fetchDepositAddress': True,
                 'withdraw': True,
             },
             'timeframes': {
@@ -75,6 +76,7 @@ class huobipro (Exchange):
                         'order/orders',  # 查询当前委托、历史委托
                         'order/matchresults',  # 查询当前成交、历史成交
                         'dw/withdraw-virtual/addresses',  # 查询虚拟币提现地址
+                        'dw/deposit-virtual/addresses',
                     ],
                     'post': [
                         'order/orders/place',  # 创建并执行一个新订单(一步下单， 推荐使用)
@@ -177,7 +179,7 @@ class huobipro (Exchange):
         average = None
         if (open is not None) and(close is not None):
             change = close - open
-            average = (open + close) / 2
+            average = self.sum(open, close) / 2
             if (close is not None) and(close > 0):
                 percentage = (change / open) * 100
         baseVolume = self.safe_float(ticker, 'amount')
@@ -356,7 +358,7 @@ class huobipro (Exchange):
         response = self.privateGetOrderOrdersId(self.extend({
             'id': id,
         }, params))
-        return self.parse_order(response)
+        return self.parse_order(response['data'])
 
     def parse_order_status(self, status):
         if status == 'partial-filled':
@@ -434,6 +436,20 @@ class huobipro (Exchange):
 
     def cancel_order(self, id, symbol=None, params={}):
         return self.privatePostOrderOrdersIdSubmitcancel({'id': id})
+
+    def fetch_deposit_address(self, code, params={}):
+        self.load_markets()
+        currency = self.currency(code)
+        response = self.privateGetDwDepositVirtualAddresses(self.extend({
+            'currency': currency['id'].lower(),
+        }, params))
+        address = self.safe_string(response, 'data')
+        return {
+            'currency': code,
+            'status': 'ok',
+            'address': address,
+            'info': response,
+        }
 
     def withdraw(self, currency, amount, address, tag=None, params={}):
         request = {

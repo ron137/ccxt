@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1216'
+__version__ = '1.10.1258'
 
 # -----------------------------------------------------------------------------
 
@@ -24,6 +24,7 @@ from ccxt.async.base.throttle import throttle
 # -----------------------------------------------------------------------------
 
 from ccxt.base.errors import ExchangeError
+from ccxt.base.errors import ExchangeNotAvailable
 from ccxt.base.errors import RequestTimeout
 from ccxt.base.errors import NotSupported
 
@@ -47,7 +48,8 @@ class Exchange(BaseExchange):
         if 'asyncio_loop' in config:
             self.asyncio_loop = config['asyncio_loop']
         self.asyncio_loop = self.asyncio_loop or asyncio.get_event_loop()
-        if 'session' not in config:
+        self.own_session = 'session' not in config
+        if self.own_session:
             # Create out SSL context object with our CA cert file
             context = ssl.create_default_context(cafile=certifi.where())
             # Pass this SSL context to aiohttp and create a TCPConnector
@@ -67,7 +69,8 @@ class Exchange(BaseExchange):
 
     async def close(self):
         if self.session is not None:
-            await self.session.close()
+            if self.own_session:
+                await self.session.close()
             self.session = None
 
     async def wait_for_token(self):
@@ -130,7 +133,7 @@ class Exchange(BaseExchange):
                 self.logger.debug("%s %s, Response: %s %s %s", method, url, response.status, response.headers, self.last_http_response)
 
         except socket.gaierror as e:
-            self.raise_error(ExchangeError, url, method, e, None)
+            self.raise_error(ExchangeNotAvailable, url, method, e, None)
 
         except concurrent.futures._base.TimeoutError as e:
             self.raise_error(RequestTimeout, method, url, e, None)
