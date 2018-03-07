@@ -317,15 +317,14 @@ module.exports = class binance extends Exchange {
         });
     }
 
-    milliseconds () {
-        return super.milliseconds () - this.options['timeDifference'];
+    nonce () {
+        return this.milliseconds () - this.options['timeDifference'];
     }
 
     async loadTimeDifference () {
-        const before = this.milliseconds ();
         const response = await this.publicGetTime ();
         const after = this.milliseconds ();
-        this.options['timeDifference'] = parseInt ((before + after) / 2 - response['serverTime']);
+        this.options['timeDifference'] = parseInt (after - response['serverTime']);
         return this.options['timeDifference'];
     }
 
@@ -461,13 +460,7 @@ module.exports = class binance extends Exchange {
     parseTicker (ticker, market = undefined) {
         let timestamp = this.safeInteger (ticker, 'closeTime');
         let iso8601 = (typeof timestamp === 'undefined') ? undefined : this.iso8601 (timestamp);
-        let symbol = ticker['symbol'];
-        if (typeof market === 'undefined') {
-            if (symbol in this.markets_by_id)
-                market = this.markets_by_id[symbol];
-        }
-        if (typeof market !== 'undefined')
-            symbol = market['symbol'];
+        let symbol = this.findSymbol (this.safeString (ticker, 'symbol'), market);
         let last = this.safeFloat (ticker, 'lastPrice');
         return {
             'symbol': symbol,
@@ -633,16 +626,7 @@ module.exports = class binance extends Exchange {
         let status = this.safeValue (order, 'status');
         if (typeof status !== 'undefined')
             status = this.parseOrderStatus (status);
-        let symbol = undefined;
-        if (market) {
-            symbol = market['symbol'];
-        } else {
-            let id = order['symbol'];
-            if (id in this.markets_by_id) {
-                market = this.markets_by_id[id];
-                symbol = market['symbol'];
-            }
-        }
+        let symbol = this.findSymbol (this.safeString (order, 'symbol'), market);
         let timestamp = undefined;
         if ('time' in order)
             timestamp = order['time'];
@@ -799,7 +783,7 @@ module.exports = class binance extends Exchange {
                 let tag = this.safeString (response, 'addressTag');
                 return {
                     'currency': code,
-                    'address': address,
+                    'address': this.checkAddress (address),
                     'tag': tag,
                     'status': 'ok',
                     'info': response,
@@ -810,6 +794,7 @@ module.exports = class binance extends Exchange {
     }
 
     async withdraw (code, amount, address, tag = undefined, params = {}) {
+        this.checkAddress (address);
         await this.loadMarkets ();
         let currency = this.currency (code);
         let name = address.slice (0, 20);
@@ -843,7 +828,7 @@ module.exports = class binance extends Exchange {
         } else if ((api === 'private') || (api === 'wapi')) {
             this.checkRequiredCredentials ();
             let query = this.urlencode (this.extend ({
-                'timestamp': this.milliseconds (),
+                'timestamp': this.nonce (),
                 'recvWindow': this.options['recvWindow'],
             }, params));
             let signature = this.hmac (this.encode (query), this.encode (this.secret));
@@ -892,7 +877,7 @@ module.exports = class binance extends Exchange {
             if (body.length > 0) {
                 if (body[0] === '{') {
                     let response = JSON.parse (body);
-                    let error = this.safeValue (response, 'code');
+                    let error = this.safeString (response, 'code');
                     if (typeof error !== 'undefined') {
                         const exceptions = this.exceptions;
                         if (error in exceptions) {

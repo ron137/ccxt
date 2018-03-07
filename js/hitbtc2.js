@@ -997,7 +997,9 @@ module.exports = class hitbtc2 extends hitbtc {
         if (typeof since !== 'undefined')
             request['from'] = this.iso8601 (since);
         let response = await this.privateGetHistoryOrder (this.extend (request, params));
-        return this.parseOrders (response, market, since, limit);
+        let orders = this.parseOrders (response, market);
+        orders = this.filterBy (orders, 'status', 'closed');
+        return this.filterBySinceLimit (orders, since, limit);
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
@@ -1048,6 +1050,7 @@ module.exports = class hitbtc2 extends hitbtc {
             'currency': currency['id'],
         });
         let address = response['address'];
+        this.checkAddress (address);
         let tag = this.safeString (response, 'paymentId');
         return {
             'currency': currency,
@@ -1065,6 +1068,7 @@ module.exports = class hitbtc2 extends hitbtc {
             'currency': currency['id'],
         });
         let address = response['address'];
+        this.checkAddress (address);
         let tag = this.safeString (response, 'paymentId');
         return {
             'currency': currency,
@@ -1076,6 +1080,7 @@ module.exports = class hitbtc2 extends hitbtc {
     }
 
     async withdraw (code, amount, address, tag = undefined, params = {}) {
+        this.checkAddress (address);
         let currency = this.currency (code);
         let request = {
             'currency': currency['id'],

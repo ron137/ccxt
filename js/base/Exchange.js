@@ -12,6 +12,7 @@ const {
     , deepExtend
     , extend
     , flatten
+    , unique
     , indexBy
     , sortBy
     , groupBy
@@ -29,6 +30,7 @@ const {
 
 const {
     ExchangeError
+    , InvalidAddress
     , NotSupported
     , AuthenticationError
     , DDoSProtection
@@ -180,6 +182,7 @@ module.exports = class Exchange {
         this.microseconds     = () => now () * 1000 // TODO: utilize performance.now for that purpose
         this.seconds          = () => Math.floor (now () / 1000)
 
+        this.minFundingAddressLength = 10 // used in checkAddress
         this.substituteCommonCurrencyCodes = true  // reserved
 
         // do not delete this line, it is needed for users to be able to define their own fetchImplementation
@@ -266,6 +269,18 @@ module.exports = class Exchange {
             if (this.requiredCredentials[key] && !this[key])
                 throw new AuthenticationError (this.id + ' requires `' + key + '`')
         })
+    }
+
+    checkAddress (address) {
+
+        if (typeof address === 'undefined')
+            throw new InvalidAddress (this.id + ' address is undefined')
+
+        // check the address is not the same letter like 'aaaaa' nor too short nor has a space
+        if ((unique (address).length < 2) || address.length < this.minFundingAddressLength || address.includes (' '))
+            throw new InvalidAddress (this.id + ' address is invalid or has less than ' + this.minFundingAddressLength.toString () + ' characters: "' + address.toString () + '"')
+
+        return address
     }
 
     initRestRateLimiter () {
@@ -405,7 +420,7 @@ module.exports = class Exchange {
                 title = match[1].trim ();
 
             let maintenance = responseBody.match (/offline|busy|retry|wait|unavailable|maintain|maintenance|maintenancing/i)
-            let ddosProtection = responseBody.match (/cloudflare|incapsula|overload/i)
+            let ddosProtection = responseBody.match (/cloudflare|incapsula|overload|ddos/i)
 
             if (e instanceof SyntaxError) {
 
@@ -637,6 +652,34 @@ module.exports = class Exchange {
         throw new ExchangeError (this.id + ' does not have currency code ' + code)
     }
 
+    findMarket (string) {
+
+        if (typeof this.markets === 'undefined')
+            return new ExchangeError (this.id + ' markets not loaded')
+
+        if (typeof string === 'string') {
+
+            if (string in this.markets_by_id)
+                return this.markets_by_id[string]
+
+            if (string in this.markets)
+                return this.markets[string]
+        }
+
+        return string
+    }
+
+    findSymbol (string, market = undefined) {
+
+        if (typeof market === 'undefined')
+            market = this.findMarket (string)
+
+        if (typeof market === 'object')
+            return market['symbol']
+
+        return string
+    }
+
     market (symbol) {
 
         if (typeof this.markets === 'undefined')
@@ -787,25 +830,39 @@ module.exports = class Exchange {
         return array
     }
 
+    filterBySymbolSinceLimit (array, symbol = undefined, since = undefined, limit = undefined) {
+
+        const symbolIsDefined = typeof symbol !== 'undefined'
+        const sinceIsDefined = typeof since !== 'undefined'
+
+        // single-pass filter for both symbol and since
+        if (symbolIsDefined || sinceIsDefined)
+            array = array.filter (entry =>
+                ((symbolIsDefined ? (entry.symbol === symbol)  : true) &&
+                 (sinceIsDefined  ? (entry.timestamp >= since) : true)))
+
+        if (typeof limit !== 'undefined')
+            array = array.slice (0, limit)
+
+        return array
+    }
+
     parseTrades (trades, market = undefined, since = undefined, limit = undefined) {
         let result = Object.values (trades || []).map (trade => this.parseTrade (trade, market))
-        result = sortBy (result, 'timestamp', true)
-        return this.filterBySinceLimit (result, since, limit)
+        result = sortBy (result, 'timestamp')
+        let symbol = (typeof market !== 'undefined') ? market['symbol'] : undefined
+        return this.filterBySymbolSinceLimit (result, symbol, since, limit)
     }
 
     parseOrders (orders, market = undefined, since = undefined, limit = undefined) {
         let result = Object.values (orders).map (order => this.parseOrder (order, market))
-        return this.filterBySinceLimit (result, since, limit)
+        result = sortBy (result, 'timestamp')
+        let symbol = (typeof market !== 'undefined') ? market['symbol'] : undefined
+        return this.filterBySymbolSinceLimit (result, symbol, since, limit)
     }
 
-    filterOrdersBySymbol (orders, symbol = undefined) {
-        let grouped = this.groupBy (orders, 'symbol')
-        if (symbol) {
-            if (symbol in grouped)
-                return grouped[symbol]
-            return []
-        }
-        return orders
+    filterBySymbol (array, symbol = undefined) {
+        return ((typeof symbol !== 'undefined') ? array.filter (entry => entry.symbol === symbol) : array)
     }
 
     parseOHLCV (ohlcv, market = undefined, timeframe = '1m', since = undefined, limit = undefined) {

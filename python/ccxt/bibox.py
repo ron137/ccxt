@@ -477,11 +477,12 @@ class bibox (Exchange):
         })
         result = {
             'info': response,
-            'address': None,
+            'address': None,  # POINTLESS?
         }
         return result
 
     def withdraw(self, code, amount, address, tag=None, params={}):
+        self.check_address(address)
         self.load_markets()
         currency = self.currency(code)
         if self.password is None:

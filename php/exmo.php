@@ -187,11 +187,7 @@ class exmo extends Exchange {
         $ids = is_array ($response) ? array_keys ($response) : array ();
         for ($i = 0; $i < count ($ids); $i++) {
             $id = $ids[$i];
-            $symbol = $id;
-            if (is_array ($this->markets_by_id) && array_key_exists ($id, $this->markets_by_id)) {
-                $market = $this->markets_by_id[$id];
-                $symbol = $market['symbol'];
-            }
+            $symbol = $this->find_symbol($id);
             $result[$symbol] = $this->parse_order_book($response[$id], null, 'bid', 'ask');
         }
         return $result;
@@ -289,14 +285,18 @@ class exmo extends Exchange {
 
     public function create_order ($symbol, $type, $side, $amount, $price = null, $params = array ()) {
         $this->load_markets();
-        $prefix = ($type === 'market') ? 'market_' : '';
-        $order = array (
+        if ($type === 'market') {
+            $price = '0';
+            $type = $type . '_';
+        }
+        $type .= $side;
+        $request = array (
             'pair' => $this->market_id($symbol),
             'quantity' => $amount,
+            'type' => $type,
             'price' => $price,
-            'type' => $prefix . $side,
         );
-        $response = $this->privatePostOrderCreate (array_merge ($order, $params));
+        $response = $this->privatePostOrderCreate (array_merge ($request, $params));
         return array (
             'info' => $response,
             'id' => (string) $response['order_id'],
@@ -323,9 +323,10 @@ class exmo extends Exchange {
             $this->load_markets();
             $market = $this->market ($symbol);
         }
-        $response = $this->privatePostOrderTrades (array_merge (array (
+        $request = array (
             'order_id' => $id,
-        ), $params));
+        );
+        $response = $this->privatePostOrderTrades (array_merge ($request, $params));
         return $this->parse_trades($response['trades'], $market, $since, $limit);
     }
 
@@ -336,11 +337,10 @@ class exmo extends Exchange {
             $market = $this->market ($symbol);
         }
         $orders = $this->privatePostUserOpenOrders ();
-        if ($market !== null)
-            if ($orders[$market['id']] != null)
-                $orders = $orders[$market['id']];
-            else
-                $orders = array ();
+        if ($market !== null) {
+            $id = $market['id'];
+            $orders = (is_array ($orders) && array_key_exists ($id, $orders)) ? $orders[$id] : array ();
+        }
         return $this->parse_orders($orders, $market, $since, $limit);
     }
 
@@ -360,7 +360,7 @@ class exmo extends Exchange {
                 else
                     $marketId = $order['out_currency'] . '_' . $order['in_currency'];
             }
-            if (is_array ($this->markets_by_id) && array_key_exists ($marketId, $this->markets_by_id))
+            if (($marketId !== null) && (is_array ($this->markets_by_id) && array_key_exists ($marketId, $this->markets_by_id)))
                 $market = $this->markets_by_id[$marketId];
         }
         $amount = $this->safe_float($order, 'quantity');
@@ -470,6 +470,7 @@ class exmo extends Exchange {
     }
 
     public function withdraw ($currency, $amount, $address, $tag = null, $params = array ()) {
+        $this->check_address($address);
         $this->load_markets();
         $request = array (
             'amount' => $amount,

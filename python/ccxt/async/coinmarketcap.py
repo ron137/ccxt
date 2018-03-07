@@ -100,6 +100,7 @@ class coinmarketcap (Exchange):
             # we change just the Coinmarketcap instead of changing them all
             'MIOTA': 'IOTA',
             'Maggie': 'Maggie',
+            'BlazeCoin': 'BlazeCoin',
         }
         if name in currencies:
             return currencies[name]
@@ -119,7 +120,7 @@ class coinmarketcap (Exchange):
                 baseId = market['id']
                 base = self.currency_code(market['symbol'], market['name'])
                 symbol = base + '/' + quote
-                id = baseId + '/' + quote
+                id = baseId + '/' + quoteId
                 result.append({
                     'id': id,
                     'symbol': symbol,

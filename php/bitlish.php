@@ -20,6 +20,9 @@ class bitlish extends Exchange {
                 'fetchOHLCV' => true,
                 'withdraw' => true,
             ),
+            'timeframes' => array (
+                '1h' => 3600,
+            ),
             'urls' => array (
                 'logo' => 'https://user-images.githubusercontent.com/1294454/27766275-dcfc6c30-5ed3-11e7-839d-00a846385d0b.jpg',
                 'api' => 'https://bitlish.com/api',
@@ -204,11 +207,13 @@ class bitlish extends Exchange {
         return $this->parse_ticker($ticker, $market);
     }
 
-    public function fetch_ohlcv ($symbol, $timeframe = '1m', $since = null, $limit = null, $params = array ()) {
+    public function fetch_ohlcv ($symbol, $timeframe = '1h', $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
         // $market = $this->market ($symbol);
         $now = $this->seconds ();
         $start = $now - 86400 * 30; // last 30 days
+        if ($since !== null)
+            $start = intval ($since / 1000);
         $interval = array ( (string) $start, null );
         return $this->publicPostOhlcv (array_merge (array (
             'time_range' => $interval,
@@ -316,6 +321,7 @@ class bitlish extends Exchange {
     }
 
     public function withdraw ($currency, $amount, $address, $tag = null, $params = array ()) {
+        $this->check_address($address);
         $this->load_markets();
         if ($currency !== 'BTC') {
             // they did not document other types...

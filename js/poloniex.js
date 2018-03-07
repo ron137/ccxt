@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, AuthenticationError, InsufficientFunds, OrderNotFound, OrderNotCached, InvalidOrder, CancelPending, InvalidNonce } = require ('./base/errors');
+const { ExchangeError, AuthenticationError, DDoSProtection, InsufficientFunds, OrderNotFound, OrderNotCached, InvalidOrder, CancelPending, InvalidNonce } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -739,8 +739,7 @@ module.exports = class poloniex extends Exchange {
         let address = undefined;
         if (response['success'] === 1)
             address = this.safeString (response, 'response');
-        if (!address)
-            throw new ExchangeError (this.id + ' createDepositAddress failed: ' + this.last_http_response);
+        this.checkAddress (address);
         return {
             'currency': currency,
             'address': address,
@@ -753,6 +752,7 @@ module.exports = class poloniex extends Exchange {
         let response = await this.privatePostReturnDepositAddresses ();
         let currencyId = this.currencyId (currency);
         let address = this.safeString (response, currencyId);
+        this.checkAddress (address);
         let status = address ? 'ok' : 'none';
         return {
             'currency': currency,
@@ -763,6 +763,7 @@ module.exports = class poloniex extends Exchange {
     }
 
     async withdraw (currency, amount, address, tag = undefined, params = {}) {
+        this.checkAddress (address);
         await this.loadMarkets ();
         let currencyId = this.currencyId (currency);
         let request = {
@@ -818,6 +819,8 @@ module.exports = class poloniex extends Exchange {
                 throw new OrderNotFound (feedback);
             } else if (error === 'Invalid API key/secret pair.') {
                 throw new AuthenticationError (feedback);
+            } else if (error === 'Please do not make more than 8 API calls per second.') {
+                throw new DDoSProtection (feedback);
             } else if (error.indexOf ('Total must be at least') >= 0) {
                 throw new InvalidOrder (feedback);
             } else if (error.indexOf ('Not enough') >= 0) {

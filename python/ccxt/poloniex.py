@@ -14,6 +14,7 @@ from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import OrderNotCached
 from ccxt.base.errors import CancelPending
+from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import InvalidNonce
 
 
@@ -686,8 +687,7 @@ class poloniex (Exchange):
         address = None
         if response['success'] == 1:
             address = self.safe_string(response, 'response')
-        if not address:
-            raise ExchangeError(self.id + ' createDepositAddress failed: ' + self.last_http_response)
+        self.check_address(address)
         return {
             'currency': currency,
             'address': address,
@@ -699,6 +699,7 @@ class poloniex (Exchange):
         response = self.privatePostReturnDepositAddresses()
         currencyId = self.currency_id(currency)
         address = self.safe_string(response, currencyId)
+        self.check_address(address)
         status = 'ok' if address else 'none'
         return {
             'currency': currency,
@@ -708,6 +709,7 @@ class poloniex (Exchange):
         }
 
     def withdraw(self, currency, amount, address, tag=None, params={}):
+        self.check_address(address)
         self.load_markets()
         currencyId = self.currency_id(currency)
         request = {
@@ -758,6 +760,8 @@ class poloniex (Exchange):
                 raise OrderNotFound(feedback)
             elif error == 'Invalid API key/secret pair.':
                 raise AuthenticationError(feedback)
+            elif error == 'Please do not make more than 8 API calls per second.':
+                raise DDoSProtection(feedback)
             elif error.find('Total must be at least') >= 0:
                 raise InvalidOrder(feedback)
             elif error.find('Not enough') >= 0:

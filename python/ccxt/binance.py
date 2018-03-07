@@ -332,14 +332,13 @@ class binance (Exchange):
             },
         })
 
-    def milliseconds(self):
-        return super(binance, self).milliseconds() - self.options['timeDifference']
+    def nonce(self):
+        return self.milliseconds() - self.options['timeDifference']
 
     def load_time_difference(self):
-        before = self.milliseconds()
         response = self.publicGetTime()
         after = self.milliseconds()
-        self.options['timeDifference'] = int((before + after) / 2 - response['serverTime'])
+        self.options['timeDifference'] = int(after - response['serverTime'])
         return self.options['timeDifference']
 
     def fetch_markets(self):
@@ -464,12 +463,7 @@ class binance (Exchange):
     def parse_ticker(self, ticker, market=None):
         timestamp = self.safe_integer(ticker, 'closeTime')
         iso8601 = None if (timestamp is None) else self.iso8601(timestamp)
-        symbol = ticker['symbol']
-        if market is None:
-            if symbol in self.markets_by_id:
-                market = self.markets_by_id[symbol]
-        if market is not None:
-            symbol = market['symbol']
+        symbol = self.find_symbol(self.safe_string(ticker, 'symbol'), market)
         last = self.safe_float(ticker, 'lastPrice')
         return {
             'symbol': symbol,
@@ -620,14 +614,7 @@ class binance (Exchange):
         status = self.safe_value(order, 'status')
         if status is not None:
             status = self.parse_order_status(status)
-        symbol = None
-        if market:
-            symbol = market['symbol']
-        else:
-            id = order['symbol']
-            if id in self.markets_by_id:
-                market = self.markets_by_id[id]
-                symbol = market['symbol']
+        symbol = self.find_symbol(self.safe_string(order, 'symbol'), market)
         timestamp = None
         if 'time' in order:
             timestamp = order['time']
@@ -773,7 +760,7 @@ class binance (Exchange):
                 tag = self.safe_string(response, 'addressTag')
                 return {
                     'currency': code,
-                    'address': address,
+                    'address': self.check_address(address),
                     'tag': tag,
                     'status': 'ok',
                     'info': response,
@@ -781,6 +768,7 @@ class binance (Exchange):
         raise ExchangeError(self.id + ' fetchDepositAddress failed: ' + self.last_http_response)
 
     def withdraw(self, code, amount, address, tag=None, params={}):
+        self.check_address(address)
         self.load_markets()
         currency = self.currency(code)
         name = address[0:20]
@@ -813,7 +801,7 @@ class binance (Exchange):
         elif (api == 'private') or (api == 'wapi'):
             self.check_required_credentials()
             query = self.urlencode(self.extend({
-                'timestamp': self.milliseconds(),
+                'timestamp': self.nonce(),
                 'recvWindow': self.options['recvWindow'],
             }, params))
             signature = self.hmac(self.encode(query), self.encode(self.secret))
@@ -859,7 +847,7 @@ class binance (Exchange):
             if len(body) > 0:
                 if body[0] == '{':
                     response = json.loads(body)
-                    error = self.safe_value(response, 'code')
+                    error = self.safe_string(response, 'code')
                     if error is not None:
                         exceptions = self.exceptions
                         if error in exceptions:

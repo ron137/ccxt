@@ -738,8 +738,7 @@ class poloniex extends Exchange {
         $address = null;
         if ($response['success'] === 1)
             $address = $this->safe_string($response, 'response');
-        if (!$address)
-            throw new ExchangeError ($this->id . ' createDepositAddress failed => ' . $this->last_http_response);
+        $this->check_address($address);
         return array (
             'currency' => $currency,
             'address' => $address,
@@ -752,6 +751,7 @@ class poloniex extends Exchange {
         $response = $this->privatePostReturnDepositAddresses ();
         $currencyId = $this->currency_id ($currency);
         $address = $this->safe_string($response, $currencyId);
+        $this->check_address($address);
         $status = $address ? 'ok' : 'none';
         return array (
             'currency' => $currency,
@@ -762,6 +762,7 @@ class poloniex extends Exchange {
     }
 
     public function withdraw ($currency, $amount, $address, $tag = null, $params = array ()) {
+        $this->check_address($address);
         $this->load_markets();
         $currencyId = $this->currency_id ($currency);
         $request = array (
@@ -817,6 +818,8 @@ class poloniex extends Exchange {
                 throw new OrderNotFound ($feedback);
             } else if ($error === 'Invalid API key/secret pair.') {
                 throw new AuthenticationError ($feedback);
+            } else if ($error === 'Please do not make more than 8 API calls per second.') {
+                throw new DDoSProtection ($feedback);
             } else if (mb_strpos ($error, 'Total must be at least') !== false) {
                 throw new InvalidOrder ($feedback);
             } else if (mb_strpos ($error, 'Not enough') !== false) {

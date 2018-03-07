@@ -202,7 +202,7 @@ class bittrex (Exchange):
 
     async def fetch_balance(self, params={}):
         await self.load_markets()
-        response = await self.accountGetBalances()
+        response = await self.accountGetBalances(params)
         balances = response['result']
         result = {'info': balances}
         indexed = self.index_by(balances, 'Currency')
@@ -414,7 +414,7 @@ class bittrex (Exchange):
             request['market'] = market['id']
         response = await self.marketGetOpenorders(self.extend(request, params))
         orders = self.parse_orders(response['result'], market, since, limit)
-        return self.filter_orders_by_symbol(orders, symbol)
+        return self.filter_by_symbol(orders, symbol)
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         if type != 'limit':
@@ -558,7 +558,7 @@ class bittrex (Exchange):
         response = await self.accountGetOrderhistory(self.extend(request, params))
         orders = self.parse_orders(response['result'], market, since, limit)
         if symbol:
-            return self.filter_orders_by_symbol(orders, symbol)
+            return self.filter_by_symbol(orders, symbol)
         return orders
 
     async def fetch_closed_orders(self, symbol=None, since=None, limit=None, params={}):
@@ -585,6 +585,7 @@ class bittrex (Exchange):
         if (code == 'XRP') or (code == 'XLM'):
             tag = address
             address = currency['address']
+        self.check_address(address)
         return {
             'currency': code,
             'address': address,
@@ -594,6 +595,7 @@ class bittrex (Exchange):
         }
 
     async def withdraw(self, currency, amount, address, tag=None, params={}):
+        self.check_address(address)
         currencyId = self.currency_id(currency)
         request = {
             'currency': currencyId,
@@ -641,29 +643,32 @@ class bittrex (Exchange):
     def throw_exception_on_error(self, response):
         if 'message' in response:
             message = self.safe_string(response, 'message')
+            error = self.id + ' ' + self.json(response)
             if message == 'APISIGN_NOT_PROVIDED':
-                raise AuthenticationError(self.id + ' ' + self.json(response))
+                raise AuthenticationError(error)
             if message == 'INVALID_SIGNATURE':
-                raise AuthenticationError(self.id + ' ' + self.json(response))
+                raise AuthenticationError(error)
+            if message == 'INVALID_CURRENCY':
+                raise ExchangeError(error)
             if message == 'INVALID_PERMISSION':
-                raise AuthenticationError(self.id + ' ' + self.json(response))
+                raise AuthenticationError(error)
             if message == 'INSUFFICIENT_FUNDS':
-                raise InsufficientFunds(self.id + ' ' + self.json(response))
+                raise InsufficientFunds(error)
             if message == 'QUANTITY_NOT_PROVIDED':
-                raise InvalidOrder(self.id + ' ' + self.json(response))
+                raise InvalidOrder(error)
             if message == 'MIN_TRADE_REQUIREMENT_NOT_MET':
-                raise InvalidOrder(self.id + ' ' + self.json(response))
+                raise InvalidOrder(error)
             if message == 'APIKEY_INVALID':
                 if self.hasAlreadyAuthenticatedSuccessfully:
-                    raise DDoSProtection(self.id + ' ' + self.json(response))
+                    raise DDoSProtection(error)
                 else:
-                    raise AuthenticationError(self.id + ' ' + self.json(response))
+                    raise AuthenticationError(error)
             if message == 'DUST_TRADE_DISALLOWED_MIN_VALUE_50K_SAT':
                 raise InvalidOrder(self.id + ' order cost should be over 50k satoshi ' + self.json(response))
             if message == 'ORDER_NOT_OPEN':
-                raise InvalidOrder(self.id + ' ' + self.json(response))
+                raise InvalidOrder(error)
             if message == 'UUID_INVALID':
-                raise OrderNotFound(self.id + ' ' + self.json(response))
+                raise OrderNotFound(error)
 
     def handle_errors(self, code, reason, url, method, headers, body):
         if code >= 400:

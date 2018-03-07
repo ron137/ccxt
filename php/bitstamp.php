@@ -554,16 +554,19 @@ class bitstamp extends Exchange {
         $method .= $v1 ? 'Deposit' : '';
         $method .= 'Address';
         $response = $this->$method ($params);
+        $address = $this->safe_string($response, 'address');
+        $this->check_address($address);
         return array (
             'currency' => $code,
             'status' => 'ok',
-            'address' => $this->safe_string($response, 'address'),
+            'address' => $address,
             'tag' => $this->safe_string($response, 'destination_tag'),
             'info' => $response,
         );
     }
 
     public function withdraw ($code, $amount, $address, $tag = null, $params = array ()) {
+        $this->check_address($address);
         if ($this->is_fiat ($code))
             throw new NotSupported ($this->id . ' fiat withdraw() for ' . $code . ' is not implemented yet');
         $name = $this->get_currency_name ($code);

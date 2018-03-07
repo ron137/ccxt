@@ -967,7 +967,9 @@ class hitbtc2 (hitbtc):
         if since is not None:
             request['from'] = self.iso8601(since)
         response = self.privateGetHistoryOrder(self.extend(request, params))
-        return self.parse_orders(response, market, since, limit)
+        orders = self.parse_orders(response, market)
+        orders = self.filter_by(orders, 'status', 'closed')
+        return self.filter_by_since_limit(orders, since, limit)
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
@@ -1014,6 +1016,7 @@ class hitbtc2 (hitbtc):
             'currency': currency['id'],
         })
         address = response['address']
+        self.check_address(address)
         tag = self.safe_string(response, 'paymentId')
         return {
             'currency': currency,
@@ -1030,6 +1033,7 @@ class hitbtc2 (hitbtc):
             'currency': currency['id'],
         })
         address = response['address']
+        self.check_address(address)
         tag = self.safe_string(response, 'paymentId')
         return {
             'currency': currency,
@@ -1040,6 +1044,7 @@ class hitbtc2 (hitbtc):
         }
 
     def withdraw(self, code, amount, address, tag=None, params={}):
+        self.check_address(address)
         currency = self.currency(code)
         request = {
             'currency': currency['id'],

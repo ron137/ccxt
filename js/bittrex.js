@@ -191,7 +191,7 @@ module.exports = class bittrex extends Exchange {
 
     async fetchBalance (params = {}) {
         await this.loadMarkets ();
-        let response = await this.accountGetBalances ();
+        let response = await this.accountGetBalances (params);
         let balances = response['result'];
         let result = { 'info': balances };
         let indexed = this.indexBy (balances, 'Currency');
@@ -424,7 +424,7 @@ module.exports = class bittrex extends Exchange {
         }
         let response = await this.marketGetOpenorders (this.extend (request, params));
         let orders = this.parseOrders (response['result'], market, since, limit);
-        return this.filterOrdersBySymbol (orders, symbol);
+        return this.filterBySymbol (orders, symbol);
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
@@ -584,7 +584,7 @@ module.exports = class bittrex extends Exchange {
         let response = await this.accountGetOrderhistory (this.extend (request, params));
         let orders = this.parseOrders (response['result'], market, since, limit);
         if (symbol)
-            return this.filterOrdersBySymbol (orders, symbol);
+            return this.filterBySymbol (orders, symbol);
         return orders;
     }
 
@@ -615,6 +615,7 @@ module.exports = class bittrex extends Exchange {
             tag = address;
             address = currency['address'];
         }
+        this.checkAddress (address);
         return {
             'currency': code,
             'address': address,
@@ -625,6 +626,7 @@ module.exports = class bittrex extends Exchange {
     }
 
     async withdraw (currency, amount, address, tag = undefined, params = {}) {
+        this.checkAddress (address);
         let currencyId = this.currencyId (currency);
         let request = {
             'currency': currencyId,
@@ -676,31 +678,34 @@ module.exports = class bittrex extends Exchange {
     throwExceptionOnError (response) {
         if ('message' in response) {
             let message = this.safeString (response, 'message');
+            let error = this.id + ' ' + this.json (response);
             if (message === 'APISIGN_NOT_PROVIDED')
-                throw new AuthenticationError (this.id + ' ' + this.json (response));
+                throw new AuthenticationError (error);
             if (message === 'INVALID_SIGNATURE')
-                throw new AuthenticationError (this.id + ' ' + this.json (response));
+                throw new AuthenticationError (error);
+            if (message === 'INVALID_CURRENCY')
+                throw new ExchangeError (error);
             if (message === 'INVALID_PERMISSION')
-                throw new AuthenticationError (this.id + ' ' + this.json (response));
+                throw new AuthenticationError (error);
             if (message === 'INSUFFICIENT_FUNDS')
-                throw new InsufficientFunds (this.id + ' ' + this.json (response));
+                throw new InsufficientFunds (error);
             if (message === 'QUANTITY_NOT_PROVIDED')
-                throw new InvalidOrder (this.id + ' ' + this.json (response));
+                throw new InvalidOrder (error);
             if (message === 'MIN_TRADE_REQUIREMENT_NOT_MET')
-                throw new InvalidOrder (this.id + ' ' + this.json (response));
+                throw new InvalidOrder (error);
             if (message === 'APIKEY_INVALID') {
                 if (this.hasAlreadyAuthenticatedSuccessfully) {
-                    throw new DDoSProtection (this.id + ' ' + this.json (response));
+                    throw new DDoSProtection (error);
                 } else {
-                    throw new AuthenticationError (this.id + ' ' + this.json (response));
+                    throw new AuthenticationError (error);
                 }
             }
             if (message === 'DUST_TRADE_DISALLOWED_MIN_VALUE_50K_SAT')
                 throw new InvalidOrder (this.id + ' order cost should be over 50k satoshi ' + this.json (response));
             if (message === 'ORDER_NOT_OPEN')
-                throw new InvalidOrder (this.id + ' ' + this.json (response));
+                throw new InvalidOrder (error);
             if (message === 'UUID_INVALID')
-                throw new OrderNotFound (this.id + ' ' + this.json (response));
+                throw new OrderNotFound (error);
         }
     }
 

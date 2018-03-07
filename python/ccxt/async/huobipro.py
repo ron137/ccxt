@@ -245,14 +245,6 @@ class huobipro (Exchange):
             'amount': trade['amount'],
         }
 
-    def parse_trades_data(self, data, market, since=None, limit=None):
-        result = []
-        for i in range(0, len(data)):
-            trades = self.parse_trades(data[i]['data'], market, since, limit)
-            for k in range(0, len(trades)):
-                result.append(trades[k])
-        return result
-
     async def fetch_trades(self, symbol, since=None, limit=None, params={}):
         await self.load_markets()
         market = self.market(symbol)
@@ -260,7 +252,15 @@ class huobipro (Exchange):
             'symbol': market['id'],
             'size': 2000,
         }, params))
-        return self.parse_trades_data(response['data'], market, since, limit)
+        data = response['data']
+        result = []
+        for i in range(0, len(data)):
+            trades = data[i]['data']
+            for j in range(0, len(trades)):
+                trade = self.parse_trade(trades[j], market)
+                result.append(trade)
+        result = self.sort_by(result, 'timestamp')
+        return self.filter_by_symbol_since_limit(result, symbol, since, limit)
 
     def parse_ohlcv(self, ohlcv, market=None, timeframe='1m', since=None, limit=None):
         return [
@@ -444,6 +444,7 @@ class huobipro (Exchange):
             'currency': currency['id'].lower(),
         }, params))
         address = self.safe_string(response, 'data')
+        self.check_address(address)
         return {
             'currency': code,
             'status': 'ok',
@@ -451,7 +452,24 @@ class huobipro (Exchange):
             'info': response,
         }
 
+    def calculate_fee(self, symbol, type, side, amount, price, takerOrMaker='taker', params={}):
+        market = self.markets[symbol]
+        rate = market[takerOrMaker]
+        cost = float(self.cost_to_precision(symbol, amount * rate))
+        key = 'quote'
+        if side == 'sell':
+            cost *= price
+        else:
+            key = 'base'
+        return {
+            'type': takerOrMaker,
+            'currency': market[key],
+            'rate': rate,
+            'cost': float(self.fee_to_precision(symbol, cost)),
+        }
+
     async def withdraw(self, currency, amount, address, tag=None, params={}):
+        self.check_address(address)
         request = {
             'address': address,  # only supports existing addresses in your withdraw address list
             'amount': amount,

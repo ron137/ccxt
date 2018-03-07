@@ -182,10 +182,7 @@ class exmo (Exchange):
         ids = list(response.keys())
         for i in range(0, len(ids)):
             id = ids[i]
-            symbol = id
-            if id in self.markets_by_id:
-                market = self.markets_by_id[id]
-                symbol = market['symbol']
+            symbol = self.find_symbol(id)
             result[symbol] = self.parse_order_book(response[id], None, 'bid', 'ask')
         return result
 
@@ -273,14 +270,17 @@ class exmo (Exchange):
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         await self.load_markets()
-        prefix = 'market_' if (type == 'market') else ''
-        order = {
+        if type == 'market':
+            price = '0'
+            type = type + '_'
+        type += side
+        request = {
             'pair': self.market_id(symbol),
             'quantity': amount,
+            'type': type,
             'price': price,
-            'type': prefix + side,
         }
-        response = await self.privatePostOrderCreate(self.extend(order, params))
+        response = await self.privatePostOrderCreate(self.extend(request, params))
         return {
             'info': response,
             'id': str(response['order_id']),
@@ -303,9 +303,10 @@ class exmo (Exchange):
         if symbol is not None:
             await self.load_markets()
             market = self.market(symbol)
-        response = await self.privatePostOrderTrades(self.extend({
+        request = {
             'order_id': id,
-        }, params))
+        }
+        response = await self.privatePostOrderTrades(self.extend(request, params))
         return self.parse_trades(response['trades'], market, since, limit)
 
     async def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
@@ -315,10 +316,8 @@ class exmo (Exchange):
             market = self.market(symbol)
         orders = await self.privatePostUserOpenOrders()
         if market is not None:
-            if orders[market['id']] is not None:
-                orders = orders[market['id']]
-            else:
-                orders = []
+            id = market['id']
+            orders = orders[id] if (id in list(orders.keys())) else []
         return self.parse_orders(orders, market, since, limit)
 
     def parse_order(self, order, market=None):
@@ -336,7 +335,7 @@ class exmo (Exchange):
                     marketId = order['in_currency'] + '_' + order['out_currency']
                 else:
                     marketId = order['out_currency'] + '_' + order['in_currency']
-            if marketId in self.markets_by_id:
+            if (marketId is not None) and(marketId in list(self.markets_by_id.keys())):
                 market = self.markets_by_id[marketId]
         amount = self.safe_float(order, 'quantity')
         if amount is None:
@@ -435,6 +434,7 @@ class exmo (Exchange):
         }
 
     async def withdraw(self, currency, amount, address, tag=None, params={}):
+        self.check_address(address)
         await self.load_markets()
         request = {
             'amount': amount,

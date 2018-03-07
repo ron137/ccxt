@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.10.1258'
+__version__ = '1.11.41'
 
 # -----------------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import RequestTimeout
 from ccxt.base.errors import ExchangeNotAvailable
+from ccxt.base.errors import InvalidAddress
 
 # -----------------------------------------------------------------------------
 
@@ -168,6 +169,7 @@ class Exchange(object):
         'withdraw': False,
     }
 
+    minFundingAddressLength = 10  # used in check_address
     substituteCommonCurrencyCodes = True
     lastRestRequestTimestamp = 0
     lastRestPollTimestamp = 0
@@ -226,7 +228,6 @@ class Exchange(object):
             'delay': 1.0,
             'capacity': 1.0,
             'defaultCost': 1.0,
-            'maxCapacity': 1000,
         }, getattr(self, 'tokenBucket') if hasattr(self, 'tokenBucket') else {})
 
         self.session = self.session if self.session else Session()
@@ -409,7 +410,7 @@ class Exchange(object):
             else:
                 return response
         except ValueError as e:  # ValueError == JsonDecodeError
-            ddos_protection = re.search('(cloudflare|incapsula)', response, flags=re.IGNORECASE)
+            ddos_protection = re.search('(cloudflare|incapsula|overload|ddos)', response, flags=re.IGNORECASE)
             exchange_not_available = re.search('(offline|busy|retry|wait|unavailable|maintain|maintenance|maintenancing)', response, flags=re.IGNORECASE)
             if ddos_protection:
                 self.raise_error(DDoSProtection, method, url, None, response)
@@ -783,6 +784,14 @@ class Exchange(object):
             if self.requiredCredentials[key] and not getattr(self, key):
                 self.raise_error(AuthenticationError, details='requires `' + key + '`')
 
+    def check_address(self, address):
+        """Checks an address is not the same character repeated or an empty sequence"""
+        if address is None:
+            self.raise_error(InvalidAddress, details='address is None')
+        if all(letter == address[0] for letter in address) or len(address) < self.minFundingAddressLength or ' ' in address:
+            self.raise_error(InvalidAddress, details='address is invalid or has less than ' + str(self.minFundingAddressLength) + ' characters: "' + str(address) + '"')
+        return address
+
     def account(self):
         return {
             'free': 0.0,
@@ -1070,8 +1079,12 @@ class Exchange(object):
     def parse_timeframe(self, timeframe):
         amount = int(timeframe[0:-1])
         unit = timeframe[-1]
-        if 'M' in unit:
+        if 'y' in unit:
+            scale = 60 * 60 * 24 * 365
+        elif 'M' in unit:
             scale = 60 * 60 * 24 * 30
+        elif 'w' in unit:
+            scale = 60 * 60 * 24 * 7
         elif 'd' in unit:
             scale = 60 * 60 * 24
         elif 'h' in unit:
@@ -1083,27 +1096,37 @@ class Exchange(object):
     def parse_trades(self, trades, market=None, since=None, limit=None):
         array = self.to_array(trades)
         array = [self.parse_trade(trade, market) for trade in array]
-        return self.filter_by_since_limit(array, since, limit)
+        array = self.sort_by(array, 'timestamp')
+        symbol = market['symbol'] if market else None
+        return self.filter_by_symbol_since_limit(array, symbol, since, limit)
 
     def parse_orders(self, orders, market=None, since=None, limit=None):
         array = self.to_array(orders)
         array = [self.parse_order(order, market) for order in array]
-        return self.filter_by_since_limit(array, since, limit)
+        array = self.sort_by(array, 'timestamp')
+        symbol = market['symbol'] if market else None
+        return self.filter_by_symbol_since_limit(array, symbol, since, limit)
 
-    def filter_by_since_limit(self, array, since=None, limit=None):
+    def filter_by_symbol_since_limit(self, array, symbol=None, since=None, limit=None):
+        if symbol:
+            array = [entry for entry in array if entry['symbol'] == symbol]
         if since:
-            array = [entry for entry in array if entry['timestamp'] > since]
+            array = [entry for entry in array if entry['timestamp'] >= since]
         if limit:
             array = array[0:limit]
         return array
 
-    def filter_orders_by_symbol(self, orders, symbol=None):
+    def filter_by_since_limit(self, array, since=None, limit=None):
+        if since:
+            array = [entry for entry in array if entry['timestamp'] >= since]
+        if limit:
+            array = array[0:limit]
+        return array
+
+    def filter_by_symbol(self, array, symbol=None):
         if symbol:
-            grouped = self.group_by(orders, 'symbol')
-            if symbol in grouped:
-                return grouped[symbol]
-            return []
-        return orders
+            return [entry for entry in array if entry['symbol'] == symbol]
+        return array
 
     def currency(self, code):
         if not self.currencies:
@@ -1111,6 +1134,23 @@ class Exchange(object):
         if isinstance(code, basestring) and (code in self.currencies):
             return self.currencies[code]
         self.raise_error(ExchangeError, details='Does not have currency code ' + str(code))
+
+    def find_market(self, string):
+        if not self.markets:
+            self.raise_error(ExchangeError, details='Markets not loaded')
+        if isinstance(string, basestring):
+            if string in self.markets_by_id:
+                return self.markets_by_id[string]
+            if string in self.markets:
+                return self.markets[string]
+        return string
+
+    def find_symbol(self, string, market=None):
+        if market is None:
+            market = self.find_market(string)
+        if isinstance(market, dict):
+            return market['symbol']
+        return string
 
     def market(self, symbol):
         if not self.markets:

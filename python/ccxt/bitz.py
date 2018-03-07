@@ -22,7 +22,6 @@ class bitz (Exchange):
             'rateLimit': 1000,
             'version': 'v1',
             'has': {
-                'fetchBalance': False,  # so far the only exchange that has createOrder but not fetchBalance %)
                 'fetchTickers': True,
                 'fetchOHLCV': True,
                 'fetchOpenOrders': True,
@@ -54,6 +53,7 @@ class bitz (Exchange):
                 },
                 'private': {
                     'post': [
+                        'balances',
                         'tradeAdd',
                         'tradeCancel',
                         'openOrders',
@@ -137,8 +137,9 @@ class bitz (Exchange):
         for i in range(0, len(ids)):
             id = ids[i]
             market = markets[id]
-            idUpper = id.upper()
-            base, quote = idUpper.split('_')
+            baseId, quoteId = id.split('_')
+            base = baseId.upper()
+            quote = quoteId.upper()
             base = self.common_currency_code(base)
             quote = self.common_currency_code(quote)
             symbol = base + '/' + quote
@@ -147,10 +148,33 @@ class bitz (Exchange):
                 'symbol': symbol,
                 'base': base,
                 'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
                 'active': True,
                 'info': market,
             })
         return result
+
+    def fetch_balance(self, params={}):
+        self.load_markets()
+        response = self.privatePostBalances(params)
+        data = response['data']
+        balances = self.omit(data, 'uid')
+        result = {'info': response}
+        keys = list(balances.keys())
+        for i in range(0, len(keys)):
+            currency = keys[i]
+            balance = float(balances[currency])
+            if currency in self.currencies_by_id:
+                currency = self.currencies_by_id[currency]['code']
+            else:
+                currency = currency.upper()
+            account = self.account()
+            account['free'] = balance
+            account['used'] = None
+            account['total'] = balance
+            result[currency] = account
+        return self.parse_balance(result)
 
     def parse_ticker(self, ticker, market=None):
         timestamp = ticker['date'] * 1000
@@ -250,10 +274,15 @@ class bitz (Exchange):
         ohlcv = self.unjson(response['data']['datas']['data'])
         return self.parse_ohlcvs(ohlcv, market, timeframe, since, limit)
 
-    def parse_order(self, order, market):
+    def parse_order(self, order, market=None):
         symbol = None
-        if market:
+        if market is not None:
             symbol = market['symbol']
+        side = self.safe_string(order, 'side')
+        if side is None:
+            side = self.safe_string(order, 'type')
+            if side is not None:
+                side = 'buy' if (side == 'in') else 'sell'
         return {
             'id': order['id'],
             'datetime': None,
@@ -261,7 +290,7 @@ class bitz (Exchange):
             'status': 'open',
             'symbol': symbol,
             'type': 'limit',
-            'side': order['type'],
+            'side': side,
             'price': order['price'],
             'cost': None,
             'amount': order['number'],
@@ -275,9 +304,10 @@ class bitz (Exchange):
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()
         market = self.market(symbol)
+        orderType = 'in' if (side == 'buy') else 'out'
         request = {
             'coin': market['id'],
-            'type': side,
+            'type': orderType,
             'price': self.price_to_precision(symbol, price),
             'number': self.amount_to_string(symbol, amount),
             'tradepwd': self.password,
@@ -288,7 +318,7 @@ class bitz (Exchange):
             'id': id,
             'price': price,
             'number': amount,
-            'type': side,
+            'side': side,
         }, market)
         self.orders[id] = order
         return order

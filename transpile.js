@@ -58,6 +58,7 @@ const commonRegexes = [
     [ /\.parseOHLCV\s/g, '.parse_ohlcv'],
     [ /\.parseDate\s/g, '.parse_date'],
     [ /\.parseTicker\s/g, '.parse_ticker'],
+    [ /\.parseTimeframe\s/g, '.parse_timeframe'],
     [ /\.parseTradesData\s/g, '.parse_trades_data'],
     [ /\.parseTrades\s/g, '.parse_trades'],
     [ /\.parseTrade\s/g, '.parse_trade'],
@@ -67,13 +68,16 @@ const commonRegexes = [
     [ /\.parseOrders\s/g, '.parse_orders'],
     [ /\.parseOrderStatus\s/g, '.parse_order_status'],
     [ /\.parseOrder\s/g, '.parse_order'],
+    [ /\.filterBySymbolSinceLimit\s/g, '.filter_by_symbol_since_limit'],
     [ /\.filterBySinceLimit\s/g, '.filter_by_since_limit'],
-    [ /\.filterOrdersBySymbol\s/g, '.filter_orders_by_symbol'],
+    [ /\.filterBySymbol\s/g, '.filter_by_symbol'],
     [ /\.getVersionString\s/g, '.get_version_string'],
     [ /\.indexBy\s/g, '.index_by'],
     [ /\.sortBy\s/g, '.sort_by'],
     [ /\.filterBy\s/g, '.filter_by'],
     [ /\.groupBy\s/g, '.group_by'],
+    [ /\.findMarket\s/g, '.find_market'],
+    [ /\.findSymbol\s/g, '.find_symbol'],
     [ /\.marketIds\s/g, '.market_ids'],
     [ /\.marketId\s/g, '.market_id'],
     [ /\.fetchFundingFees\s/g, '.fetch_funding_fees'],
@@ -113,6 +117,7 @@ const commonRegexes = [
     [ /\.throwExceptionOnError\s/g, '.throw_exception_on_error'],
     [ /\.handleErrors\s/g, '.handle_errors'],
     [ /\.checkRequiredCredentials\s/g, '.check_required_credentials'],
+    [ /\.checkAddress\s/g, '.check_address'],
 ]
 
 // ----------------------------------------------------------------------------

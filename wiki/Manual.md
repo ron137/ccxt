@@ -1777,8 +1777,6 @@ As such, `cancelOrder()` can throw an `OrderNotFound` exception in these cases:
 
 ## Personal Trades
 
-
-
 ```
 - this part of the unified API is currenty a work in progress
 - there may be some issues and missing implementations here and there
@@ -1888,10 +1886,13 @@ createDepositAddress (code, params = {})
 {
     'currency': currency, // currency code
     'address': address,   // address in terms of requested currency
+    'tag': tag,           // tag / memo / paymentId for particular currencies (XRP, XMR, ...)
     'status': status,     // 'ok' or other
     'info': response,     // raw unparsed data as returned from the exchange
 }
 ```
+
+With certain currencies, like AEON, BTS, GXS, NXT, SBD, STEEM, STR, XEM, XLM, XMR, XRP, an additional argument `tag` is usually required by exchanges. The tag is a memo or a message or a payment id that is attached to a withdrawal transaction. The tag is mandatory for those currencies and it identifies the recipient user account.
 
 ### Withdraw
 
@@ -1907,8 +1908,6 @@ The withdraw method returns a dictionary containing the withdrawal id, which is 
     'id': '12345567890', // string withdrawal id, if any
 }
 ```
-
-With certain currencies, like AEON, BTS, GXS, NXT, SBD, STEEM, STR, XEM, XLM, XMR, XRP, an additional argument `tag` is usually required by exchanges. The tag is a memo or a message or a payment id that is attached to a withdrawal transaction.
 
 Some exchanges require a manual approval of each withdrawal by means of 2FA (2-factor authentication). In order to approve your withdrawal you usually have to either click their secret link in your email inbox or enter a Google Authenticator code or an Authy code on their website to verify that withdrawal transaction was requested intentionally.
 
@@ -2046,6 +2045,8 @@ Below is an outline of exception inheritance hierarchy:
 |   |
 |   +---+ InsufficientFunds
 |   |
+|   +---+ InvalidAddress
+|   |
 |   +---+ InvalidOrder
 |       |
 |       +---+ OrderNotFound
@@ -2078,6 +2079,7 @@ Other exceptions derived from `ExchangeError`:
   - `NotSupported`: This exception is raised if the endpoint is not offered/not supported by the exchange API.
   - `AuthenticationError`: Raised when an exchange requires one of the API credentials that you've missed to specify, or when there's a mistake in the keypair or an outdated nonce. Most of the time you need `apiKey` and `secret`, sometimes you also need `uid` and/or `password`.
   - `InsufficientFunds`: This exception is raised when you don't have enough currency on your account balance to place an order.
+  - `InvalidAddress`: This exception is raised upon encountering a bad funding address or a funding address shorter than `.minFundingAddressLength` (10 characters by default) in a call to `fetchDepositAddress`, `createDepositAddress` or `withdraw`.
   - `InvalidOrder`: This exception is the base class for all exceptions related to the unified order API.
   - `OrderNotFound`: Raised when you are trying to fetch or cancel a non-existent order.
 
@@ -2091,6 +2093,8 @@ This exception is thrown whenever Cloudflare or Incapsula rate limiter restricti
 
   - `cloudflare`
   - `incapsula`
+  - `overload`
+  - `ddos`
 
 ### RequestTimeout
 
@@ -2132,6 +2136,7 @@ Raised when your nonce is less than the previous nonce used with your keypair, a
 
 In case you experience any difficulty connecting to a particular exchange, do the following in order of precedence:
 
+- Make sure that you have the most recent version of ccxt.
 - Check the [CHANGELOG](https://github.com/ccxt/ccxt/blob/master/CHANGELOG.md) for recent updates.
 - Turn `verbose = true` to get more detail about it.
 - Python people can turn on DEBUG logging level with a standard pythonic logger, by adding these two lines to the beginning of their code:
