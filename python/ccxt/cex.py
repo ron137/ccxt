@@ -9,6 +9,8 @@ import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import InvalidOrder
 
+import time
+from datetime import datetime
 
 class cex (Exchange):
 
@@ -268,17 +270,34 @@ class cex (Exchange):
         return self.parse_ticker(ticker, market)
 
     def parse_trade(self, trade, market=None):
-        timestamp = int(trade['date']) * 1000
+
+        # Check if we parse my trade or public trades
+        my_trade = True
+        if 'tid' in trade:
+            my_trade = False
+            amount = float(trade['amount'])
+            price = float(trade['price'])
+            trade_id = trade['tid']
+            timestamp = int(trade['date']) * 1000
+        else:
+            # Hard parsing because they don't send price and amount so we have to calc it
+            amount = float(trade["a:{}:cds".format(market['info']['symbol1'])])
+            price = float(trade["a:{}:cds".format(market['info']['symbol2'])]) / amount
+            time_str = trade['time'].split('.')[0]
+            original_timestamp = round(time.mktime(datetime.strptime(time_str, "%Y-%d-%mT%H:%M:%S").timetuple()))
+            timestamp = (original_timestamp + 3 * 3600) * 1000
+            trade_id = trade['id']
+
         return {
             'info': trade,
-            'id': trade['tid'],
+            'id': trade_id,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': market['symbol'],
             'type': None,
             'side': trade['type'],
-            'price': float(trade['price']),
-            'amount': float(trade['amount']),
+            'price': price,
+            'amount': amount,
         }
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
@@ -401,9 +420,33 @@ class cex (Exchange):
             request['pair'] = market['id']
             method += 'Pair'
         orders = getattr(self, method)(self.extend(request, params))
-        for i in range(0, len(orders)):
-            orders[i] = self.extend(orders[i], {'status': 'open'})
-        return self.parse_orders(orders, market, since, limit)
+
+        # In case there are open orders
+        if orders != []:
+            for i in range(0, len(orders)):
+                orders[i] = self.extend(orders[i], {'status': 'open'})
+            return self.parse_orders(orders, market, since, limit)
+        else:
+            return []
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
+        self.load_markets()
+        request = {}
+        method = 'privatePostArchivedOrders'
+        market = None
+        if symbol:
+            market = self.market(symbol)
+            request['pair'] = market['id']
+            method += 'Pair'
+        request['dateTo'] = round(time.time())
+        trades = getattr(self, method)(self.extend(request, params))
+
+        # Only completed orders
+        trades = [trade for trade in trades if trade['status'] == 'd']
+
+        parsed_trades = self.parse_trades(trades, market, since, limit)
+        
+        return parsed_trades
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
@@ -438,6 +481,10 @@ class cex (Exchange):
 
     def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = self.fetch2(path, api, method, params, headers, body)
+
+        # In case of empty list (no orders for example)
+        if response == []:
+            return response
         if not response:
             raise ExchangeError(self.id + ' returned ' + self.json(response))
         elif response is True:

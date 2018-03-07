@@ -6,6 +6,8 @@
 from ccxt.base.exchange import Exchange
 from ccxt.base.errors import ExchangeError
 
+import time
+
 
 class bitso (Exchange):
 
@@ -115,6 +117,15 @@ class bitso (Exchange):
             })
         return result
 
+    def load_fees(self):
+        self.load_markets()
+        self.fees['trading']['taker'] = {}
+        self.fees['trading']['maker'] = {}
+        response = self.privateGetFees()
+        fees = response['payload']['fees']
+        for fee in fees:
+            self.fees['trading']['taker'][fee['book']] = fee['fee_decimal']
+            
     def fetch_balance(self, params={}):
         self.load_markets()
         response = self.privateGetBalance()

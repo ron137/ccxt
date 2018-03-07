@@ -128,7 +128,7 @@ class wex (liqui):
                     error = self.safe_string(response, 'error')
                     if not error:
                         raise ExchangeError(self.id + ' returned a malformed error: ' + body)
-                    if error == 'no orders':
+                    if error in ['no orders','no trades']:
                         # returned by fetchOpenOrders if no open orders(fix for  #489) -> not an error
                         return
                     elif 'invalid nonce parameter' in error:

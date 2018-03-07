@@ -424,4 +424,4 @@ class bitbay (Exchange):
                     raise ExchangeError(feedback)
 
     def to_mili_timestamp(self, date):
-        return time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60
+        return ( time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60 ) * 1000

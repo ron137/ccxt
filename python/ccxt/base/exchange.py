@@ -389,6 +389,16 @@ class Exchange(object):
         elif http_status_code in [401, 511]:
             error = AuthenticationError
         if error:
+            if 'Please allow up to 5 seconds' in response and self.proxy:
+                print('Exchange '+self.id+' got DDoSProtection, using scraper, waiting 5 seconds...')
+                self.headers['cloudscraper'] = '0' 
+                try:
+                    new_headers = self.request('/')
+                    del self.headers['cloudscraper']
+                    self.headers['cookie'] = new_headers['cookie']
+                    self.userAgent = new_headers['User-Agent']
+                except:
+                    pass
             self.raise_error(error, url, method, exception if exception else http_status_code, response)
 
     def handle_rest_response(self, response, url, method='GET', headers=None, body=None):

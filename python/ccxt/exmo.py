@@ -310,8 +310,6 @@ class exmo (Exchange):
 
         return self.parse_trades(trades, market, since, limit)
 
-
-
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)

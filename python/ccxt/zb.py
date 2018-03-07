@@ -22,6 +22,8 @@ from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import ExchangeNotAvailable
 
+import time
+
 
 class zb (Exchange):
 
@@ -385,12 +387,34 @@ class zb (Exchange):
         try:
             response = getattr(self, method)(self.extend(request, params))
         except Exception as e:
-            if self.last_json_response:
-                code = self.safe_string(self.last_json_response, 'code')
-                if code == '3001':
-                    return []
-            raise e
+            if '"code":3001' in str(e):
+                return []
+            else:
+                raise e
         return self.parse_orders(response, market, since, limit)
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=100, params={}):
+        if not symbol:
+            raise ExchangeError(self.id + 'fetch_my_trades requires a symbol parameter')
+        self.load_markets()
+        market = self.market(symbol)
+
+        request = {
+            'currency': market['id'],
+            'pageIndex': 1,  # default pageIndex is 1
+            'pageSize': limit,  # default pageSize is 10
+        }
+        method = 'privateGetGetOrdersIgnoreTradeType'
+
+        response = None
+        try:
+            response = getattr(self, method)(self.extend(request, params))
+        except Exception as e:
+            if '"code":3001' in str(e):
+                return []
+            else:
+                raise e
+        return self.parse_trades(response, market, since, limit)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=10, params={}):
         if not symbol:
@@ -410,11 +434,10 @@ class zb (Exchange):
         try:
             response = getattr(self, method)(self.extend(request, params))
         except Exception as e:
-            if self.last_json_response:
-                code = self.safe_string(self.last_json_response, 'code')
-                if code == '3001':
-                    return []
-            raise e
+            if '"code":3001' in str(e):
+                return []
+            else:
+                raise e
         return self.parse_orders(response, market, since, limit)
 
     def parse_order(self, order, market=None):
@@ -431,7 +454,7 @@ class zb (Exchange):
         if market:
             symbol = market['symbol']
         price = order['price']
-        average = order['trade_price']
+        average = order['price']
         filled = order['trade_amount']
         amount = order['total_amount']
         remaining = amount - filled
@@ -457,6 +480,43 @@ class zb (Exchange):
             'fee': None,
         }
         return result
+
+    def parse_trade(self, trade, market):
+
+        # Differences between public trades / my trades
+        try:
+            timestamp = trade['trade_date']
+        except:
+            timestamp = trade['date'] * 1000
+
+        try:
+            trade_id = trade['id']
+        except:
+            trade_id = trade['tid']
+
+        if(type(trade['type']) == type('a')):
+            trade_side = trade['type']
+        else:
+            trade_side = 'buy' if trade['type'] == 1 else 'sell'
+
+        try:
+            trade_amount = trade['trade_amount']
+        except:
+            trade_amount = trade['amount']
+
+        return {
+            'id': trade_id,
+            'info': trade,
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': market['symbol'],
+            'order': trade_id,
+            'type': None,
+            'side': trade_side,
+            'price': float(trade['price']),
+            'amount': float(trade_amount),
+            'cost': self.safe_float(trade, 'trade_money'),
+        }
 
     def parse_order_status(self, status):
         statuses = {
