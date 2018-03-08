@@ -7,6 +7,8 @@ from ccxt.base.exchange import Exchange
 import hashlib
 from ccxt.base.errors import ExchangeError
 
+import time
+
 
 class gateio (Exchange):
 
@@ -113,6 +115,16 @@ class gateio (Exchange):
                 'limits': limits,
             })
         return result
+
+    def load_fees(self):
+        self.fees['trading']['taker'] = {}
+        self.fees['trading']['maker'] = {}
+
+        # Get fees from markets object
+        for market in self.markets:
+            pair = self.markets[market]['id']
+            self.fees['trading']['taker'][pair] = self.markets[market]['taker']
+            self.fees['trading']['maker'][pair] = self.markets[market]['maker']
 
     def fetch_balance(self, params={}):
         self.load_markets()
