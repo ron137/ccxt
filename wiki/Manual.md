@@ -219,7 +219,8 @@ $bitfinex = new \ccxt\bitfinex (); // default id
 $bitfinex1 = new \ccxt\bitfinex (array ('id' => 'bitfinex1'));
 $bitfinex2 = new \ccxt\bitfinex (array ('id' => 'bitfinex2'));
 $id = 'kraken';
-$kraken = new \ccxt\$id ();
+$exchange = '\\ccxt\\' . $id
+$kraken = new $exchange ();
 ```
 
 ## Exchange Structure
@@ -538,7 +539,8 @@ print (okcoin.id, markets)
 ```PHP
 // PHP
 $id = 'huobi';
-$huobi = new \ccxt\$id ();
+$exchange = '\\ccxt\\' . $id;
+$huobi = new $exchange ();
 $markets = $huobi.load_markets ();
 var_dump ($huobi->id, $markets);
 ```
@@ -1197,9 +1199,11 @@ if ($exchange->has['fetchOHLCV'])
     }
 ```
 
-To get the list of available timeframes for your exchange see the `timeframes` property. Note that it is only populated when `has['fetchTickers']`  is true as well.
+To get the list of available timeframes for your exchange see the `timeframes` property. Note that it is only populated when `has['fetchTickers']` is true as well.
 
  **There's a limit on how far back in time your requests can go.** Most of exchanges will not allow to query detailed candlestick history (like those for 1-minute and 5-minute timeframes) too far in the past. They usually keep a reasonable amount of most recent candles, like 1000 last candles for any timeframe is more than enough for most of needs. You can work around that limitation by continuously fetching (aka *REST polling*) latest OHLCVs and storing them in a CSV file or in a database.
+
+ **Note that the info from the last (current) candle may be incomplete until the candle is closed (until the next candle starts).**
 
 The fetchOHLCV method shown above returns a list (a flat array) of OHLCV candles represented by the following structure:
 

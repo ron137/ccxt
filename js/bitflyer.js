@@ -300,15 +300,21 @@ module.exports = class bitflyer extends Exchange {
         if (typeof symbol === 'undefined')
             throw new ExchangeError (this.id + ' fetchOrders() requires a symbol argument');
         await this.loadMarkets ();
+        let market = this.market (symbol);
         let request = {
-            'product_code': this.marketId (symbol),
+            'product_code': market['id'],
             'count': limit,
         };
         let response = await this.privateGetGetchildorders (this.extend (request, params));
-        let orders = this.parseOrders (response, symbol, since, limit);
+        let orders = this.parseOrders (response, market, since, limit);
         if (symbol)
             orders = this.filterBy (orders, 'symbol', symbol);
         return orders;
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = 100, params = {}) {
+        params['child_order_state'] = 'ACTIVE';
+        return this.fetchOrders (symbol, since, limit, params);
     }
 
     async fetchOrder (id, symbol = undefined, params = {}) {
@@ -350,9 +356,10 @@ module.exports = class bitflyer extends Exchange {
             let nonce = this.nonce ().toString ();
             let auth = [ nonce, method, request ].join ('');
             if (Object.keys (params).length) {
-                body = this.json (params);
-                if (method !== 'GET')
+                if (method !== 'GET') {
+                    body = this.json (params);
                     auth += body;
+                }
             }
             headers = {
                 'ACCESS-KEY': this.apiKey,
