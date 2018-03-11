@@ -9,7 +9,6 @@ from ccxt.base.errors import ExchangeError
 
 import time
 
-
 class gateio (Exchange):
 
     def describe(self):
@@ -145,6 +144,15 @@ class gateio (Exchange):
             result[code] = account
         return self.parse_balance(result)
 
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        self.load_markets()
+        open_orders = self.privatePostOpenOrders()['orders']
+        if open_orders == []:
+            return open_orders
+
+        parsed_orders = self.parse_orders(open_orders)
+        return parsed_orders
+
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
         orderbook = self.publicGetOrderBookId(self.extend({
@@ -179,6 +187,38 @@ class gateio (Exchange):
             'quoteVolume': float(ticker['baseVolume']),
             'info': ticker,
         }
+
+    def parse_order(self, order, market=None):
+        side = order['type']
+        symbol = None
+        if market is None:
+            marketId = order['currencyPair']
+            if marketId in self.markets_by_id:
+                market = self.markets_by_id[marketId]
+        if market:
+            symbol = market['symbol']
+
+        timestamp = int(order['timestamp']) * 1000
+        amount = float(order['amount'])
+        filled = float(order['filledAmount'])
+        remaining = amount - filled
+        result = {
+            'info': order,
+            'id': order['orderNumber'],
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': symbol,
+            'type': None,
+            'side': side,
+            'price': self.safe_float(order, 'rate'),
+            'amount': amount,
+            'cost': None,
+            'remaining': remaining,
+            'filled': filled,
+            'status': order['status'],
+            'fee': None,
+        }
+        return result
 
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()

@@ -125,7 +125,7 @@ class bitso (Exchange):
         fees = response['payload']['fees']
         for fee in fees:
             self.fees['trading']['taker'][fee['book']] = fee['fee_decimal']
-            
+
     def fetch_balance(self, params={}):
         self.load_markets()
         response = self.privateGetBalance()
