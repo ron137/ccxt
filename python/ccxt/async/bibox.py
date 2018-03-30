@@ -8,6 +8,7 @@ import hashlib
 import math
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
+from ccxt.base.errors import PermissionDenied
 from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import DDoSProtection
@@ -33,6 +34,7 @@ class bibox (Exchange):
                 'fetchClosedOrders': True,
                 'fetchMyTrades': True,
                 'fetchOHLCV': True,
+                'createMarketOrder': False,  # or they will return https://github.com/ccxt/ccxt/issues/2338
                 'withdraw': True,
             },
             'timeframes': {
@@ -136,6 +138,7 @@ class bibox (Exchange):
             symbol = market['symbol']
         else:
             symbol = ticker['coin_symbol'] + '/' + ticker['currency_symbol']
+        last = self.safe_float(ticker, 'last')
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -143,16 +146,18 @@ class bibox (Exchange):
             'high': self.safe_float(ticker, 'high'),
             'low': self.safe_float(ticker, 'low'),
             'bid': self.safe_float(ticker, 'buy'),
+            'bidVolume': None,
             'ask': self.safe_float(ticker, 'sell'),
+            'askVolume': None,
             'vwap': None,
             'open': None,
-            'close': None,
-            'first': None,
-            'last': self.safe_float(ticker, 'last'),
+            'close': last,
+            'last': last,
+            'previousClose': None,
             'change': None,
             'percentage': self.safe_string(ticker, 'percent'),
             'average': None,
-            'baseVolume': self.safe_float(ticker, 'vol'),
+            'baseVolume': self.safe_float(ticker, 'vol24H'),
             'quoteVolume': None,
             'info': ticker,
         }
@@ -468,14 +473,15 @@ class bibox (Exchange):
         await self.load_markets()
         currency = self.currency(code)
         response = await self.privatePostTransfer({
-            'cmd': 'transfer/transferOutInfo',
+            'cmd': 'transfer/transferIn',
             'body': self.extend({
                 'coin_symbol': currency['id'],
             }, params),
         })
+        address = self.safe_string(response, 'result')
         result = {
             'info': response,
-            'address': None,  # POINTLESS?
+            'address': address,
         }
         return result
 
@@ -536,12 +542,19 @@ class bibox (Exchange):
                     # operation failednot  Orders have been completed or revoked
                     # e.g. trying to cancel a filled order
                     raise OrderNotFound(message)
+                elif code == '2067':
+                    # https://github.com/ccxt/ccxt/issues/2338
+                    #  {"error": {"code": "2067", "msg": "暂不支持市价单"}, "cmd": "orderpending/trade"}
+                    # "Does not support market orders"
+                    raise InvalidOrder(message)
                 elif code == '2068':
                     # \u4e0b\u5355\u6570\u91cf\u4e0d\u80fd\u4f4e\u4e8e
                     # The number of orders can not be less than
                     raise InvalidOrder(message)
                 elif code == '3012':
-                    raise AuthenticationError(message)  # invalid api key
+                    raise AuthenticationError(message)  # invalid apiKey
+                elif code == '3024':
+                    raise PermissionDenied(message)  # insufficient apiKey permissions
                 elif code == '3025':
                     raise AuthenticationError(message)  # signature failed
                 elif code == '4000':

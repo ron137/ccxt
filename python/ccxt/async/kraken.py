@@ -37,6 +37,7 @@ class kraken (Exchange):
             'has': {
                 'createDepositAddress': True,
                 'fetchDepositAddress': True,
+                'fetchTradingFees': True,
                 'CORS': False,
                 'fetchCurrencies': True,
                 'fetchTickers': True,
@@ -64,7 +65,7 @@ class kraken (Exchange):
                 'api': {
                     'public': 'https://api.kraken.com',
                     'private': 'https://api.kraken.com',
-                    'zendesk': 'https://kraken.zendesk.com/hc/en-us/articles',
+                    'zendesk': 'https://support.kraken.com/hc/en-us/articles',
                 },
                 'www': 'https://www.kraken.com',
                 'doc': [
@@ -204,9 +205,7 @@ class kraken (Exchange):
             },
             'options': {
                 'cacheDepositMethodsOnFetchDepositAddress': True,  # will issue up to two calls in fetchDepositAddress
-                'forceFetchDepositMethods': False,  # will issue a HTTP request even for noDepositMethod-currencies
                 'depositMethods': {},
-                'noDepositMethod': ['DAO', 'NMC', 'XVN', 'GBP', 'KRW'],
             },
         })
 
@@ -280,8 +279,7 @@ class kraken (Exchange):
                 'amount': market['lot_decimals'],
                 'price': market['pair_decimals'],
             }
-            lot = math.pow(10, -precision['amount'])
-            minAmount = lot
+            minAmount = math.pow(10, -precision['amount'])
             if base in limits:
                 minAmount = limits[base]
             result.append({
@@ -294,7 +292,6 @@ class kraken (Exchange):
                 'altname': market['altname'],
                 'maker': maker,
                 'taker': float(market['fees'][0][1]) / 100,
-                'lot': lot,
                 'active': True,
                 'precision': precision,
                 'limits': {
@@ -327,7 +324,6 @@ class kraken (Exchange):
             'info': None,
             'maker': None,
             'taker': None,
-            'lot': amountLimits['min'],
             'active': False,
             'precision': precision,
             'limits': limits,
@@ -424,6 +420,7 @@ class kraken (Exchange):
         baseVolume = float(ticker['v'][1])
         vwap = float(ticker['p'][1])
         quoteVolume = baseVolume * vwap
+        last = float(ticker['c'][0])
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -431,12 +428,14 @@ class kraken (Exchange):
             'high': float(ticker['h'][1]),
             'low': float(ticker['l'][1]),
             'bid': float(ticker['b'][0]),
+            'bidVolume': None,
             'ask': float(ticker['a'][0]),
+            'askVolume': None,
             'vwap': vwap,
             'open': float(ticker['o']),
-            'close': None,
-            'first': None,
-            'last': float(ticker['c'][0]),
+            'close': last,
+            'last': last,
+            'previousClose': None,
             'change': None,
             'percentage': None,
             'average': None,
@@ -745,9 +744,6 @@ class kraken (Exchange):
         return self.filter_by_symbol(orders, symbol)
 
     async def fetch_deposit_methods(self, code, params={}):
-        if code in self.options['noDepositMethod']:
-            if not self.options['forceFetchDepositMethods']:
-                raise ExchangeError(self.id + ' ' + code + ' does not have a deposit method. Add exchange property .options["forceFetchDepositMethods"] = True to suppress self warning and force issuing a HTTP request')
         await self.load_markets()
         currency = self.currency(code)
         response = await self.privatePostDepositMethods(self.extend({

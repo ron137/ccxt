@@ -4,7 +4,7 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.11.71'
+__version__ = '1.12.48'
 
 # -----------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ class Exchange(object):
         'fetchClosedOrders': False,
         'fetchCurrencies': False,
         'fetchDepositAddress': False,
-        'fetchFees': False,
+        'fetchFundingFees': False,
         'fetchL2OrderBook': True,
         'fetchMarkets': True,
         'fetchMyTrades': False,
@@ -166,6 +166,7 @@ class Exchange(object):
         'fetchTicker': True,
         'fetchTickers': False,
         'fetchTrades': True,
+        'fetchTradingFees': False,
         'withdraw': False,
     }
 
@@ -181,6 +182,12 @@ class Exchange(object):
     last_http_response = None
     last_json_response = None
     last_response_headers = None
+
+    commonCurrencies = {
+        'XBT': 'BTC',
+        'BCC': 'BCH',
+        'DRK': 'DASH',
+    }
 
     def __init__(self, config={}):
 
@@ -523,8 +530,7 @@ class Exchange(object):
     @staticmethod
     def group_by(array, key):
         result = {}
-        if type(array) is dict:
-            array = list(Exchange.keysort(array).items())
+        array = Exchange.to_array(array)
         array = [entry for entry in array if (key in entry) and (entry[key] is not None)]
         for entry in array:
             if entry[key] not in result:
@@ -802,13 +808,11 @@ class Exchange(object):
     def common_currency_code(self, currency):
         if not self.substituteCommonCurrencyCodes:
             return currency
-        if currency == 'XBT':
-            return 'BTC'
-        if currency == 'BCC':
-            return 'BCH'
-        if currency == 'DRK':
-            return 'DASH'
-        return currency
+        return self.safe_string(self.commonCurrencies, currency, currency)
+
+    def currency_id(self, commonCode):
+        currencyIds = {v: k for k, v in self.commonCurrencies.items()}
+        return self.safe_string(currencyIds, commonCode, commonCode)
 
     def precision_from_string(self, string):
         parts = re.sub(r'0+$', '', string).split('.')
@@ -888,7 +892,7 @@ class Exchange(object):
     def load_fees(self):
         self.load_markets()
         self.populate_fees()
-        if not self.has['fetchFees']:
+        if not (self.has['fetchTradingFees'] or self.has['fetchFundingFees']):
             return self.fees
 
         fetched_fees = self.fetch_fees()
@@ -1009,12 +1013,12 @@ class Exchange(object):
         })
 
     def parse_order_book(self, orderbook, timestamp=None, bids_key='bids', asks_key='asks', price_key=0, amount_key=1):
-        timestamp = timestamp or self.milliseconds()
         return {
             'bids': self.sort_by(self.parse_bids_asks(orderbook[bids_key], price_key, amount_key) if (bids_key in orderbook) and isinstance(orderbook[bids_key], list) else [], 0, True),
             'asks': self.sort_by(self.parse_bids_asks(orderbook[asks_key], price_key, amount_key) if (asks_key in orderbook) and isinstance(orderbook[asks_key], list) else [], 0),
             'timestamp': timestamp,
-            'datetime': self.iso8601(timestamp),
+            'datetime': self.iso8601(timestamp) if timestamp is not None else None,
+            'nonce': None,
         }
 
     def parse_balance(self, balance):
@@ -1047,12 +1051,11 @@ class Exchange(object):
 
     def build_ohlcv(self, trades, timeframe='1m', since=None, limit=None):
         ms = self.parse_timeframe(timeframe) * 1000
-        print(type(ms), ms)
         ohlcvs = []
         (high, low, close, volume) = (2, 3, 4, 5)
         num_trades = len(trades)
         oldest = (num_trades - 1) if limit is None else min(num_trades - 1, limit)
-        for i in range(oldest, 0, -1):
+        for i in range(0, oldest):
             trade = trades[i]
             if (since is not None) and (trade['timestamp'] < since):
                 continue
@@ -1108,6 +1111,7 @@ class Exchange(object):
         return self.filter_by_symbol_since_limit(array, symbol, since, limit)
 
     def filter_by_symbol_since_limit(self, array, symbol=None, since=None, limit=None):
+        array = self.to_array(array)
         if symbol:
             array = [entry for entry in array if entry['symbol'] == symbol]
         if since:
@@ -1117,6 +1121,7 @@ class Exchange(object):
         return array
 
     def filter_by_since_limit(self, array, since=None, limit=None):
+        array = self.to_array(array)
         if since:
             array = [entry for entry in array if entry['timestamp'] >= since]
         if limit:
@@ -1124,6 +1129,7 @@ class Exchange(object):
         return array
 
     def filter_by_symbol(self, array, symbol=None):
+        array = self.to_array(array)
         if symbol:
             return [entry for entry in array if entry['symbol'] == symbol]
         return array
