@@ -109,9 +109,14 @@ class gateio (Exchange):
                 'min': None,
                 'max': None,
             }
+            costLimits = {
+                'min': 10,
+                'max': None,
+            }
             limits = {
                 'amount': amountLimits,
                 'price': priceLimits,
+                'cost': costLimits,
             }
             result.append({
                 'id': id,
@@ -163,6 +168,40 @@ class gateio (Exchange):
 
         parsed_orders = self.parse_orders(open_orders)
         return parsed_orders
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+        """ The API returns only my last 24 hours trades """
+
+        # Check if we got symbol
+        if not symbol:
+            raise ExchangeError(self.id + ' fetch_my_trades requires a symbol parameter')
+
+        transactions = self.privatePostTradeHistory(self.extend({
+            'currencyPair': self.market_id(symbol)
+        }, params))
+        transactions = transactions['trades']
+
+        # Return empty list if there are no trades
+        if not transactions:
+            return []
+
+        trades = []
+        for transaction in transactions:
+            timestamp = int(transaction['time_unix']) * 1000
+            trade = {
+                'id': transaction['tradeID'],
+                'info': transaction,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'symbol': symbol,
+                'type': 'limit',
+                'side': transaction['type'],
+                'price': float(transaction['rate']),
+                'amount': float(transaction['amount']),
+            }
+            trades.append(trade)
+
+        return trades
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
@@ -263,7 +302,7 @@ class gateio (Exchange):
 
     def parse_trade(self, trade, market):
         # exchange reports local time(UTC+8)
-        timestamp = self.parse8601(trade['date']) - 8 * 60 * 60 * 1000
+        timestamp = int(trade['timestamp']) * 1000
         return {
             'id': trade['tradeID'],
             'info': trade,
@@ -302,7 +341,15 @@ class gateio (Exchange):
 
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
-        return self.privatePostCancelOrder({'orderNumber': id})
+        try:
+            return self.privatePostCancelOrder({'orderNumber': id})
+        except Exception as e:
+            if "Success" in str(e):
+                return True
+            elif "Error: invalid order id or order is already closed." is str(e):
+                return True
+            else:
+                raise e
 
     def query_deposit_address(self, method, currency, params={}):
         method = 'privatePost' + method + 'Address'

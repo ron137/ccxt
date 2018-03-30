@@ -204,10 +204,10 @@ class liqui (Exchange):
                     continue
                 if order['side'] == 'buy':
                     cur = order['symbol'].split('/')[1]
-                    amount = order['amount'] * order['price']
+                    amount = order['remaining'] * order['price']
                 else:
                     cur = order['symbol'].split('/')[0]
-                    amount = order['amount']
+                    amount = order['remaining']
                 if uppercase == cur:
                     used += amount
                     total += amount
@@ -335,6 +335,8 @@ class liqui (Exchange):
         id = self.safe_string(trade, 'tid')
         if 'trade_id' in trade:
             id = self.safe_string(trade, 'trade_id')
+        if 'order_id' in trade:
+            id = self.safe_string(trade, 'order_id')
         order = self.safe_string(trade, self.get_order_id_key())
         if 'pair' in trade:
             marketId = trade['pair']
@@ -407,7 +409,8 @@ class liqui (Exchange):
             'side': side,
             'price': price,
             'cost': price * filled,
-            'amount': amount,
+            'amount': remaining,
+            'start_amount': remaining,
             'remaining': remaining,
             'filled': filled,
             'fee': None,
@@ -453,7 +456,7 @@ class liqui (Exchange):
         if market:
             symbol = market['symbol']
         remaining = None
-        amount = None
+        amount = self.safe_float(order, 'amount')
         price = self.safe_float(order, 'rate')
         filled = None
         cost = None

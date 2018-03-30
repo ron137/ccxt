@@ -17,6 +17,7 @@ class exmo (Exchange):
             'countries': ['ES', 'RU'],  # Spain, Russia
             'rateLimit': 350,  # once every 350 ms ≈ 180 requests per minute ≈ 3 requests per second
             'version': 'v1',
+            '_nonce': None,
             'has': {
                 'CORS': False,
                 'fetchOrder': True,
@@ -392,6 +393,12 @@ class exmo (Exchange):
         if market is not None:
             id = market['id']
             orders = orders[id] if (id in list(orders.keys())) else []
+        else:
+            combine_orders = []
+            for id in orders:
+                combine_orders += orders[id]
+            orders = combine_orders
+
         return self.parse_orders(orders, market, since, limit)
 
     def parse_order(self, order, market=None):
@@ -540,11 +547,20 @@ class exmo (Exchange):
                 'Sign': self.hmac(self.encode(body), self.encode(self.secret), hashlib.sha512),
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
+    
+    def nonce(self):
+        if not self._nonce:
+            self._nonce = self.initial_nonce
+        nonce = self._nonce
+        self._nonce += 1
+        return nonce
 
     def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = self.fetch2(path, api, method, params, headers, body)
         if 'result' in response:
             if response['result']:
                 return response
+            if 'error' in response and "40009" in response['error']:
+                self._nonce = int(response['error'].split('less or equal than what was used before \"')[1][:-1])+1
             raise ExchangeError(self.id + ' ' + self.json(response))
         return response

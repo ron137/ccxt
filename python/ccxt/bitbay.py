@@ -291,7 +291,7 @@ class bitbay (Exchange):
                 'symbol': symbol,
                 'type': 'limit',
                 'side': 'sell' if transaction['type'] == 'ASK' else 'buy',
-                'price': float(transaction['price']),
+                'price': float(transaction['rate']),
                 'amount': float(transaction['amount']),
             }
             trades.append(trade)
@@ -425,4 +425,4 @@ class bitbay (Exchange):
                     raise ExchangeError(feedback)
 
     def to_mili_timestamp(self, date):
-        return ( time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60 ) * 1000
+        return (time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60 ) * 1000

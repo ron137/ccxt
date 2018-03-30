@@ -18,8 +18,9 @@ class wex (liqui):
             'id': 'wex',
             'name': 'WEX',
             'countries': 'NZ',  # New Zealand
+            'rateLimit': 100,
             'version': '3',
-            '_nonce': 1,
+            '_nonce': None,
             'has': {
                 'CORS': False,
                 'fetchTickers': True,
@@ -143,6 +144,8 @@ class wex (liqui):
                         raise ExchangeError(feedback)
 
     def nonce(self):
+        if not self._nonce:
+            self._nonce = self.initial_nonce
         nonce = self._nonce
         self._nonce += 1
         return nonce

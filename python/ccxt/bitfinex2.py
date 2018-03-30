@@ -345,7 +345,7 @@ class bitfinex2 (bitfinex):
         market = self.market(symbol)
         request = {
             'symbol': market['id'],
-            'sort': 1,
+            'sort': 0,
             'limit': limit,  # default = max = 120
         }
         if since is not None:

@@ -5,6 +5,7 @@
 
 from ccxt.base.exchange import Exchange
 import hashlib
+import time
 
 
 class bit2c (Exchange):
@@ -14,7 +15,7 @@ class bit2c (Exchange):
             'id': 'bit2c',
             'name': 'Bit2C',
             'countries': 'IL',  # Israel
-            'rateLimit': 1500,
+            'rateLimit': 500,
             'has': {
                 'CORS': False,
             },
@@ -185,7 +186,6 @@ class bit2c (Exchange):
         response = self.privateGetOrderMyOrders(self.extend({
             'pair': self.market_id(symbol)
             }, params))
-
         orders = []
         for side in response[self.market_id(symbol)]:
             side_orders = response[self.market_id(symbol)][side]
@@ -249,7 +249,7 @@ class bit2c (Exchange):
             url = self.url(url, params)
         else:
             self.check_required_credentials()
-            nonce = self.nonce() * 10000000000
+            nonce = int(time.time() * 10000000000)
             query = self.extend({'nonce': nonce}, params)
             body = self.urlencode(query)
             signature = self.hmac(self.encode(body), self.encode(self.secret), hashlib.sha512, 'base64')

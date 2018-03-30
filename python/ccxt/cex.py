@@ -10,7 +10,8 @@ from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import InvalidOrder
 
 import time
-from datetime import datetime
+import datetime
+import dateutil
 
 class cex (Exchange):
 
@@ -19,7 +20,7 @@ class cex (Exchange):
             'id': 'cex',
             'name': 'CEX.IO',
             'countries': ['GB', 'EU', 'CY', 'RU'],
-            'rateLimit': 1500,
+            'rateLimit': 800,
             'has': {
                 'CORS': True,
                 'fetchTickers': True,
@@ -283,9 +284,7 @@ class cex (Exchange):
             # Hard parsing because they don't send price and amount so we have to calc it
             amount = float(trade["a:{}:cds".format(market['info']['symbol1'])])
             price = float(trade["a:{}:cds".format(market['info']['symbol2'])]) / amount
-            time_str = trade['time'].split('.')[0]
-            original_timestamp = round(time.mktime(datetime.strptime(time_str, "%Y-%d-%mT%H:%M:%S").timetuple()))
-            timestamp = (original_timestamp + 3 * 3600) * 1000
+            timestamp = self.to_mili_timestamp(trade['time'])
             trade_id = trade['id']
 
         return {
@@ -445,7 +444,7 @@ class cex (Exchange):
         trades = [trade for trade in trades if trade['status'] == 'd']
 
         parsed_trades = self.parse_trades(trades, market, since, limit)
-        
+
         return parsed_trades
 
     def fetch_order(self, id, symbol=None, params={}):
@@ -498,3 +497,6 @@ class cex (Exchange):
             if response['error']:
                 raise ExchangeError(self.id + ' ' + self.json(response))
         return response
+
+    def to_mili_timestamp(self, date):
+        return ( time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds()) * 1000

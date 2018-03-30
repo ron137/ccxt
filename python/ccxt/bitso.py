@@ -272,7 +272,8 @@ class bitso (Exchange):
             'major': self.amount_to_precision(symbol, amount),
         }
         if type == 'limit':
-            order['price'] = self.price_to_precision(symbol, price)
+            order['price'] = price
+
         response = self.privatePostOrders(self.extend(order, params))
         return {
             'info': response,

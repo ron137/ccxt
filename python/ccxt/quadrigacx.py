@@ -14,6 +14,8 @@ except NameError:
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 
+import time
+
 
 class quadrigacx (Exchange):
 
@@ -22,7 +24,7 @@ class quadrigacx (Exchange):
             'id': 'quadrigacx',
             'name': 'QuadrigaCX',
             'countries': 'CA',
-            'rateLimit': 1000,
+            'rateLimit': 1200,
             'version': 'v2',
             'has': {
                 'fetchDepositAddress': True,
@@ -82,6 +84,12 @@ class quadrigacx (Exchange):
                 'BTG/CAD': {'id': 'btg_cad', 'symbol': 'BTG/CAD', 'base': 'BTG', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
                 'BTG/BTC': {'id': 'btg_btc', 'symbol': 'BTG/BTC', 'base': 'BTG', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005},
             },
+            'fees': {
+                'trading': {
+                    'maker': 0.5 / 100,
+                    'taker': 0.5 / 100,
+                }
+            }
         })
 
     def fetch_balance(self, params={}):
@@ -156,6 +164,20 @@ class quadrigacx (Exchange):
             'book': market['id'],
         }, params))
         return self.parse_trades(response, market, since, limit)
+
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        self.load_markets()
+        open_orders = self.privatePostOpenOrders()
+
+        # No orders
+        if open_orders == []:
+            return open_orders
+
+        print(open_orders)
+        time.sleep(9999)
+
+        parsed_orders = self.parse_orders(open_orders)
+        return parsed_orders
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         method = 'privatePost' + self.capitalize(side)
