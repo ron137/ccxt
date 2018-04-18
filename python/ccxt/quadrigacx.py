@@ -15,7 +15,8 @@ from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 
 import time
-
+import datetime
+import dateutil
 
 class quadrigacx (Exchange):
 
@@ -24,7 +25,7 @@ class quadrigacx (Exchange):
             'id': 'quadrigacx',
             'name': 'QuadrigaCX',
             'countries': 'CA',
-            'rateLimit': 1200,
+            'rateLimit': 10000,
             'version': 'v2',
             'has': {
                 'fetchDepositAddress': True,
@@ -73,16 +74,17 @@ class quadrigacx (Exchange):
                 },
             },
             'markets': {
-                'BTC/CAD': {'id': 'btc_cad', 'symbol': 'BTC/CAD', 'base': 'BTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
-                'BTC/USD': {'id': 'btc_usd', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD', 'maker': 0.005, 'taker': 0.005},
-                'ETH/BTC': {'id': 'eth_btc', 'symbol': 'ETH/BTC', 'base': 'ETH', 'quote': 'BTC', 'maker': 0.002, 'taker': 0.002},
-                'ETH/CAD': {'id': 'eth_cad', 'symbol': 'ETH/CAD', 'base': 'ETH', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
-                'LTC/CAD': {'id': 'ltc_cad', 'symbol': 'LTC/CAD', 'base': 'LTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
-                'LTC/BTC': {'id': 'ltc_btc', 'symbol': 'LTC/BTC', 'base': 'LTC', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005},
-                'BCH/CAD': {'id': 'bch_cad', 'symbol': 'BCH/CAD', 'base': 'BCH', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
-                'BCH/BTC': {'id': 'bch_btc', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005},
-                'BTG/CAD': {'id': 'btg_cad', 'symbol': 'BTG/CAD', 'base': 'BTG', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005},
-                'BTG/BTC': {'id': 'btg_btc', 'symbol': 'BTG/BTC', 'base': 'BTG', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005},
+                # TODO: Fix wrong limits of crypto/crypto markets
+                'BTC/CAD': {'id': 'btc_cad', 'symbol': 'BTC/CAD', 'base': 'BTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BTC/USD': {'id': 'btc_usd', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'ETH/BTC': {'id': 'eth_btc', 'symbol': 'ETH/BTC', 'base': 'ETH', 'quote': 'BTC', 'maker': 0.002, 'taker': 0.002, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'ETH/CAD': {'id': 'eth_cad', 'symbol': 'ETH/CAD', 'base': 'ETH', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'LTC/CAD': {'id': 'ltc_cad', 'symbol': 'LTC/CAD', 'base': 'LTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'LTC/BTC': {'id': 'ltc_btc', 'symbol': 'LTC/BTC', 'base': 'LTC', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BCH/CAD': {'id': 'bch_cad', 'symbol': 'BCH/CAD', 'base': 'BCH', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BCH/BTC': {'id': 'bch_btc', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BTG/CAD': {'id': 'btg_cad', 'symbol': 'BTG/CAD', 'base': 'BTG', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BTG/BTC': {'id': 'btg_btc', 'symbol': 'BTG/BTC', 'base': 'BTG', 'quote': 'BTC', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
             },
             'fees': {
                 'trading': {
@@ -91,6 +93,9 @@ class quadrigacx (Exchange):
                 }
             }
         })
+
+    def to_mili_timestamp(self, date):
+       return (time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60 ) * 1000
 
     def fetch_balance(self, params={}):
         balances = self.privatePostBalance()
@@ -165,24 +170,104 @@ class quadrigacx (Exchange):
         market = self.market(symbol)
         response = self.publicGetTransactions(self.extend({
             'book': market['id'],
+            'time': 'hour',
         }, params))
         return self.parse_trades(response, market, since, limit)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
-        open_orders = self.privatePostOpenOrders()
+
+        # We gotta send symbol because the default is btc_cad
+        market = self.market(symbol)
+        open_orders = self.privatePostOpenOrders(self.extend({
+            'book': market['id'],
+        }, params))
 
         # No orders
         if open_orders == []:
             return open_orders
 
-        print(open_orders)
-        time.sleep(9999)
+        # Parse orders
+        parsed_orders = []
+        for order in open_orders:
+            timestamp = int(self.to_mili_timestamp(order['datetime']))
+            parsed_order = {
+                'info': order,
+                'id': str(order['id']),
+                'timestamp': timestamp,
+                'datetime': str(order['datetime']),
+                'symbol': symbol,
+                'type': None,
+                'side': 'buy' if order['type'] == 0 else 'sell',
+                'price': float(order['price']),
+                'average': None,
+                'cost': None,
+                'amount': float(order['amount']),
+                'filled': None,
+                'remaining': None,
+                'status': 'open',
+                'fee': None,
+            }
+            parsed_orders.append(parsed_order)
 
-        parsed_orders = self.parse_orders(open_orders)
         return parsed_orders
 
+    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
+
+        if not symbol:
+            raise ExchangeError(self.id + ' fetch_my_trades requires a symbol parameter')
+
+        # Load markets and prepare API request
+        self.load_markets()
+        request = {}
+        method = 'privatePostUserTransactions'
+        market = None
+
+        # Add symbol to request
+        if symbol:
+            market = self.market(symbol)
+            coin1 = market['id'].split('_')[0]
+            coin2 = market['id'].split('_')[1]
+            request['book'] = market['id']
+            request['limit'] = 1000
+
+        # Get user transactions from API and filter out deposits and withdrawals
+        trades = getattr(self, method)(self.extend(request, params))
+        trades = list(filter(lambda trade: trade['type'] == 2, trades))
+
+        # Iterate returned data and parse it to the right format
+        parsed_trades = []
+        for trade in trades:
+
+            # Check wether the trade is buy or sell
+            if float(trade[coin2]) < 0:
+                trade_side = 'buy'
+            else:
+                trade_side = 'sell'
+
+            trade_amount = abs(float(trade[coin1]))
+            timestamp = round(self.to_mili_timestamp(trade['datetime']))
+
+            # Parsed trade
+            parsed_trade = {
+                'info': trade,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'symbol': market['symbol'],
+                'id': str(trade['id']),
+                'order': None,
+                'type': 'limit',
+                'side': trade_side,
+                'price': float(trade['rate']),
+                'amount': float(trade_amount),
+            }
+            parsed_trades.append(parsed_trade)
+
+        return parsed_trades
+
     def create_order(self, symbol, type, side, amount, price=None, params={}):
+
+        # Create place order request
         method = 'privatePost' + self.capitalize(side)
         order = {
             'amount': amount,
@@ -190,11 +275,30 @@ class quadrigacx (Exchange):
         }
         if type == 'limit':
             order['price'] = price
+
+        # Request place order
         response = getattr(self, method)(self.extend(order, params))
-        return {
+
+        # Parse new order and return
+        timestamp = int(self.to_mili_timestamp(response['datetime']))
+        order = {
+            'id': response['id'],
             'info': response,
-            'id': str(response['id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'average': price,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': amount,
+            'status': 'open',
+            'fee': None,
         }
+        return order
 
     def cancel_order(self, id, symbol=None, params={}):
         return self.privatePostCancelOrder(self.extend({

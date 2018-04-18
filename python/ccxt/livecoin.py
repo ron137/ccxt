@@ -15,6 +15,9 @@ from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import ExchangeNotAvailable
 
+import time
+import datetime
+import dateutil
 
 class livecoin (Exchange):
 
@@ -97,6 +100,9 @@ class livecoin (Exchange):
                 'XBT': 'Bricktox',
             },
         })
+
+    def to_mili_timestamp(self, date):
+       return (time.mktime(dateutil.parser.parse(date).timetuple()) + dateutil.tz.tzlocal().utcoffset(datetime.datetime.now(dateutil.tz.tzlocal())).total_seconds() - 1 * 60 * 60 ) * 1000
 
     def fetch_markets(self):
         markets = self.publicGetExchangeTicker()
@@ -251,6 +257,39 @@ class livecoin (Exchange):
             'maker': commission,
             'taker': commission,
         }
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
+
+        # Check if we got symbol
+        if symbol:
+            market_id = self.market(symbol)['id']
+            transactions = self.privateGetExchangeTrades(self.extend({
+                'currencyPair': market_id
+            }, params))
+        else:
+            transactions = self.privateGetExchangeTrades()
+
+        # No trades, return an empty list
+        if not transactions:
+            return []
+
+        trades = []
+        for transaction in transactions:
+            timestamp = int(transaction['datetime']) * 1000
+            trade = {
+                'id': str(transaction['id']),
+                'info': transaction,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'symbol': symbol,
+                'type': 'limit',
+                'side': transaction['type'],
+                'price': float(transaction['price']),
+                'amount': float(transaction['quantity']),
+            }
+            trades.append(trade)
+
+        return trades
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
@@ -453,9 +492,9 @@ class livecoin (Exchange):
         market = self.market(symbol)
         currencyPair = market['id']
         response = self.privatePostExchangeCancellimit(self.extend({
-            'orderId': id,
-            'currencyPair': currencyPair,
-        }, params))
+            'orderId': int(id),
+            'currencyPair': str(currencyPair),
+        }))
         message = self.safe_string(response, 'message', self.json(response))
         if 'success' in response:
             if not response['success']:

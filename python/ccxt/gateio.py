@@ -262,7 +262,7 @@ class gateio (Exchange):
         remaining = amount - filled
         result = {
             'info': order,
-            'id': order['orderNumber'],
+            'id': str(order['orderNumber']),
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,

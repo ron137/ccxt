@@ -261,12 +261,17 @@ class exmo (Exchange):
 
     def parse_trade(self, trade, market):
         timestamp = trade['date'] * 1000
+        if market:
+            symbol = market['symbol']
+        else:
+            market_id = self.safe_string(trade, 'pair')
+            symbol = self.find_symbol(market_id)
         return {
             'id': str(trade['trade_id']),
             'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'symbol': market['symbol'],
+            'symbol': symbol,
             'order': self.safe_string(trade, 'order_id'),
             'type': None,
             'side': trade['type'],
@@ -318,9 +323,12 @@ class exmo (Exchange):
 
     def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
         self.load_markets()
-        market = self.market(symbol)
+        market = None  
         if symbol:
+            market = self.market(symbol)
             params['pair'] = self.market_id(symbol)
+        else:
+            params['pair'] = ",".join(self.market_ids(self.symbols))
         response = self.privatePostUserTrades(self.extend({
             'limit': limit
             },params))
@@ -341,18 +349,6 @@ class exmo (Exchange):
             'pair': market['id'],
         }, params))
         return self.parse_trades(response[market['id']], market, since, limit)
-
-    def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
-        self.load_markets()
-        request = {}
-        market = None
-        if symbol is not None:
-            market = self.market(symbol)
-            request['pair'] = market['id']
-        response = self.privatePostUserTrades(self.extend(request, params))
-        if market is not None:
-            response = response[market['id']]
-        return self.parse_trades(response, market, since, limit)
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()

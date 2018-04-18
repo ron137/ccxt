@@ -24,6 +24,7 @@ from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import ExchangeNotAvailable
 from ccxt.base.errors import InvalidNonce
 
+import time
 
 class kraken (Exchange):
 
@@ -444,6 +445,21 @@ class kraken (Exchange):
             'info': ticker,
         }
 
+    def parse_coins(self):
+        """ Return all available coins in kraken (list) """
+
+        coins = []
+
+        for market_name in self.markets.keys():
+            market = self.markets[market_name]
+            if market['darkpool']:
+                continue
+            coin1 = market_name.split('/')[0]
+            coin2 = market_name.split('/')[1]
+            coins += [coin1, coin2]
+
+        return list(set(coins))
+
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()
         pairs = []
@@ -537,6 +553,7 @@ class kraken (Exchange):
             price = float(trade[0])
             amount = float(trade[1])
             tradeLength = len(trade)
+            id = abs(hash(str(timestamp) + str(price) + str(amount) + str(side)))
             if tradeLength > 6:
                 id = trade[6]  # artificially added as per  #1794
         symbol = market['symbol'] if (market) else None
@@ -575,6 +592,7 @@ class kraken (Exchange):
 
     def fetch_balance(self, params={}):
         self.load_markets()
+        available_coins = self.parse_coins()
         response = self.privatePostBalance()
         balances = response['result']
         result = {'info': balances}
@@ -595,7 +613,18 @@ class kraken (Exchange):
                 'total': balance,
             }
             result[code] = account
-        return self.parse_balance(result)
+
+        # Add all available coins to the funds dicts with 0 balance
+        for available_coin in available_coins:
+            if available_coin not in result.keys():
+                result[available_coin] = {
+                'free': 0.0,
+                'used': 0.0,
+                'total': 0.0,
+                }
+
+        parsed_balance = self.parse_balance(result)
+        return parsed_balance
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()

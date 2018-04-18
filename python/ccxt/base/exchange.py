@@ -15,6 +15,8 @@ from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import RequestTimeout
 from ccxt.base.errors import ExchangeNotAvailable
 from ccxt.base.errors import InvalidAddress
+import urllib3
+urllib3.disable_warnings()
 
 # -----------------------------------------------------------------------------
 
@@ -348,7 +350,8 @@ class Exchange(object):
                 data=body,
                 headers=request_headers,
                 timeout=int(self.timeout / 1000),
-                proxies=self.proxies
+                proxies=self.proxies, 
+                verify=False
             )
             self.last_http_response = response.text
             self.last_response_headers = response.headers

@@ -8,6 +8,7 @@ import base64
 import hashlib
 from ccxt.base.errors import ExchangeError
 
+import time
 
 class lakebtc (Exchange):
 
@@ -103,6 +104,66 @@ class lakebtc (Exchange):
             }
             result[code] = account
         return self.parse_balance(result)
+
+    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
+
+        # Load markets and request my trades from the API
+        self.load_markets()
+        response = self.privatePostGetTrades()
+
+        # Parse the trades
+        parsed_trades = []
+        for trade in response:
+            timestamp = trade['at'] * 1000
+            parsed_trade = {
+                'id': abs(hash(str(trade['at']) + str(trade['total']) + str(trade['amount']) + str(trade['type']))),
+                'info': trade,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'symbol': symbol,
+                'type': 'limit',
+                'side': trade['type'],
+                'price': float(trade['total']) / float(trade['amount']),
+                'amount': float(trade['amount']),
+                'cost': None,
+            }
+            parsed_trades.append(parsed_trade)
+
+        return parsed_trades
+
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+
+        # Load markets and send request to API
+        self.load_markets()
+        response = self.privatePostOpenOrders()
+
+        # No open orders
+        if not response:
+            return []
+
+        # Parse open orders
+        parsed_orders = []
+        for order in response:
+            timestamp = order['at'] * 1000
+            parsed_order = {
+                'info': order,
+                'id': str(order['id']),
+                'symbol': symbol,
+                'timestamp': timestamp,
+                'datetime': self.iso8601(timestamp),
+                'type': 'limit',
+                'side': str(order['type']),
+                'price': float(order['price']),
+                'cost': None,
+                'amount': float(order['amount']),
+                'remaining': None,
+                'filled': None,
+                'status': None,
+                'fee': None,
+            }
+            parsed_orders.append(parsed_order)
+
+        return parsed_orders
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
@@ -201,7 +262,7 @@ class lakebtc (Exchange):
 
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
-        return self.privatePostCancelOrder({'params': id})
+        return self.privatePostCancelOrders({'params': id})
 
     def nonce(self):
         return self.microseconds()
