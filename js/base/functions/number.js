@@ -16,15 +16,23 @@ const { max } = Math
 
             decimalToPrecision ('123.456', ROUND, 2, DECIMAL_PLACES)                     */
 
-
 const ROUND    = 0                  // rounding mode
     , TRUNCATE = 1
 
-const DECIMAL_PLACES          = 0        // digits counting mode
+const DECIMAL_PLACES     = 0        // digits counting mode
     , SIGNIFICANT_DIGITS = 1
 
 const NO_PADDING    = 0             // zero-padding mode
     , PAD_WITH_ZERO = 1
+
+const precisionConstants = {
+    ROUND,
+    TRUNCATE,
+    DECIMAL_PLACES,
+    SIGNIFICANT_DIGITS,
+    NO_PADDING,
+    PAD_WITH_ZERO,
+}
 
 /*  ------------------------------------------------------------------------ */
 
@@ -35,10 +43,12 @@ function numberToString (x) { // avoids scientific notation for too large and to
     if (isString (x)) return x
 
     if (Math.abs (x) < 1.0) {
-        const e = parseInt (x.toString ().split ('e-')[1])
+        const s = x.toString ()
+        const e = parseInt (s.split ('e-')[1])
+        const neg = (s[0] === '-')
         if (e) {
             x *= Math.pow (10, e-1)
-            x = '0.' + (new Array (e)).join ('0') + x.toString ().substring (2)
+            x = (neg ? '-' : '') + '0.' + (new Array (e)).join ('0') + x.toString ().substring (neg ? 3 : 2)
         }
     } else {
         let e = parseInt (x.toString ().split ('+')[1])
@@ -79,7 +89,7 @@ const decimalToPrecision = (x, roundingMode
                              , paddingMode        = NO_PADDING) => {
 
     if (numPrecisionDigits < 0) throw new Error ('negative precision is not yet supported')
-    
+
 /*  Convert to a string (if needed), skip leading minus sign (if any)   */
 
     const str          = numberToString (x)
@@ -131,10 +141,12 @@ const decimalToPrecision = (x, roundingMode
         }
     }
 
+    if (digitsStart < 0) digitsStart = 1
+
 /*  Determine the range to cut  */
 
     let precisionStart = (countingMode === DECIMAL_PLACES) ? afterDot      // 0.(0)001234567
-                                                      : digitsStart   // 0.00(1)234567
+                                                           : digitsStart   // 0.00(1)234567
       , precisionEnd = precisionStart +
                        numPrecisionDigits
 
@@ -158,9 +170,12 @@ const decimalToPrecision = (x, roundingMode
             c += memo
 
             if (i >= (precisionStart + numPrecisionDigits)) {
-                c = (roundingMode === ROUND)
-                        ? ((c >= FIVE) ? (NINE + 1) : ZERO) // single-digit rounding
-                        : ZERO                              // "floor" to zero
+
+                const ceil = (roundingMode === ROUND) &&
+                             (c >= FIVE) &&
+                            !((c === FIVE) && memo) // prevents rounding of 1.45 to 2
+
+                c = ceil ? (NINE + 1) : ZERO
             }
             if (c > NINE) { c = ZERO; memo = 1; }
             else memo = 0
@@ -226,9 +241,9 @@ module.exports = {
     decimalToPrecision,
     truncate_to_string,
     truncate,
-
-    TRUNCATE,
+    precisionConstants,
     ROUND,
+    TRUNCATE,
     DECIMAL_PLACES,
     SIGNIFICANT_DIGITS,
     NO_PADDING,

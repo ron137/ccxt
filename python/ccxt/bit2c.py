@@ -6,6 +6,7 @@
 from ccxt.base.exchange import Exchange
 import hashlib
 import time
+from ccxt.base.errors import ExchangeError
 
 
 class bit2c (Exchange):
@@ -18,11 +19,12 @@ class bit2c (Exchange):
             'rateLimit': 500,
             'has': {
                 'CORS': False,
+                'fetchOpenOrders': True,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766119-3593220e-5ece-11e7-8b3a-5a041f6bcc3f.jpg',
                 'api': 'https://bit2c.co.il',
-                'www': 'https://bit2c.co.il',
+                'www': 'https://www.bit2c.co.il',
                 'doc': [
                     'https://bit2c.co.il/home/api',
                     'https://github.com/OferE/bit2c',
@@ -34,21 +36,31 @@ class bit2c (Exchange):
                         'Exchanges/{pair}/Ticker',
                         'Exchanges/{pair}/orderbook',
                         'Exchanges/{pair}/trades',
+                        'Exchanges/{pair}/lasttrades',
                     ],
                 },
                 'private': {
                     'post': [
-                        'Account/Balance',
                         'Merchant/CreateCheckout',
-                        'Order/AccountHistory',
                         'Order/AddCoinFundsRequest',
                         'Order/AddFund',
                         'Order/AddOrder',
                         'Order/AddOrderMarketPriceBuy',
                         'Order/AddOrderMarketPriceSell',
                         'Order/CancelOrder',
+                        'Order/AddCoinFundsRequest',
+                        'Order/AddStopOrder',
                         'Payment/GetMyId',
                         'Payment/Send',
+                        'Payment/Pay',
+                    ],
+                    'get': [
+                        'Account/Balance',
+                        'Account/Balance/v2',
+                        'Order/MyOrders',
+                        'Order/GetById',
+                        'Order/AccountHistory',
+                        'Order/OrderHistory',
                     ],
                     'get':[
                         'Account/Balance/v2',
@@ -124,36 +136,6 @@ class bit2c (Exchange):
             'info': ticker,
         }
 
-    def parse_order(self, order, market):
-        info = order
-        if 'NewOrder' in order:
-            order = order['NewOrder']
-        timestamp = int(order['created']) * 1000
-        amount = float(order['amount'])
-        remaining = amount
-        filled = 0
-        price = float(order['price'])
-        average = price
-        cost = 0
-        result = {
-            'info': info,
-            'id': str(order['id']),
-            'timestamp': timestamp,
-            'datetime': self.iso8601(timestamp),
-            'symbol': market['symbol'],
-            'type': 'limit',
-            'side': 'sell' if order['type'] == 1 else 'buy',
-            'price': price,
-            'average': average,
-            'cost': 0,
-            'amount': amount,
-            'filled': 0,
-            'remaining': remaining,
-            'status': 'open',
-            'fee': None,
-        }
-        return result
-
     def parse_trade(self, trade, market=None):
         timestamp = int(trade['date']) * 1000
         symbol = None
@@ -181,21 +163,6 @@ class bit2c (Exchange):
         }, params))
         return self.parse_trades(response, market, since, limit)
 
-    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        if not symbol:
-            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
-        self.load_markets()
-        market = self.market(symbol)
-        response = self.privateGetOrderMyOrders(self.extend({
-            'pair': self.market_id(symbol)
-            }, params))
-        orders = []
-        for side in response[self.market_id(symbol)]:
-            side_orders = response[self.market_id(symbol)][side]
-            if side_orders:
-                orders += side_orders
-
-        return self.parse_orders(orders, market, since, limit)
 
     def fetch_my_trades(self, symbol=None, since=None, limit=100, params={}):
         if not symbol:
@@ -229,6 +196,8 @@ class bit2c (Exchange):
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         method = 'privatePostOrderAddOrder'
+        fees = self.fees['trading']['taker'];
+        amount = amount/(1+fees)
         order = {
             'Amount': amount,
             'Pair': self.market_id(symbol),
@@ -262,3 +231,51 @@ class bit2c (Exchange):
                 'sign': self.decode(signature),
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
+
+    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
+        if not symbol:
+            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
+        self.load_markets()
+        market = self.market(symbol)
+        response = self.privateGetOrderMyOrders(self.extend({
+            'pair': self.market_id(symbol)
+            }, params))
+        orders = []
+        for side in response[self.market_id(symbol)]:
+            side_orders = response[self.market_id(symbol)][side]
+            if side_orders:
+                orders += side_orders
+
+        return self.parse_orders(orders, market, since, limit)
+
+
+    def parse_order(self, order, market):
+        info = order
+        if 'NewOrder' in order:
+            order = order['NewOrder']
+        timestamp = int(order['created']) * 1000
+        amount = float(order['amount'])
+        remaining = amount
+        filled = 0
+        price = float(order['price'])
+        average = price
+        cost = 0
+        result = {
+            'info': info,
+            'id': str(order['id']),
+            'timestamp': timestamp,
+            'datetime': self.iso8601(timestamp),
+            'symbol': market['symbol'],
+            'type': 'limit',
+            'side': 'sell' if order['type'] == 1 else 'buy',
+            'price': price,
+            'average': average,
+            'cost': 0,
+            'amount': amount,
+            'filled': 0,
+            'remaining': remaining,
+            'status': 'open',
+            'fee': None,
+        }
+        return result
+

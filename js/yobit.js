@@ -66,20 +66,31 @@ module.exports = class yobit extends liqui {
                 'AIR': 'AirCoin',
                 'ANI': 'ANICoin',
                 'ANT': 'AntsCoin',
+                'AST': 'Astral',
                 'ATM': 'Autumncoin',
                 'BCC': 'BCH',
                 'BCS': 'BitcoinStake',
+                'BLN': 'Bulleon',
                 'BTS': 'Bitshares2',
+                'CPC': 'Capricoin',
+                'CS': 'CryptoSpots',
                 'DCT': 'Discount',
                 'DGD': 'DarkGoldCoin',
+                'ERT': 'Eristica Token',
                 'ICN': 'iCoin',
+                'KNC': 'KingN Coin',
                 'LIZI': 'LiZi',
+                'LOC': 'LocoCoin',
+                'LOCX': 'LOC',
                 'LUN': 'LunarCoin',
                 'MDT': 'Midnight',
                 'NAV': 'NavajoCoin',
                 'OMG': 'OMGame',
                 'PAY': 'EPAY',
+                'PLC': 'Platin Coin',
                 'REP': 'Republicoin',
+                'RUR': 'RUB',
+                'XIN': 'XINCoin',
             },
             'options': {
                 'fetchOrdersRequiresSymbol': true,
@@ -176,21 +187,22 @@ module.exports = class yobit extends liqui {
         };
     }
 
-    async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        let response = await this.fetch2 (path, api, method, params, headers, body);
-        if ('success' in response) {
-            if (!response['success']) {
-                if (response['error'].indexOf ('Insufficient funds') >= 0) { // not enougTh is a typo inside Liqui's own API...
-                    throw new InsufficientFunds (this.id + ' ' + this.json (response));
-                } else if (response['error'] === 'Requests too often') {
-                    throw new DDoSProtection (this.id + ' ' + this.json (response));
-                } else if ((response['error'] === 'not available') || (response['error'] === 'external service unavailable')) {
-                    throw new DDoSProtection (this.id + ' ' + this.json (response));
-                } else {
-                    throw new ExchangeError (this.id + ' ' + this.json (response));
+    handleErrors (code, reason, url, method, headers, body) {
+        if (body[0] === '{') {
+            let response = JSON.parse (body);
+            if ('success' in response) {
+                if (!response['success']) {
+                    if (response['error_log'].indexOf ('Insufficient funds') >= 0) { // not enougTh is a typo inside Liqui's own API...
+                        throw new InsufficientFunds (this.id + ' ' + this.json (response));
+                    } else if (response['error_log'] === 'Requests too often') {
+                        throw new DDoSProtection (this.id + ' ' + this.json (response));
+                    } else if ((response['error_log'] === 'not available') || (response['error_log'] === 'external service unavailable')) {
+                        throw new DDoSProtection (this.id + ' ' + this.json (response));
+                    } else {
+                        throw new ExchangeError (this.id + ' ' + this.json (response));
+                    }
                 }
             }
         }
-        return response;
     }
 };

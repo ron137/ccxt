@@ -4,13 +4,6 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.async.base.exchange import Exchange
-
-# -----------------------------------------------------------------------------
-
-try:
-    basestring  # Python 3
-except NameError:
-    basestring = str  # Python 2
 import math
 import json
 from ccxt.base.errors import ExchangeError
@@ -283,6 +276,7 @@ class binance (Exchange):
                 '-1100': InvalidOrder,  # createOrder(symbol, 1, asdf) -> 'Illegal characters found in parameter 'price'
                 '-2010': InsufficientFunds,  # createOrder -> 'Account has insufficient balance for requested action.'
                 '-2011': OrderNotFound,  # cancelOrder(1, 'BTC/USDT') -> 'UNKNOWN_ORDER'
+                '-2013': OrderNotFound,  # fetchOrder(1, 'BTC/USDT') -> 'Order does not exist'
                 '-2015': AuthenticationError,  # "Invalid API-key, IP, or permissions for action."
             },
         })
@@ -567,24 +561,34 @@ class binance (Exchange):
             timestamp = order['time']
         elif 'transactTime' in order:
             timestamp = order['transactTime']
-        else:
-            raise ExchangeError(self.id + ' malformed order: ' + self.json(order))
-        price = float(order['price'])
-        amount = float(order['origQty'])
+        iso8601 = None
+        if timestamp is not None:
+            iso8601 = self.iso8601(timestamp)
+        price = self.safe_float(order, 'price')
+        amount = self.safe_float(order, 'origQty')
         filled = self.safe_float(order, 'executedQty', 0.0)
-        remaining = max(amount - filled, 0.0)
+        remaining = None
         cost = None
-        if price is not None:
-            if filled is not None:
+        if filled is not None:
+            if amount is not None:
+                remaining = max(amount - filled, 0.0)
+            if price is not None:
                 cost = price * filled
+        id = self.safe_string(order, 'orderId')
+        type = self.safe_string(order, 'type')
+        if type is not None:
+            type = type.lower()
+        side = self.safe_string(order, 'side')
+        if side is not None:
+            side = side.lower()
         result = {
             'info': order,
-            'id': str(order['orderId']),
+            'id': id,
             'timestamp': timestamp,
-            'datetime': self.iso8601(timestamp),
+            'datetime': iso8601,
             'symbol': symbol,
-            'type': order['type'].lower(),
-            'side': order['side'].lower(),
+            'type': type,
+            'side': side,
             'price': price,
             'amount': amount,
             'cost': cost,
@@ -598,6 +602,12 @@ class binance (Exchange):
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         await self.load_markets()
         market = self.market(symbol)
+        # the next 5 lines are added to support for testing orders
+        method = 'privatePostOrder'
+        test = self.safe_value(params, 'test', False)
+        if test:
+            method += 'Test'
+            params = self.omit(params, 'test')
         order = {
             'symbol': market['id'],
             'quantity': self.amount_to_string(symbol, amount),
@@ -609,7 +619,7 @@ class binance (Exchange):
                 'price': self.price_to_precision(symbol, price),
                 'timeInForce': 'GTC',  # 'GTC' = Good To Cancel(default), 'IOC' = Immediate Or Cancel
             })
-        response = await self.privatePostOrder(self.extend(order, params))
+        response = await getattr(self, method)(self.extend(order, params))
         return self.parse_order(response)
 
     async def fetch_order(self, id, symbol=None, params={}):
@@ -778,37 +788,37 @@ class binance (Exchange):
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
     def handle_errors(self, code, reason, url, method, headers, body):
-        # in case of error binance sets http status code >= 400
-        if code < 300:
-            # status code ok, proceed with request
-            return
-        if code < 400:
-            # should not normally happen, reserve for redirects in case
-            # we'll want to scrape some info from web pages
-            return
-        # code >= 400
         if (code == 418) or (code == 429):
             raise DDoSProtection(self.id + ' ' + str(code) + ' ' + reason + ' ' + body)
         # error response in a form: {"code": -1013, "msg": "Invalid quantity."}
         # following block cointains legacy checks against message patterns in "msg" property
         # will switch "code" checks eventually, when we know all of them
-        if body.find('Price * QTY is zero or less') >= 0:
-            raise InvalidOrder(self.id + ' order cost = amount * price is zero or less ' + body)
-        if body.find('LOT_SIZE') >= 0:
-            raise InvalidOrder(self.id + ' order amount should be evenly divisible by lot size, use self.amount_to_lots(symbol, amount) ' + body)
-        if body.find('PRICE_FILTER') >= 0:
-            raise InvalidOrder(self.id + ' order price exceeds allowed price precision or invalid, use self.price_to_precision(symbol, amount) ' + body)
-        if body.find('Order does not exist') >= 0:
-            raise OrderNotFound(self.id + ' ' + body)
-        # checks against error codes
-        if isinstance(body, basestring):
-            if len(body) > 0:
-                if body[0] == '{':
-                    response = json.loads(body)
-                    error = self.safe_string(response, 'code')
-                    if error is not None:
-                        exceptions = self.exceptions
-                        if error in exceptions:
-                            raise exceptions[error](self.id + ' ' + self.json(response))
-                        else:
-                            raise ExchangeError(self.id + ': unknown error code: ' + self.json(response))
+        if code >= 400:
+            if body.find('Price * QTY is zero or less') >= 0:
+                raise InvalidOrder(self.id + ' order cost = amount * price is zero or less ' + body)
+            if body.find('LOT_SIZE') >= 0:
+                raise InvalidOrder(self.id + ' order amount should be evenly divisible by lot size, use self.amount_to_lots(symbol, amount) ' + body)
+            if body.find('PRICE_FILTER') >= 0:
+                raise InvalidOrder(self.id + ' order price exceeds allowed price precision or invalid, use self.price_to_precision(symbol, amount) ' + body)
+        if len(body) > 0:
+            if body[0] == '{':
+                response = json.loads(body)
+                # check success value for wapi endpoints
+                # response in format {'msg': 'The coin does not exist.', 'success': True/false}
+                success = self.safe_value(response, 'success', True)
+                if not success:
+                    if 'msg' in response:
+                        try:
+                            response = json.loads(response['msg'])
+                        except Exception as e:
+                            response = {}
+                # checks against error codes
+                error = self.safe_string(response, 'code')
+                if error is not None:
+                    exceptions = self.exceptions
+                    if error in exceptions:
+                        raise exceptions[error](self.id + ' ' + body)
+                    else:
+                        raise ExchangeError(self.id + ': unknown error code: ' + body + ' ' + error)
+                if not success:
+                    raise ExchangeError(self.id + ': success value False: ' + body)

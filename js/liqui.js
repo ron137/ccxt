@@ -29,6 +29,10 @@ module.exports = class liqui extends Exchange {
                 'api': {
                     'public': 'https://api.liqui.io/api',
                     'private': 'https://api.liqui.io/tapi',
+                    'web': 'https://liqui.io',
+                    'cacheapi': 'https://cacheapi.liqui.io/Market',
+                    'webapi': 'https://webapi.liqui.io/Market',
+                    'charts': 'https://charts.liqui.io/chart',
                 },
                 'www': 'https://liqui.io',
                 'doc': 'https://liqui.io/api',
@@ -55,6 +59,37 @@ module.exports = class liqui extends Exchange {
                         'WithdrawCoin',
                         'CreateCoupon',
                         'RedeemCoupon',
+                    ],
+                },
+                'web': {
+                    'get': [
+                        'User/Balances',
+                    ],
+                    'post': [
+                        'User/Login/',
+                        'User/Session/Activate/',
+                    ],
+                },
+                'cacheapi': {
+                    'get': [
+                        'Pairs',
+                        'Currencies',
+                        'depth', // ?id=228
+                        'Tickers',
+                    ],
+                },
+                'webapi': {
+                    'get': [
+                        'Last', // ?id=228
+                        'Info',
+                    ],
+                },
+                'charts': {
+                    'get': [
+                        'config',
+                        'history', // ?symbol=228&resolution=15&from=1524002997&to=1524011997'
+                        'symbols', // ?symbol=228
+                        'time',
                     ],
                 },
             },
@@ -642,10 +677,25 @@ module.exports = class liqui extends Exchange {
                 'Key': this.apiKey,
                 'Sign': signature,
             };
-        } else {
+        } else if (api === 'public') {
             url += this.getVersionString () + '/' + this.implodeParams (path, params);
-            if (Object.keys (query).length)
+            if (Object.keys (query).length) {
                 url += '?' + this.urlencode (query);
+            }
+        } else {
+            url += '/' + this.implodeParams (path, params);
+            if (method === 'GET') {
+                if (Object.keys (query).length) {
+                    url += '?' + this.urlencode (query);
+                }
+            } else {
+                if (Object.keys (query).length) {
+                    body = this.json (query);
+                    headers = {
+                        'Content-Type': 'application/json',
+                    };
+                }
+            }
         }
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }

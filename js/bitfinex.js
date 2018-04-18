@@ -3,7 +3,8 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { NotSupported, DDoSProtection, AuthenticationError, ExchangeError, InsufficientFunds, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
+const { NotSupported, DDoSProtection, AuthenticationError, ExchangeError, ExchangeNotAvailable, InsufficientFunds, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
+const { ROUND, TRUNCATE, SIGNIFICANT_DIGITS } = require ('./base/functions/number');
 
 //  ---------------------------------------------------------------------------
 
@@ -230,6 +231,7 @@ module.exports = class bitfinex extends Exchange {
             },
             'exceptions': {
                 'exact': {
+                    'temporarily_unavailable': ExchangeNotAvailable, // Sorry, the service is temporarily unavailable. See https://www.bitfinex.com/ for more info.
                     'Order could not be cancelled.': OrderNotFound, // non-existent order
                     'No such order found.': OrderNotFound, // ?
                     'Order price must be positive.': InvalidOrder, // on price <= 0
@@ -244,9 +246,10 @@ module.exports = class bitfinex extends Exchange {
                     'Invalid order: not enough exchange balance for ': InsufficientFunds, // when buying cost is greater than the available quote currency
                     'Invalid order: minimum size for ': InvalidOrder, // when amount below limits.amount.min
                     'Invalid order': InvalidOrder, // ?
+                    'The available balance is only': InsufficientFunds, // {"status":"error","message":"Cannot withdraw 1.0027 ETH from your exchange wallet. The available balance is only 0.0 ETH. If you have limit orders, open positions, unused or active margin funding, this will decrease your available balance. To increase it, you can cancel limit orders or reduce/close your positions.","withdrawal_id":0,"fees":"0.0027"}
                 },
             },
-            'significantPrecision': true,
+            'precisionMode': SIGNIFICANT_DIGITS,
         });
     }
 
@@ -321,7 +324,6 @@ module.exports = class bitfinex extends Exchange {
                 'active': true,
                 'precision': precision,
                 'limits': limits,
-                'lot': Math.pow (10, -precision['amount']),
                 'info': market,
             });
         }
@@ -329,19 +331,19 @@ module.exports = class bitfinex extends Exchange {
     }
 
     costToPrecision (symbol, cost) {
-        return this.decimalToPrecision (parseFloat (cost), this.ROUND, this.markets[symbol].precision.price, this.SIGNIFICANT_DIGITS);
+        return this.decimalToPrecision (cost, ROUND, this.markets[symbol]['precision']['price'], this.precisionMode);
     }
 
     priceToPrecision (symbol, price) {
-        return this.decimalToPrecision (parseFloat (price), this.ROUND, this.markets[symbol].precision.price, this.SIGNIFICANT_DIGITS);
+        return this.decimalToPrecision (price, ROUND, this.markets[symbol]['precision']['price'], this.precisionMode);
     }
 
     amountToPrecision (symbol, amount) {
-        return this.decimalToPrecision (parseFloat (amount), this.ROUND, this.markets[symbol].precision.amount, this.SIGNIFICANT_DIGITS);
+        return this.decimalToPrecision (amount, TRUNCATE, this.markets[symbol]['precision']['amount'], this.precisionMode);
     }
 
     feeToPrecision (currency, fee) {
-        return this.decimalToPrecision (parseFloat (fee), this.ROUND, this.currencies[currency]['precision'], this.SIGNIFICANT_DIGITS);
+        return this.decimalToPrecision (fee, ROUND, this.currencies[currency]['precision'], this.precisionMode);
     }
 
     calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {
@@ -466,7 +468,7 @@ module.exports = class bitfinex extends Exchange {
         let cost = price * amount;
         let fee = undefined;
         if ('fee_amount' in trade) {
-            let feeCost = this.safeFloat (trade, 'fee_amount');
+            let feeCost = -this.safeFloat (trade, 'fee_amount');
             let feeCurrency = this.safeString (trade, 'fee_currency');
             if (feeCurrency in this.currencies_by_id)
                 feeCurrency = this.currencies_by_id[feeCurrency]['code'];
@@ -653,23 +655,45 @@ module.exports = class bitfinex extends Exchange {
 
     getCurrencyName (currency) {
         const names = {
-            'BTC': 'bitcoin',
-            'LTC': 'litecoin',
-            'ETH': 'ethereum',
-            'ETC': 'ethereumc',
-            'OMNI': 'mastercoin',
-            'ZEC': 'zcash',
-            'XMR': 'monero',
-            'USD': 'wire',
-            'DASH': 'dash',
-            'XRP': 'ripple',
-            'EOS': 'eos',
-            'BCH': 'bcash', // undocumented
-            'USDT': 'tetheruso', // undocumented
-            'NEO': 'neo', // #1811
+            'AID': 'aid',
             'AVT': 'aventus', // #1811
-            'QTUM': 'qtum', // #1811
+            'BAT': 'bat',
+            'BCH': 'bcash', // undocumented
+            'BTC': 'bitcoin',
+            'BTG': 'bgold',
+            'DASH': 'dash',
+            'DATA': 'datacoin',
             'EDO': 'eidoo', // #1811
+            'ELF': 'elf',
+            'EOS': 'eos',
+            'ETC': 'ethereumc',
+            'ETH': 'ethereum',
+            'FUN': 'fun',
+            'GNT': 'golem',
+            'IOTA': 'iota',
+            'LTC': 'litecoin',
+            'MANA': 'mna',
+            'NEO': 'neo', // #1811
+            'OMG': 'omisego',
+            'OMNI': 'mastercoin',
+            'QASH': 'qash',
+            'QTUM': 'qtum', // #1811
+            'RCN': 'rcn',
+            'REP': 'rep',
+            'RLC': 'rlc',
+            'SAN': 'santiment',
+            'SNGLS': 'sng',
+            'SNT': 'status',
+            'SPANK': 'spk',
+            'TNB': 'tnb',
+            'TRX': 'trx',
+            'USD': 'wire',
+            'USDT': 'tetheruso', // undocumented
+            'XMR': 'monero',
+            'XRP': 'ripple',
+            'YOYOW': 'yoyow',
+            'ZEC': 'zcash',
+            'ZRX': 'zrx',
         };
         if (currency in names)
             return names[currency];
@@ -727,9 +751,12 @@ module.exports = class bitfinex extends Exchange {
             request['payment_id'] = tag;
         let responses = await this.privatePostWithdraw (this.extend (request, params));
         let response = responses[0];
+        let id = response['withdrawal_id'];
+        if (id === 0)
+            throw new ExchangeError (this.id + ' withdraw returned an id of zero: ' + this.json (response));
         return {
             'info': response,
-            'id': response['withdrawal_id'],
+            'id': id,
         };
     }
 

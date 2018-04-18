@@ -48,6 +48,10 @@ class liqui (Exchange):
                 'api': {
                     'public': 'https://api.liqui.io/api',
                     'private': 'https://api.liqui.io/tapi',
+                    'web': 'https://liqui.io',
+                    'cacheapi': 'https://cacheapi.liqui.io/Market',
+                    'webapi': 'https://webapi.liqui.io/Market',
+                    'charts': 'https://charts.liqui.io/chart',
                 },
                 'www': 'https://liqui.io',
                 'doc': 'https://liqui.io/api',
@@ -74,6 +78,37 @@ class liqui (Exchange):
                         'WithdrawCoin',
                         'CreateCoupon',
                         'RedeemCoupon',
+                    ],
+                },
+                'web': {
+                    'get': [
+                        'User/Balances',
+                    ],
+                    'post': [
+                        'User/Login/',
+                        'User/Session/Activate/',
+                    ],
+                },
+                'cacheapi': {
+                    'get': [
+                        'Pairs',
+                        'Currencies',
+                        'depth',  # ?id=228
+                        'Tickers',
+                    ],
+                },
+                'webapi': {
+                    'get': [
+                        'Last',  # ?id=228
+                        'Info',
+                    ],
+                },
+                'charts': {
+                    'get': [
+                        'config',
+                        'history',  # ?symbol=228&resolution=15&from=1524002997&to=1524011997'
+                        'symbols',  # ?symbol=228
+                        'time',
                     ],
                 },
             },
@@ -609,10 +644,21 @@ class liqui (Exchange):
                 'Key': self.apiKey,
                 'Sign': signature,
             }
-        else:
+        elif api == 'public':
             url += self.get_version_string() + '/' + self.implode_params(path, params)
             if query:
                 url += '?' + self.urlencode(query)
+        else:
+            url += '/' + self.implode_params(path, params)
+            if method == 'GET':
+                if query:
+                    url += '?' + self.urlencode(query)
+            else:
+                if query:
+                    body = self.json(query)
+                    headers = {
+                        'Content-Type': 'application/json',
+                    }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
     def handle_errors(self, httpCode, reason, url, method, headers, body):

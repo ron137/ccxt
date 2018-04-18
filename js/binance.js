@@ -267,6 +267,7 @@ module.exports = class binance extends Exchange {
                 '-1100': InvalidOrder, // createOrder(symbol, 1, asdf) -> 'Illegal characters found in parameter 'price'
                 '-2010': InsufficientFunds, // createOrder -> 'Account has insufficient balance for requested action.'
                 '-2011': OrderNotFound, // cancelOrder(1, 'BTC/USDT') -> 'UNKNOWN_ORDER'
+                '-2013': OrderNotFound, // fetchOrder (1, 'BTC/USDT') -> 'Order does not exist'
                 '-2015': AuthenticationError, // "Invalid API-key, IP, or permissions for action."
             },
         });
@@ -578,24 +579,35 @@ module.exports = class binance extends Exchange {
             timestamp = order['time'];
         else if ('transactTime' in order)
             timestamp = order['transactTime'];
-        else
-            throw new ExchangeError (this.id + ' malformed order: ' + this.json (order));
-        let price = parseFloat (order['price']);
-        let amount = parseFloat (order['origQty']);
+        let iso8601 = undefined;
+        if (typeof timestamp !== 'undefined')
+            iso8601 = this.iso8601 (timestamp);
+        let price = this.safeFloat (order, 'price');
+        let amount = this.safeFloat (order, 'origQty');
         let filled = this.safeFloat (order, 'executedQty', 0.0);
-        let remaining = Math.max (amount - filled, 0.0);
+        let remaining = undefined;
         let cost = undefined;
-        if (typeof price !== 'undefined')
-            if (typeof filled !== 'undefined')
+        if (typeof filled !== 'undefined') {
+            if (typeof amount !== 'undefined')
+                remaining = Math.max (amount - filled, 0.0);
+            if (typeof price !== 'undefined')
                 cost = price * filled;
+        }
+        let id = this.safeString (order, 'orderId');
+        let type = this.safeString (order, 'type');
+        if (typeof type !== 'undefined')
+            type = type.toLowerCase ();
+        let side = this.safeString (order, 'side');
+        if (typeof side !== 'undefined')
+            side = side.toLowerCase ();
         let result = {
             'info': order,
-            'id': order['orderId'].toString (),
+            'id': id,
             'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
+            'datetime': iso8601,
             'symbol': symbol,
-            'type': order['type'].toLowerCase (),
-            'side': order['side'].toLowerCase (),
+            'type': type,
+            'side': side,
             'price': price,
             'amount': amount,
             'cost': cost,
@@ -610,6 +622,13 @@ module.exports = class binance extends Exchange {
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
         await this.loadMarkets ();
         let market = this.market (symbol);
+        // the next 5 lines are added to support for testing orders
+        let method = 'privatePostOrder';
+        let test = this.safeValue (params, 'test', false);
+        if (test) {
+            method += 'Test';
+            params = this.omit (params, 'test');
+        }
         let order = {
             'symbol': market['id'],
             'quantity': this.amountToString (symbol, amount),
@@ -622,7 +641,7 @@ module.exports = class binance extends Exchange {
                 'timeInForce': 'GTC', // 'GTC' = Good To Cancel (default), 'IOC' = Immediate Or Cancel
             });
         }
-        let response = await this.privatePostOrder (this.extend (order, params));
+        let response = await this[method] (this.extend (order, params));
         return this.parseOrder (response);
     }
 
@@ -808,42 +827,45 @@ module.exports = class binance extends Exchange {
     }
 
     handleErrors (code, reason, url, method, headers, body) {
-        // in case of error binance sets http status code >= 400
-        if (code < 300)
-            // status code ok, proceed with request
-            return;
-        if (code < 400)
-            // should not normally happen, reserve for redirects in case
-            // we'll want to scrape some info from web pages
-            return;
-        // code >= 400
         if ((code === 418) || (code === 429))
             throw new DDoSProtection (this.id + ' ' + code.toString () + ' ' + reason + ' ' + body);
         // error response in a form: { "code": -1013, "msg": "Invalid quantity." }
         // following block cointains legacy checks against message patterns in "msg" property
         // will switch "code" checks eventually, when we know all of them
-        if (body.indexOf ('Price * QTY is zero or less') >= 0)
-            throw new InvalidOrder (this.id + ' order cost = amount * price is zero or less ' + body);
-        if (body.indexOf ('LOT_SIZE') >= 0)
-            throw new InvalidOrder (this.id + ' order amount should be evenly divisible by lot size, use this.amountToLots (symbol, amount) ' + body);
-        if (body.indexOf ('PRICE_FILTER') >= 0)
-            throw new InvalidOrder (this.id + ' order price exceeds allowed price precision or invalid, use this.priceToPrecision (symbol, amount) ' + body);
-        if (body.indexOf ('Order does not exist') >= 0)
-            throw new OrderNotFound (this.id + ' ' + body);
-        // checks against error codes
-        if (typeof body === 'string') {
-            if (body.length > 0) {
-                if (body[0] === '{') {
-                    let response = JSON.parse (body);
-                    let error = this.safeString (response, 'code');
-                    if (typeof error !== 'undefined') {
-                        const exceptions = this.exceptions;
-                        if (error in exceptions) {
-                            throw new exceptions[error] (this.id + ' ' + this.json (response));
-                        } else {
-                            throw new ExchangeError (this.id + ': unknown error code: ' + this.json (response));
+        if (code >= 400) {
+            if (body.indexOf ('Price * QTY is zero or less') >= 0)
+                throw new InvalidOrder (this.id + ' order cost = amount * price is zero or less ' + body);
+            if (body.indexOf ('LOT_SIZE') >= 0)
+                throw new InvalidOrder (this.id + ' order amount should be evenly divisible by lot size, use this.amountToLots (symbol, amount) ' + body);
+            if (body.indexOf ('PRICE_FILTER') >= 0)
+                throw new InvalidOrder (this.id + ' order price exceeds allowed price precision or invalid, use this.priceToPrecision (symbol, amount) ' + body);
+        }
+        if (body.length > 0) {
+            if (body[0] === '{') {
+                let response = JSON.parse (body);
+                // check success value for wapi endpoints
+                // response in format {'msg': 'The coin does not exist.', 'success': true/false}
+                let success = this.safeValue (response, 'success', true);
+                if (!success) {
+                    if ('msg' in response)
+                        try {
+                            response = JSON.parse (response['msg']);
+                        } catch (e) {
+                            response = {};
                         }
+                }
+                // checks against error codes
+                let error = this.safeString (response, 'code');
+                if (typeof error !== 'undefined') {
+                    const exceptions = this.exceptions;
+                    if (error in exceptions) {
+                        throw new exceptions[error] (this.id + ' ' + body);
+                    } else {
+                        throw new ExchangeError (this.id + ': unknown error code: ' + body + ' ' + error);
                     }
+                }
+                if (!success) {
+                    throw new ExchangeError (this.id + ': success value false: ' + body);
                 }
             }
         }

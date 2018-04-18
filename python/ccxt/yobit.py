@@ -4,10 +4,10 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.liqui import liqui
+import json
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import DDoSProtection
-import json
 
 
 class yobit (liqui):
@@ -71,20 +71,31 @@ class yobit (liqui):
                 'AIR': 'AirCoin',
                 'ANI': 'ANICoin',
                 'ANT': 'AntsCoin',
+                'AST': 'Astral',
                 'ATM': 'Autumncoin',
                 'BCC': 'BCH',
                 'BCS': 'BitcoinStake',
+                'BLN': 'Bulleon',
                 'BTS': 'Bitshares2',
+                'CPC': 'Capricoin',
+                'CS': 'CryptoSpots',
                 'DCT': 'Discount',
                 'DGD': 'DarkGoldCoin',
+                'ERT': 'Eristica Token',
                 'ICN': 'iCoin',
+                'KNC': 'KingN Coin',
                 'LIZI': 'LiZi',
+                'LOC': 'LocoCoin',
+                'LOCX': 'LOC',
                 'LUN': 'LunarCoin',
                 'MDT': 'Midnight',
                 'NAV': 'NavajoCoin',
                 'OMG': 'OMGame',
                 'PAY': 'EPAY',
+                'PLC': 'Platin Coin',
                 'REP': 'Republicoin',
+                'RUR': 'RUB',
+                'XIN': 'XINCoin',
             },
             'options': {
                 'fetchOrdersRequiresSymbol': True,
@@ -172,21 +183,16 @@ class yobit (liqui):
         }
 
     def handle_errors(self, code, reason, url, method, headers, body):
-        if code == 200:
-            if body[0] != '{':
-                # response is not JSON -> resort to default error handler
-                return
+        if body[0] == '{':
             response = json.loads(body)
             if 'success' in response:
                 if not response['success']:
-                    if response['error'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
+                    if response['error_log'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
                         raise InsufficientFunds(self.id + ' ' + self.json(response))
-                    elif response['error'] == 'Requests too often':
+                    elif response['error_log'] == 'Requests too often':
                         raise DDoSProtection(self.id + ' ' + self.json(response))
-                    elif (response['error'] == 'not available') or (response['error'] == 'external service unavailable'):
+                    elif (response['error_log'] == 'not available') or (response['error_log'] == 'external service unavailable'):
                         raise DDoSProtection(self.id + ' ' + self.json(response))
-                    elif response['error'] == 'invalid nonce (has already been used)':
-                        return
                     else:
                         raise ExchangeError(self.id + ' ' + self.json(response))
 

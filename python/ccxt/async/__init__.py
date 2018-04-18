@@ -4,11 +4,19 @@
 
 # -----------------------------------------------------------------------------
 
-__version__ = '1.12.48'
+__version__ = '1.13.1'
 
 # -----------------------------------------------------------------------------
 
 from ccxt.async.base.exchange import Exchange                   # noqa: F401
+
+from ccxt.base.decimal_to_precision import decimal_to_precision  # noqa: F401
+from ccxt.base.decimal_to_precision import TRUNCATE              # noqa: F401
+from ccxt.base.decimal_to_precision import ROUND                 # noqa: F401
+from ccxt.base.decimal_to_precision import DECIMAL_PLACES        # noqa: F401
+from ccxt.base.decimal_to_precision import SIGNIFICANT_DIGITS    # noqa: F401
+from ccxt.base.decimal_to_precision import NO_PADDING            # noqa: F401
+from ccxt.base.decimal_to_precision import PAD_WITH_ZERO         # noqa: F401
 
 from ccxt.base import errors                                    # noqa: F401
 from ccxt.base.errors import BaseError                          # noqa: F401
@@ -42,6 +50,7 @@ from ccxt.async.bitfinex import bitfinex                        # noqa: F401
 from ccxt.async.bitfinex2 import bitfinex2                      # noqa: F401
 from ccxt.async.bitflyer import bitflyer                        # noqa: F401
 from ccxt.async.bithumb import bithumb                          # noqa: F401
+from ccxt.async.bitkk import bitkk                              # noqa: F401
 from ccxt.async.bitlish import bitlish                          # noqa: F401
 from ccxt.async.bitmarket import bitmarket                      # noqa: F401
 from ccxt.async.bitmex import bitmex                            # noqa: F401
@@ -156,6 +165,7 @@ exchanges = [
     'bitfinex2',
     'bitflyer',
     'bithumb',
+    'bitkk',
     'bitlish',
     'bitmarket',
     'bitmex',
@@ -259,6 +269,7 @@ exchanges = [
 base = [
     'Exchange',
     'exchanges',
+    'decimal_to_precision',
 ]
 
 __all__ = base + errors.__all__ + exchanges

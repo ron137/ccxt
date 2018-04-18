@@ -37,6 +37,8 @@ const {
     , RequestTimeout
     , ExchangeNotAvailable } = require ('./errors')
 
+const { DECIMAL_PLACES } = functions.precisionConstants
+
 const defaultFetch = isNode ? require ('fetch-ponyfill') ().fetch : fetch
 
 const journal = undefined // isNode && require ('./journal') // stub until we get a better solution for Webpack and React
@@ -145,6 +147,7 @@ module.exports = class Exchange {
                 'BCC': 'BCH',
                 'DRK': 'DASH',
             },
+            'precisionMode': DECIMAL_PLACES,
         } // return
     } // describe ()
 
@@ -177,7 +180,7 @@ module.exports = class Exchange {
         this.origin = '*' // CORS origin
 
         this.iso8601          = timestamp => ((typeof timestamp === 'undefined') ? timestamp : new Date (timestamp).toISOString ())
-        this.parse8601        = x => Date.parse (((x.indexOf ('+') >= 0) || (x.slice (-1) === 'Z')) ? x : (x + 'Z'))
+        this.parse8601        = x => Date.parse ((((x.indexOf ('+') >= 0) || (x.slice (-1) === 'Z')) ? x : (x + 'Z').replace (/\s(\d\d):/, 'T$1:')))
         this.parseDate        = (x) => {
             if (typeof x === 'undefined')
                 return x
@@ -628,7 +631,7 @@ module.exports = class Exchange {
     }
 
     fetchMarkets () {
-        return new Promise ((resolve, reject) => resolve (this.markets))
+        return new Promise ((resolve, reject) => resolve (Object.values (this.markets)))
     }
 
     async fetchOrderStatus (id, market = undefined) {

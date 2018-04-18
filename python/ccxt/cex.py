@@ -33,6 +33,7 @@ class cex (Exchange):
                 'CORS': True,
                 'fetchTickers': True,
                 'fetchOHLCV': True,
+                'fetchOrder': True,
                 'fetchOpenOrders': True,
                 'fetchClosedOrders': True,
                 'fetchDepositAddress': True,
