@@ -317,7 +317,7 @@ class huobipro (Exchange):
             'amount': trade['amount'],
         }
 
-    def fetch_trades(self, symbol, since=None, limit=2000, params={}):
+    def fetch_trades(self, symbol, since=None, limit=1000, params={}):
         self.load_markets()
         market = self.market(symbol)
         request = {

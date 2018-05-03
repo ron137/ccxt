@@ -250,7 +250,7 @@ class gateio (Exchange):
         side = order['type']
         symbol = None
         if market is None:
-            marketId = order['currencyPair']
+            marketId = order['currencyPair'].lower()
             if marketId in self.markets_by_id:
                 market = self.markets_by_id[marketId]
         if market:
@@ -348,9 +348,14 @@ class gateio (Exchange):
         }
 
     def cancel_order(self, id, symbol=None, params={}):
+        
+        # Check if we got symbol
+        if not symbol:
+            raise ExchangeError(self.id + ' cancel_order requires a symbol parameter')
+
         self.load_markets()
         try:
-            return self.privatePostCancelOrder({'orderNumber': id})
+            return self.privatePostCancelOrder({'orderNumber': id, 'currencyPair': self.market_id(symbol)})
         except Exception as e:
             if "Success" in str(e):
                 return True

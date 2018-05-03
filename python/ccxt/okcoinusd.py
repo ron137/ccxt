@@ -603,7 +603,7 @@ class okcoinusd (Exchange):
         orders = self.fetch_orders(symbol, since, limit, self.extend({
             'status': closed,
         }, params))
-        return orders
+        return self.filter_by(orders, 'status', 'closed')
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
         orders = self.fetch_closed_orders(symbol, since, limit, params)
