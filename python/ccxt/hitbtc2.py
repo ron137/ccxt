@@ -20,7 +20,7 @@ class hitbtc2 (hitbtc):
             'id': 'hitbtc2',
             'name': 'HitBTC v2',
             'countries': 'UK',
-            'rateLimit': 1800,
+            'rateLimit': 2800,
             'version': '2',
             'has': {
                 'createDepositAddress': True,

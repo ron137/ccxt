@@ -15,6 +15,17 @@ from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import InvalidNonce
 
+# Constant precisions to usdt markets
+PRECISIONS = {
+                'btc': {'amount': 8, 'price': 6},
+                'eth': {'amount': 7, 'price': 6},
+                'bch': {'amount': 8, 'price': 6},
+                'neo': {'amount': 6, 'price': 6},
+                'ltc': {'amount': 6, 'price': 6},
+                'act': {'amount': 4, 'price': 6},
+                'neo': {'amount': 6, 'price': 6},
+                'lym': {'amount': 4, 'price': 6}
+                }
 
 class kucoin (Exchange):
 
@@ -207,10 +218,13 @@ class kucoin (Exchange):
             base = self.common_currency_code(base)
             quote = self.common_currency_code(quote)
             symbol = base + '/' + quote
-            precision = {
-                'amount': 8,
-                'price': 8,
-            }
+
+            # Set precisions
+            if base.lower() in PRECISIONS:
+                precision = PRECISIONS[base.lower()]
+            else:
+                precision = {'amount': 8, 'price': 8}
+
             active = market['trading']
             result.append({
                 'id': id,
@@ -624,6 +638,9 @@ class kucoin (Exchange):
         if 'type' in params:
             request['type'] = params['type'].upper()
             params = self.omit(params, 'type')
+        elif 'side' in params:
+            request['type'] = params['side'].upper()
+            params = self.omit(params, 'side')
         else:
             raise ExchangeError(self.id + ' cancelOrder requires parameter type=["BUY"|"SELL"]')
         #

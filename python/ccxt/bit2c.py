@@ -74,11 +74,13 @@ class bit2c (Exchange):
                 'BCH/NIS': {'id': 'BchNis', 'symbol': 'BCH/NIS', 'base': 'BCH', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
                 'LTC/NIS': {'id': 'LtcNis', 'symbol': 'LTC/NIS', 'base': 'LTC', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
                 'BTG/NIS': {'id': 'BtgNis', 'symbol': 'BTG/NIS', 'base': 'BTG', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
+                'ETH/NIS': {'id': 'EthNis', 'symbol': 'ETH/NIS', 'base': 'ETH', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
+                'ETC/NIS': {'id': 'EtcNis', 'symbol': 'ETC/NIS', 'base': 'ETC', 'quote': 'NIS', 'precision': {'price': 2, 'amount': 8 }, 'limits':{ 'amount': {'min':0.00000001}, 'cost': {'min':10} }},
             },
             'fees': {
                 'trading': {
-                    'maker': 0.5 / 100,
-                    'taker': 0.5 / 100,
+                    'maker': 0.2 / 100,
+                    'taker': 0.2 / 100,
                 },
             },
         })
@@ -278,4 +280,3 @@ class bit2c (Exchange):
             'fee': None,
         }
         return result
-

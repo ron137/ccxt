@@ -59,6 +59,14 @@ class lakebtc (Exchange):
                     'taker': 0.2 / 100,
                 },
             },
+            'limits': {
+                'amount':{
+                    'min': 0.0001,
+                },
+                'cost': {
+                    'min': 0.00000001,
+                },
+            },
         })
 
     def fetch_markets(self):
@@ -251,10 +259,9 @@ class lakebtc (Exchange):
             raise ExchangeError(self.id + ' allows limit orders only')
         method = 'privatePost' + self.capitalize(side) + 'Order'
         market = self.market(symbol)
-        order = {
-            'params': [price, amount, market['id']],
-        }
-        response = getattr(self, method)(self.extend(order, params))
+        order = [price, amount, market['id']]
+        response = self.request(method, 'private', 'POST', order)
+        #response = getattr(self, method)(self.extend(order))
         return {
             'info': response,
             'id': str(response['id']),
@@ -277,9 +284,10 @@ class lakebtc (Exchange):
             self.check_required_credentials()
             nonce = self.nonce()
             if params:
-                params = ','.join(params)
+                params = ','.join(self.add_quates_if_string(v) for v in params)
             else:
                 params = ''
+
             query = self.urlencode({
                 'tonce': nonce,
                 'accesskey': self.apiKey,
@@ -301,6 +309,12 @@ class lakebtc (Exchange):
                 'Content-Type': 'application/json',
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
+
+    def add_quates_if_string(self, var):
+        if type(var) == type('asd'):
+            return "'{}'".format(var)
+        else:
+            return str(var)
 
     def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = self.fetch2(path, api, method, params, headers, body)

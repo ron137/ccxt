@@ -39,6 +39,7 @@ class bithumb (Exchange):
                         'orderbook/{currency}',
                         'orderbook/all',
                         'recent_transactions/{currency}',
+                        'transaction_history/{currency}',
                         'recent_transactions/all',
                     ],
                 },
@@ -229,7 +230,7 @@ class bithumb (Exchange):
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.publicGetRecentTransactionsCurrency(self.extend({
+        response = self.publicGetTransactionHistoryCurrency(self.extend({
             'currency': market['base'],
             'count': 100,  # max = 100
         }, params))

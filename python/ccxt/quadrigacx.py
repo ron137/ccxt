@@ -75,8 +75,8 @@ class quadrigacx (Exchange):
             },
             'markets': {
                 # TODO: Fix wrong limits of crypto/crypto markets
-                'BTC/CAD': {'id': 'btc_cad', 'symbol': 'BTC/CAD', 'base': 'BTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
-                'BTC/USD': {'id': 'btc_usd', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
+                'BTC/CAD': {'id': 'btc_cad', 'symbol': 'BTC/CAD', 'base': 'BTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.005}, 'cost': {'min': 1.0} }},
+                'BTC/USD': {'id': 'btc_usd', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.005}, 'cost': {'min': 1.0} }},
                 'ETH/BTC': {'id': 'eth_btc', 'symbol': 'ETH/BTC', 'base': 'ETH', 'quote': 'BTC', 'maker': 0.002, 'taker': 0.002, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
                 'ETH/CAD': {'id': 'eth_cad', 'symbol': 'ETH/CAD', 'base': 'ETH', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},
                 'LTC/CAD': {'id': 'ltc_cad', 'symbol': 'LTC/CAD', 'base': 'LTC', 'quote': 'CAD', 'maker': 0.005, 'taker': 0.005, 'limits':{ 'amount': {'min':0.000001}, 'cost': {'min': 1.0} }},

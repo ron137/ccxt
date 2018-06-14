@@ -17,7 +17,7 @@ class hitbtc (Exchange):
             'id': 'hitbtc',
             'name': 'HitBTC',
             'countries': 'UK',
-            'rateLimit': 1500,
+            'rateLimit': 2800,
             'version': '1',
             'has': {
                 'CORS': False,

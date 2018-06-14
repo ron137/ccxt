@@ -28,7 +28,7 @@ class liqui (Exchange):
             'id': 'liqui',
             'name': 'Liqui',
             'countries': 'UA',
-            'rateLimit': 3000,
+            'rateLimit': 4800,
             'version': '3',
             'userAgent': self.userAgents['chrome'],
             'has': {

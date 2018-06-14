@@ -18,7 +18,7 @@ class yobit (liqui):
             'name': 'YoBit',
             'countries': 'RU',
             '_nonce': None,
-            'rateLimit': 400,  # responses are cached every 2 seconds
+            'rateLimit': 800,  # responses are cached every 2 seconds
             'version': '3',
             'has': {
                 'createDepositAddress': True,
@@ -187,12 +187,15 @@ class yobit (liqui):
             response = json.loads(body)
             if 'success' in response:
                 if not response['success']:
-                    if response['error_log'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
+                    print(response)
+                    if response['error'].find('Insufficient funds') >= 0:  # not enougTh is a typo inside Liqui's own API...
                         raise InsufficientFunds(self.id + ' ' + self.json(response))
-                    elif response['error_log'] == 'Requests too often':
+                    elif response['error'] == 'Requests too often':
                         raise DDoSProtection(self.id + ' ' + self.json(response))
-                    elif (response['error_log'] == 'not available') or (response['error_log'] == 'external service unavailable'):
+                    elif (response['error'] == 'not available') or (response['error'] == 'external service unavailable'):
                         raise DDoSProtection(self.id + ' ' + self.json(response))
+                    elif response['error'] == 'invalid nonce (has already been used)':
+                        return
                     else:
                         raise ExchangeError(self.id + ' ' + self.json(response))
 

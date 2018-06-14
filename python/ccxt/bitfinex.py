@@ -30,7 +30,7 @@ class bitfinex (Exchange):
             'name': 'Bitfinex',
             'countries': 'VG',
             'version': 'v1',
-            'rateLimit': 1500,
+            'rateLimit': 3000,
             # new metainfo interface
             'has': {
                 'CORS': False,
@@ -298,6 +298,8 @@ class bitfinex (Exchange):
     def fetch_markets(self):
         markets = self.publicGetSymbolsDetails()
         result = []
+        self.all_currencies = []
+
         for p in range(0, len(markets)):
             market = markets[p]
             id = market['pair'].upper()
@@ -305,6 +307,13 @@ class bitfinex (Exchange):
             quoteId = id[3:6]
             base = self.common_currency_code(baseId)
             quote = self.common_currency_code(quoteId)
+
+            # Create currencies list
+            if baseId not in self.all_currencies:
+                self.all_currencies.append(baseId)
+            if quoteId not in self.all_currencies:
+                self.all_currencies.append(quoteId)
+
             symbol = base + '/' + quote
             precision = {
                 'price': market['price_precision'],
@@ -366,6 +375,14 @@ class bitfinex (Exchange):
         self.load_markets()
         balanceType = self.safe_string(params, 'type', 'exchange')
         balances = self.privatePostBalances()
+
+        # Fill empty currencies
+        all_currencies = [x.lower() for x in self.all_currencies]
+        balances_currencies = [balance['currency'] for balance in balances]
+        for currency in all_currencies:
+            if currency not in balances_currencies:
+                balances.append({'currency': currency, 'type': 'exchange', 'amount': 0.0, 'available': 0.0})
+
         result = {'info': balances}
         for i in range(0, len(balances)):
             balance = balances[i]

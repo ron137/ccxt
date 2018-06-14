@@ -117,8 +117,8 @@ class bitbay (Exchange):
             },
             'fees': {
                 'trading': {
-                    'maker': 0.3 / 100,
-                    'taker': 0.0043,
+                    'maker': 0.17 / 100,
+                    'taker': 0.25 / 100,
                 },
                 'funding': {
                     'withdraw': {
@@ -228,12 +228,14 @@ class bitbay (Exchange):
             'amount': trade['amount'],
         }
 
-    def parse_order(self, order, market):
+    def parse_order(self, order, market=None):
         side = None
         type = None
         if 'type' in order:
             side = 'sell' if (order['type'] == 'ask') else 'buy'
             type = 'limit'
+        market_id = order['order_currency'] + order['payment_currency']
+        market = self.find_market(market_id)
         symbol = market['symbol']
         timestamp = self.to_mili_timestamp(order['order_date'])
         amount = float(order['start_units'])
@@ -271,10 +273,11 @@ class bitbay (Exchange):
         return self.parse_trades(response, market, since, limit)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        if not symbol:
-            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol parameter')
         self.load_markets()
-        market = self.market(symbol)
+        if symbol:
+            market = self.market(symbol)
+        else:
+            market = None
         response = self.privatePostOrders(self.extend({
             'limit': limit
         }, params))
