@@ -16,8 +16,9 @@ class ice3x (Exchange):
         return self.deep_extend(super(ice3x, self).describe(), {
             'id': 'ice3x',
             'name': 'ICE3X',
-            'countries': 'ZA',  # South Africa
+            'countries': ['ZA'],  # South Africa
             'rateLimit': 1000,
+            'version': 'v1',
             'has': {
                 'fetchCurrencies': True,
                 'fetchTickers': True,
@@ -28,7 +29,7 @@ class ice3x (Exchange):
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/38012176-11616c32-3269-11e8-9f05-e65cf885bb15.jpg',
-                'api': 'https://ice3x.com/api/v1',
+                'api': 'https://ice3x.com/api',
                 'www': [
                     'https://ice3x.com',
                     'https://ice3x.co.za',
@@ -40,6 +41,7 @@ class ice3x (Exchange):
                     'https://help.ice3.com/support/solutions/articles/11000008131-what-are-your-fiat-deposit-and-withdrawal-fees-',
                     'https://help.ice3.com/support/solutions/articles/11000033289-deposit-fees',
                 ],
+                'referral': 'https://ice3x.com?ref=14341802',
             },
             'api': {
                 'public': {
@@ -93,14 +95,15 @@ class ice3x (Exchange):
         result = {}
         for i in range(0, len(currencies)):
             currency = currencies[i]
-            id = currency['currency_id']
-            code = self.common_currency_code(currency['iso'].upper())
+            id = self.safe_string(currency, 'currency_id')
+            code = self.safe_string(currency, 'iso')
+            code = code.upper()
+            code = self.common_currency_code(code)
             result[code] = {
                 'id': id,
                 'code': code,
                 'name': currency['name'],
                 'active': True,
-                'status': 'ok',
                 'precision': precision,
                 'limits': {
                     'amount': {
@@ -120,18 +123,18 @@ class ice3x (Exchange):
             }
         return result
 
-    def fetch_markets(self):
+    def fetch_markets(self, params={}):
         if not self.currencies:
             self.currencies = self.fetch_currencies()
         self.currencies_by_id = self.index_by(self.currencies, 'id')
-        response = self.publicGetPairList()
-        markets = response['response']['entities']
+        response = self.publicGetPairList(params)
+        markets = self.safe_value(response['response'], 'entities')
         result = []
         for i in range(0, len(markets)):
             market = markets[i]
-            id = market['pair_id']
-            baseId = market['currency_id_from']
-            quoteId = market['currency_id_to']
+            id = self.safe_string(market, 'pair_id')
+            baseId = self.safe_string(market, 'currency_id_from')
+            quoteId = self.safe_string(market, 'currency_id_to')
             baseCurrency = self.currencies_by_id[baseId]
             quoteCurrency = self.currencies_by_id[quoteId]
             base = self.common_currency_code(baseCurrency['code'])
@@ -145,7 +148,6 @@ class ice3x (Exchange):
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'active': True,
-                'lot': None,
                 'info': market,
             })
         return result
@@ -153,7 +155,7 @@ class ice3x (Exchange):
     def parse_ticker(self, ticker, market=None):
         timestamp = self.milliseconds()
         symbol = market['symbol']
-        last = float(ticker['last_price'])
+        last = self.safe_float(ticker, 'last_price')
         return {
             'symbol': symbol,
             'timestamp': timestamp,
@@ -173,90 +175,114 @@ class ice3x (Exchange):
             'percentage': None,
             'average': self.safe_float(ticker, 'avg'),
             'baseVolume': None,
-            'quoteVolume': float(ticker['vol']),
+            'quoteVolume': self.safe_float(ticker, 'vol'),
             'info': ticker,
         }
 
     def fetch_ticker(self, symbol, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.publicGetStatsMarketdepthfull(self.extend({
+        request = {
             'pair_id': market['id'],
-        }, params))
-        return self.parse_ticker(response['response']['entity'], market)
+        }
+        response = self.publicGetStatsMarketdepthfull(self.extend(request, params))
+        ticker = self.safe_value(response['response'], 'entity')
+        return self.parse_ticker(ticker, market)
 
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()
         response = self.publicGetStatsMarketdepthfull(params)
-        tickers = response['response']['entities']
+        tickers = self.safe_value(response['response'], 'entities')
         result = {}
         for i in range(0, len(tickers)):
             ticker = tickers[i]
-            market = self.marketsById[ticker['pair_id']]
-            symbol = market['symbol']
-            result[symbol] = self.parse_ticker(ticker, market)
+            marketId = self.safe_string(ticker, 'pair_id')
+            market = self.safe_value(self.marketsById, marketId)
+            if market is not None:
+                symbol = market['symbol']
+                result[symbol] = self.parse_ticker(ticker, market)
         return result
 
-    def fetch_order_book(self, symbol, params={}):
+    def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        response = self.publicGetOrderbookInfo(self.extend({
+        request = {
             'pair_id': self.market_id(symbol),
-        }, params))
-        orderbook = response['response']['entities']
+        }
+        if limit is not None:
+            type = self.safe_string(params, 'type')
+            if (type != 'ask') and(type != 'bid'):
+                # eslint-disable-next-line quotes
+                raise ExchangeError(self.id + " fetchOrderBook requires an exchange-specific extra 'type' param('bid' or 'ask') when used with a limit")
+            else:
+                request['items_per_page'] = limit
+        response = self.publicGetOrderbookInfo(self.extend(request, params))
+        orderbook = self.safe_value(response['response'], 'entities')
         return self.parse_order_book(orderbook, None, 'bids', 'asks', 'price', 'amount')
 
     def parse_trade(self, trade, market=None):
-        timestamp = int(trade['created']) * 1000
-        price = float(trade['price'])
-        amount = float(trade['volume'])
-        symbol = market['symbol']
-        cost = float(self.cost_to_precision(symbol, price * amount))
-        fee = self.safe_float(trade, 'fee')
-        if fee:
+        timestamp = self.safe_integer(trade, 'created')
+        if timestamp is not None:
+            timestamp *= 1000
+        price = self.safe_float(trade, 'price')
+        amount = self.safe_float(trade, 'volume')
+        cost = None
+        if price is not None:
+            if amount is not None:
+                cost = price * amount
+        fee = None
+        feeCost = self.safe_float(trade, 'fee')
+        if feeCost is not None:
             fee = {
-                'cost': fee,
+                'cost': feeCost,
                 'currency': market['quote'],
             }
+        type = 'limit'
+        side = self.safe_string(trade, 'type')
+        id = self.safe_string(trade, 'trade_id')
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
         return {
+            'id': id,
+            'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,
-            'id': self.safe_string(trade, 'trade_id'),
             'order': None,
-            'type': 'limit',
-            'side': trade['type'],
+            'type': type,
+            'side': side,
+            'takerOrMaker': None,
             'price': price,
             'amount': amount,
             'cost': cost,
             'fee': fee,
-            'info': trade,
         }
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.publicGetTradeList(self.extend({
+        request = {
             'pair_id': market['id'],
-        }, params))
-        trades = response['response']['entities']
+        }
+        response = self.publicGetTradeList(self.extend(request, params))
+        trades = self.safe_value(response['response'], 'entities')
         return self.parse_trades(trades, market, since, limit)
 
     def fetch_balance(self, params={}):
         self.load_markets()
         response = self.privatePostBalanceList(params)
         result = {'info': response}
-        balances = response['response']['entities']
+        balances = self.safe_value(response['response'], 'entities', [])
         for i in range(0, len(balances)):
             balance = balances[i]
-            id = balance['currency_id']
-            if id in self.currencies_by_id:
-                currency = self.currencies_by_id[id]
-                code = currency['code']
-                result[code] = {
-                    'free': 0.0,
-                    'used': 0.0,
-                    'total': float(balance['balance']),
-                }
+            # currency ids are numeric strings
+            currencyId = self.safe_string(balance, 'currency_id')
+            code = currencyId
+            if currencyId in self.currencies_by_id:
+                code = self.currencies_by_id[currencyId]['code']
+            account = self.account()
+            account['total'] = self.safe_float(balance, 'balance')
+            result[code] = account
         return self.parse_balance(result)
 
     def parse_order(self, order, market=None):
@@ -266,7 +292,7 @@ class ice3x (Exchange):
             market = self.marketsById[pairId]
             symbol = market['symbol']
         timestamp = self.safe_integer(order, 'created') * 1000
-        price = float(order['price'])
+        price = self.safe_float(order, 'price')
         amount = self.safe_float(order, 'volume')
         status = self.safe_integer(order, 'active')
         remaining = self.safe_float(order, 'remaining')
@@ -277,19 +303,23 @@ class ice3x (Exchange):
             status = 'closed'
             remaining = 0
             filled = amount
-        fee = self.safe_float(order, 'fee')
-        if fee:
-            fee = {'cost': fee}
-            if market:
+        fee = None
+        feeCost = self.safe_float(order, 'fee')
+        if feeCost is not None:
+            fee = {
+                'cost': feeCost,
+            }
+            if market is not None:
                 fee['currency'] = market['quote']
         return {
             'id': self.safe_string(order, 'order_id'),
             'datetime': self.iso8601(timestamp),
             'timestamp': timestamp,
+            'lastTradeTimestamp': None,
             'status': status,
             'symbol': symbol,
             'type': 'limit',
-            'side': order['type'],
+            'side': self.safeStrin(order, 'type'),
             'price': price,
             'cost': None,
             'amount': amount,
@@ -303,12 +333,13 @@ class ice3x (Exchange):
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.privatePostOrderNew(self.extend({
+        request = {
             'pair_id': market['id'],
             'type': side,
             'amount': amount,
             'price': price,
-        }, params))
+        }
+        response = self.privatePostOrderNew(self.extend(request, params))
         order = self.parse_order({
             'order_id': response['response']['entity']['order_id'],
             'created': self.seconds(),
@@ -324,22 +355,24 @@ class ice3x (Exchange):
         return order
 
     def cancel_order(self, id, symbol=None, params={}):
-        response = self.privatePostOrderCancel(self.extend({
+        request = {
             'order_id': id,
-        }, params))
-        return response
+        }
+        return self.privatePostOrderCancel(self.extend(request, params))
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
-        response = self.privatePostOrderInfo(self.extend({
+        request = {
             'order _id': id,
-        }, params))
-        return self.parse_order(response['response']['entity'])
+        }
+        response = self.privatePostOrderInfo(self.extend(request, params))
+        order = self.safe_value(response['response'], 'entity')
+        return self.parse_order(order)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
-        response = self.privatePostOrderList()
-        orders = response['response']['entities']
+        response = self.privatePostOrderList(params)
+        orders = self.safe_value(response['response'], 'entities')
         return self.parse_orders(orders, None, since, limit)
 
     def fetch_my_trades(self, symbol=None, since=None, limit=None, params={}):
@@ -348,21 +381,22 @@ class ice3x (Exchange):
         request = {
             'pair_id': market['id'],
         }
-        if limit:
+        if limit is not None:
             request['items_per_page'] = limit
-        if since:
+        if since is not None:
             request['date_from'] = int(since / 1000)
         response = self.privatePostTradeList(self.extend(request, params))
-        trades = response['response']['entities']
+        trades = self.safe_value(response['response'], 'entities')
         return self.parse_trades(trades, market, since, limit)
 
     def fetch_deposit_address(self, code, params={}):
         self.load_markets()
         currency = self.currency(code)
-        response = self.privatePostBalanceInfo(self.extend({
+        request = {
             'currency_id': currency['id'],
-        }, params))
-        balance = response['response']['entity']
+        }
+        response = self.privatePostBalanceInfo(self.extend(request, params))
+        balance = self.safe_value(response['response'], 'entity')
         address = self.safe_string(balance, 'address')
         status = 'ok' if address else 'none'
         return {
@@ -374,11 +408,10 @@ class ice3x (Exchange):
         }
 
     def sign(self, path, api='public', method='GET', params={}, headers=None, body=None):
-        url = self.urls['api'] + '/' + path
+        url = self.urls['api'] + '/' + self.version + '/' + path
         if api == 'public':
-            params = self.urlencode(params)
-            if len(params):
-                url += '?' + params
+            if params:
+                url += '?' + self.urlencode(params)
         else:
             self.check_required_credentials()
             body = self.urlencode(self.extend({

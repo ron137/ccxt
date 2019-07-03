@@ -8,7 +8,6 @@ import base64
 import hashlib
 from ccxt.base.errors import ExchangeError
 
-import time
 
 class lakebtc (Exchange):
 
@@ -16,7 +15,7 @@ class lakebtc (Exchange):
         return self.deep_extend(super(lakebtc, self).describe(), {
             'id': 'lakebtc',
             'name': 'LakeBTC',
-            'countries': 'US',
+            'countries': ['US'],
             'version': 'api_v2',
             'has': {
                 'CORS': True,
@@ -59,23 +58,15 @@ class lakebtc (Exchange):
                     'taker': 0.2 / 100,
                 },
             },
-            'limits': {
-                'amount':{
-                    'min': 0.0001,
-                },
-                'cost': {
-                    'min': 0.00000001,
-                },
-            },
         })
 
-    def fetch_markets(self):
-        markets = self.publicGetTicker()
+    def fetch_markets(self, params={}):
+        response = self.publicGetTicker(params)
         result = []
-        keys = list(markets.keys())
-        for k in range(0, len(keys)):
-            id = keys[k]
-            market = markets[id]
+        keys = list(response.keys())
+        for i in range(0, len(keys)):
+            id = keys[i]
+            market = response[id]
             baseId = id[0:3]
             quoteId = id[3:6]
             base = baseId.upper()
@@ -94,17 +85,18 @@ class lakebtc (Exchange):
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        response = self.privatePostGetAccountInfo()
-        balances = response['balance']
+        response = self.privatePostGetAccountInfo(params)
+        balances = self.safe_value(response, 'balance', {})
         result = {'info': response}
-        ids = list(balances.keys())
-        for i in range(0, len(ids)):
-            id = ids[i]
-            code = id
-            if id in self.currencies_by_id:
-                currency = self.currencies_by_id[id]
-                code = currency['code']
-            balance = float(balances[id])
+        currencyIds = list(balances.keys())
+        for i in range(0, len(currencyIds)):
+            currencyId = currencyIds[i]
+            code = currencyId
+            if currencyId in self.currencies_by_id:
+                code = self.currencies_by_id[currencyId]['code']
+            else:
+                code = self.common_currency_code(currencyId)
+            balance = self.safe_float(balances, currencyId)
             account = {
                 'free': balance,
                 'used': 0.0,
@@ -113,72 +105,13 @@ class lakebtc (Exchange):
             result[code] = account
         return self.parse_balance(result)
 
-    def fetch_my_trades(self, symbol=None, since=None, limit=10000, params={}):
-
-        # Load markets and request my trades from the API
-        self.load_markets()
-        response = self.privatePostGetTrades()
-
-        # Parse the trades
-        parsed_trades = []
-        for trade in response:
-            timestamp = trade['at'] * 1000
-            parsed_trade = {
-                'id': abs(hash(str(trade['at']) + str(trade['total']) + str(trade['amount']) + str(trade['type']))),
-                'info': trade,
-                'timestamp': timestamp,
-                'datetime': self.iso8601(timestamp),
-                'symbol': symbol,
-                'type': 'limit',
-                'side': trade['type'],
-                'price': float(trade['total']) / float(trade['amount']),
-                'amount': float(trade['amount']),
-                'cost': None,
-            }
-            parsed_trades.append(parsed_trade)
-
-        return parsed_trades
-
-    def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-
-        # Load markets and send request to API
-        self.load_markets()
-        response = self.privatePostOpenOrders()
-
-        # No open orders
-        if not response:
-            return []
-
-        # Parse open orders
-        parsed_orders = []
-        for order in response:
-            timestamp = order['at'] * 1000
-            parsed_order = {
-                'info': order,
-                'id': str(order['id']),
-                'symbol': symbol,
-                'timestamp': timestamp,
-                'datetime': self.iso8601(timestamp),
-                'type': 'limit',
-                'side': str(order['type']),
-                'price': float(order['price']),
-                'cost': None,
-                'amount': float(order['amount']),
-                'remaining': None,
-                'filled': None,
-                'status': None,
-                'fee': None,
-            }
-            parsed_orders.append(parsed_order)
-
-        return parsed_orders
-
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        orderbook = self.publicGetBcorderbook(self.extend({
+        request = {
             'symbol': self.market_id(symbol),
-        }, params))
-        return self.parse_order_book(orderbook)
+        }
+        response = self.publicGetBcorderbook(self.extend(request, params))
+        return self.parse_order_book(response)
 
     def parse_ticker(self, ticker, market=None):
         timestamp = self.milliseconds()
@@ -211,12 +144,12 @@ class lakebtc (Exchange):
 
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()
-        tickers = self.publicGetTicker(params)
-        ids = list(tickers.keys())
+        response = self.publicGetTicker(params)
+        ids = list(response.keys())
         result = {}
         for i in range(0, len(ids)):
             symbol = ids[i]
-            ticker = tickers[symbol]
+            ticker = response[symbol]
             market = None
             if symbol in self.markets_by_id:
                 market = self.markets_by_id[symbol]
@@ -230,27 +163,43 @@ class lakebtc (Exchange):
         tickers = self.publicGetTicker(params)
         return self.parse_ticker(tickers[market['id']], market)
 
-    def parse_trade(self, trade, market):
-        timestamp = trade['date'] * 1000
+    def parse_trade(self, trade, market=None):
+        timestamp = self.safe_integer(trade, 'date')
+        if timestamp is not None:
+            timestamp *= 1000
+        id = self.safe_string(trade, 'tid')
+        price = self.safe_float(trade, 'price')
+        amount = self.safe_float(trade, 'amount')
+        cost = None
+        if price is not None:
+            if amount is not None:
+                cost = price * amount
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
         return {
+            'id': id,
             'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'symbol': market['symbol'],
-            'id': str(trade['tid']),
+            'symbol': symbol,
             'order': None,
             'type': None,
             'side': None,
-            'price': float(trade['price']),
-            'amount': float(trade['amount']),
+            'takerOrMaker': None,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'fee': None,
         }
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.publicGetBctrades(self.extend({
+        request = {
             'symbol': market['id'],
-        }, params))
+        }
+        response = self.publicGetBctrades(self.extend(request, params))
         return self.parse_trades(response, market, since, limit)
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
@@ -259,17 +208,21 @@ class lakebtc (Exchange):
             raise ExchangeError(self.id + ' allows limit orders only')
         method = 'privatePost' + self.capitalize(side) + 'Order'
         market = self.market(symbol)
-        order = [price, amount, market['id']]
-        response = self.request(method, 'private', 'POST', order)
-        #response = getattr(self, method)(self.extend(order))
+        order = {
+            'params': [price, amount, market['id']],
+        }
+        response = getattr(self, method)(self.extend(order, params))
         return {
             'info': response,
-            'id': str(response['id']),
+            'id': self.safe_string(response, 'id'),
         }
 
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
-        return self.privatePostCancelOrders({'params': id})
+        request = {
+            'params': [id],
+        }
+        return self.privatePostCancelOrder(self.extend(request, params))
 
     def nonce(self):
         return self.microseconds()
@@ -283,22 +236,21 @@ class lakebtc (Exchange):
         else:
             self.check_required_credentials()
             nonce = self.nonce()
-            if params:
-                params = ','.join(self.add_quates_if_string(v) for v in params)
-            else:
-                params = ''
-
+            queryParams = ''
+            if 'params' in params:
+                paramsList = params['params']
+                queryParams = ','.join(paramsList)
             query = self.urlencode({
                 'tonce': nonce,
                 'accesskey': self.apiKey,
                 'requestmethod': method.lower(),
                 'id': nonce,
                 'method': path,
-                'params': params,
+                'params': queryParams,
             })
             body = self.json({
                 'method': path,
-                'params': params,
+                'params': queryParams,
                 'id': nonce,
             })
             signature = self.hmac(self.encode(query), self.encode(self.secret), hashlib.sha1)
@@ -309,12 +261,6 @@ class lakebtc (Exchange):
                 'Content-Type': 'application/json',
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
-
-    def add_quates_if_string(self, var):
-        if type(var) == type('asd'):
-            return "'{}'".format(var)
-        else:
-            return str(var)
 
     def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
         response = self.fetch2(path, api, method, params, headers, body)

@@ -6,6 +6,7 @@
 from ccxt.base.exchange import Exchange
 import base64
 import hashlib
+from ccxt.base.errors import ArgumentsRequired
 
 
 class negociecoins (Exchange):
@@ -14,10 +15,11 @@ class negociecoins (Exchange):
         return self.deep_extend(super(negociecoins, self).describe(), {
             'id': 'negociecoins',
             'name': 'NegocieCoins',
-            'countries': 'BR',
+            'countries': ['BR'],
             'rateLimit': 1000,
             'version': 'v3',
             'has': {
+                'createMarketOrder': False,
                 'fetchOrder': True,
                 'fetchOrders': True,
                 'fetchOpenOrders': True,
@@ -97,16 +99,16 @@ class negociecoins (Exchange):
     def parse_ticker(self, ticker, market=None):
         timestamp = ticker['date'] * 1000
         symbol = market['symbol'] if (market is not None) else None
-        last = float(ticker['last'])
+        last = self.safe_float(ticker, 'last')
         return {
             'symbol': symbol,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'high': float(ticker['high']),
-            'low': float(ticker['low']),
-            'bid': float(ticker['buy']),
+            'high': self.safe_float(ticker, 'high'),
+            'low': self.safe_float(ticker, 'low'),
+            'bid': self.safe_float(ticker, 'buy'),
             'bidVolume': None,
-            'ask': float(ticker['sell']),
+            'ask': self.safe_float(ticker, 'sell'),
             'askVolume': None,
             'vwap': None,
             'open': None,
@@ -116,7 +118,7 @@ class negociecoins (Exchange):
             'change': None,
             'percentage': None,
             'average': None,
-            'baseVolume': float(ticker['vol']),
+            'baseVolume': self.safe_float(ticker, 'vol'),
             'quoteVolume': None,
             'info': ticker,
         }
@@ -124,32 +126,44 @@ class negociecoins (Exchange):
     def fetch_ticker(self, symbol, params={}):
         self.load_markets()
         market = self.market(symbol)
-        ticker = self.publicGetPARTicker(self.extend({
+        request = {
             'PAR': market['id'],
-        }, params))
+        }
+        ticker = self.publicGetPARTicker(self.extend(request, params))
         return self.parse_ticker(ticker, market)
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        orderbook = self.publicGetPAROrderbook(self.extend({
+        request = {
             'PAR': self.market_id(symbol),
-        }, params))
-        return self.parse_order_book(orderbook, None, 'bid', 'ask', 'price', 'quantity')
+        }
+        response = self.publicGetPAROrderbook(self.extend(request, params))
+        return self.parse_order_book(response, None, 'bid', 'ask', 'price', 'quantity')
 
     def parse_trade(self, trade, market=None):
         timestamp = trade['date'] * 1000
-        price = float(trade['price'])
-        amount = float(trade['amount'])
-        symbol = market['symbol']
-        cost = float(self.cost_to_precision(symbol, price * amount))
+        price = self.safe_float(trade, 'price')
+        amount = self.safe_float(trade, 'amount')
+        cost = None
+        if price is not None:
+            if amount is not None:
+                cost = price * amount
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
+        id = self.safe_string(trade, 'tid')
+        type = 'limit'
+        side = self.safe_string(trade, 'type')
+        if side is not None:
+            side = side.lower()
         return {
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,
-            'id': self.safe_string(trade, 'tid'),
+            'id': id,
             'order': None,
-            'type': 'limit',
-            'side': trade['type'].lower(),
+            'type': type,
+            'side': side,
             'price': price,
             'amount': amount,
             'cost': cost,
@@ -166,47 +180,64 @@ class negociecoins (Exchange):
             'PAR': market['id'],
             'timestamp_inicial': int(since / 1000),
         }
-        trades = self.publicGetPARTradesTimestampInicial(self.extend(request, params))
-        return self.parse_trades(trades, market, since, limit)
+        response = self.publicGetPARTradesTimestampInicial(self.extend(request, params))
+        return self.parse_trades(response, market, since, limit)
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        balances = self.privateGetUserBalance(params)
-        result = {'info': balances}
-        currencies = list(balances.keys())
-        for i in range(0, len(currencies)):
-            id = currencies[i]
-            balance = balances[id]
-            currency = self.common_currency_code(id)
+        response = self.privateGetUserBalance(params)
+        #
+        #     {
+        #         "coins": [
+        #             {"name":"BRL","available":0.0,"openOrders":0.0,"withdraw":0.0,"total":0.0},
+        #             {"name":"BTC","available":0.0,"openOrders":0.0,"withdraw":0.0,"total":0.0},
+        #         ],
+        #     }
+        #
+        result = {'info': response}
+        balances = self.safe_value(response, 'coins')
+        for i in range(0, len(balances)):
+            balance = balances[i]
+            currencyId = self.safe_string(balance, 'name')
+            code = currencyId
+            if currencyId in self.currencies_by_id:
+                code = self.currencies_by_id[currencyId]['code']
+            else:
+                code = self.common_currency_code(currencyId)
+            openOrders = self.safe_float(balance, 'openOrders')
+            withdraw = self.safe_float(balance, 'withdraw')
             account = {
-                'free': float(balance['total']),
-                'used': 0.0,
-                'total': float(balance['available']),
+                'free': self.safe_float(balance, 'total'),
+                'used': self.sum(openOrders, withdraw),
+                'total': self.safe_float(balance, 'available'),
             }
-            account['used'] = account['total'] - account['free']
-            result[currency] = account
+            result[code] = account
         return self.parse_balance(result)
+
+    def parse_order_status(self, status):
+        statuses = {
+            'filled': 'closed',
+            'cancelled': 'canceled',
+            'partially filled': 'open',
+            'pending': 'open',
+            'rejected': 'rejected',
+        }
+        return self.safe_string(statuses, status, status)
 
     def parse_order(self, order, market=None):
         symbol = None
-        if not market:
-            market = self.safe_value(self.marketsById, order['pair'])
+        if market is None:
+            marketId = self.safe_string(order, 'pair')
+            market = self.safe_value(self.marketsById, marketId)
             if market:
                 symbol = market['symbol']
-        timestamp = self.parse8601(order['created'])
-        price = float(order['price'])
-        amount = float(order['quantity'])
+        timestamp = self.parse8601(self.safe_string(order, 'created'))
+        price = self.safe_float(order, 'price')
+        amount = self.safe_float(order, 'quantity')
         cost = self.safe_float(order, 'total')
         remaining = self.safe_float(order, 'pending_quantity')
         filled = self.safe_float(order, 'executed_quantity')
-        status = order['status']
-        # cancelled, filled, partially filled, pending, rejected
-        if status == 'filled':
-            status = 'closed'
-        elif status == 'cancelled':
-            status = 'canceled'
-        else:
-            status = 'open'
+        status = self.parse_order_status(self.safe_string(order, 'status'))
         trades = None
         # if order['operations']:
         #     trades = self.parse_trades(order['operations'])
@@ -226,7 +257,7 @@ class negociecoins (Exchange):
             'trades': trades,
             'fee': {
                 'currency': market['quote'],
-                'cost': float(order['fee']),
+                'cost': self.safe_float(order, 'fee'),
             },
             'info': order,
         }
@@ -234,12 +265,13 @@ class negociecoins (Exchange):
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.privatePostUserOrder(self.extend({
+        request = {
             'pair': market['id'],
             'price': self.price_to_precision(symbol, price),
             'volume': self.amount_to_precision(symbol, amount),
             'type': side,
-        }, params))
+        }
+        response = self.privatePostUserOrder(self.extend(request, params))
         order = self.parse_order(response[0], market)
         id = order['id']
         self.orders[id] = order
@@ -248,20 +280,24 @@ class negociecoins (Exchange):
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
         market = self.markets[symbol]
-        response = self.privateDeleteUserOrderOrderId(self.extend({
+        request = {
             'orderId': id,
-        }, params))
+        }
+        response = self.privateDeleteUserOrderOrderId(self.extend(request, params))
         return self.parse_order(response[0], market)
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
-        order = self.privateGetUserOrderOrderId(self.extend({
+        request = {
             'orderId': id,
-        }, params))
+        }
+        order = self.privateGetUserOrderOrderId(self.extend(request, params))
         return self.parse_order(order[0])
 
     def fetch_orders(self, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
+        if symbol is None:
+            raise ArgumentsRequired(self.id + ' fetchOrders() requires a symbol argument')
         market = self.market(symbol)
         request = {
             'pair': market['id'],
@@ -280,14 +316,16 @@ class negociecoins (Exchange):
         return self.parse_orders(orders, market)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
-        return self.fetch_orders(symbol, since, limit, self.extend({
+        request = {
             'status': 'pending',
-        }, params))
+        }
+        return self.fetch_orders(symbol, since, limit, self.extend(request, params))
 
     def fetch_closed_orders(self, symbol=None, since=None, limit=None, params={}):
-        return self.fetch_orders(symbol, since, limit, self.extend({
+        request = {
             'status': 'filled',
-        }, params))
+        }
+        return self.fetch_orders(symbol, since, limit, self.extend(request, params))
 
     def nonce(self):
         return self.milliseconds()
@@ -312,8 +350,8 @@ class negociecoins (Exchange):
             uri = self.encode_uri_component(url).lower()
             payload = ''.join([self.apiKey, method, uri, timestamp, nonce, content])
             secret = base64.b64decode(self.secret)
-            signature = self.hmac(self.encode(payload), self.encode(secret), hashlib.sha256, 'base64')
-            signature = self.binary_to_string(signature)
+            signature = self.hmac(self.encode(payload), secret, hashlib.sha256, 'base64')
+            signature = self.decode(signature)
             auth = ':'.join([self.apiKey, signature, nonce, timestamp])
             headers = {
                 'Authorization': 'amx ' + auth,

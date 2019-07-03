@@ -12,10 +12,11 @@ class ethfinex (bitfinex):
         return self.deep_extend(super(ethfinex, self).describe(), {
             'id': 'ethfinex',
             'name': 'Ethfinex',
-            'countries': 'VG',
+            'countries': ['VG'],
             'version': 'v1',
             'rateLimit': 1500,
             # new metainfo interface
+            'certified': False,
             'has': {
                 'CORS': False,
                 'createDepositAddress': True,
@@ -29,6 +30,7 @@ class ethfinex (bitfinex):
                 'fetchOpenOrders': True,
                 'fetchOrder': True,
                 'fetchTickers': True,
+                'fetchTradingFee': True,
                 'fetchTradingFees': True,
                 'withdraw': True,
             },
@@ -48,7 +50,11 @@ class ethfinex (bitfinex):
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/37555526-7018a77c-29f9-11e8-8835-8e415c038a18.jpg',
-                'api': 'https://api.ethfinex.com',
+                'api': {
+                    'v2': 'https://api.ethfinex.com',
+                    'public': 'https://api.ethfinex.com',
+                    'private': 'https://api.ethfinex.com',
+                },
                 'www': 'https://www.ethfinex.com',
                 'doc': [
                     'https://bitfinex.readme.io/v1/docs',

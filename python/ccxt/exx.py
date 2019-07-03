@@ -8,6 +8,7 @@ import hashlib
 import math
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
+from ccxt.base.errors import ExchangeNotAvailable
 
 
 class exx (Exchange):
@@ -16,8 +17,9 @@ class exx (Exchange):
         return self.deep_extend(super(exx, self).describe(), {
             'id': 'exx',
             'name': 'EXX',
-            'countries': 'CN',
+            'countries': ['CN'],
             'rateLimit': 1000 / 10,
+            'userAgent': self.userAgents['chrome'],
             'has': {
                 'fetchOrder': True,
                 'fetchTickers': True,
@@ -32,6 +34,7 @@ class exx (Exchange):
                 'www': 'https://www.exx.com/',
                 'doc': 'https://www.exx.com/help/restApi',
                 'fees': 'https://www.exx.com/help/rate',
+                'referral': 'https://www.exx.com/r/fde4260159e53ab8a58cc9186d35501f?recommQd=1',
             },
             'api': {
                 'public': {
@@ -84,15 +87,21 @@ class exx (Exchange):
                     },
                 },
             },
+            'commonCurrencies': {
+                'TV': 'TIV',  # Ti-Value
+            },
+            'exceptions': {
+                '103': AuthenticationError,
+            },
         })
 
-    def fetch_markets(self):
-        markets = self.publicGetMarkets()
-        ids = list(markets.keys())
+    def fetch_markets(self, params={}):
+        response = self.publicGetMarkets(params)
+        ids = list(response.keys())
         result = []
         for i in range(0, len(ids)):
             id = ids[i]
-            market = markets[id]
+            market = response[id]
             baseId, quoteId = id.split('_')
             upper = id.upper()
             base, quote = upper.split('_')
@@ -104,7 +113,6 @@ class exx (Exchange):
                 'amount': int(market['amountScale']),
                 'price': int(market['priceScale']),
             }
-            lot = math.pow(10, -precision['amount'])
             result.append({
                 'id': id,
                 'symbol': symbol,
@@ -113,11 +121,10 @@ class exx (Exchange):
                 'baseId': baseId,
                 'quoteId': quoteId,
                 'active': active,
-                'lot': lot,
                 'precision': precision,
                 'limits': {
                     'amount': {
-                        'min': lot,
+                        'min': math.pow(10, -precision['amount']),
                         'max': math.pow(10, precision['amount']),
                     },
                     'price': {
@@ -135,28 +142,28 @@ class exx (Exchange):
 
     def parse_ticker(self, ticker, market=None):
         symbol = market['symbol']
-        timestamp = int(ticker['date'])
+        timestamp = self.safe_integer(ticker, 'date')
         ticker = ticker['ticker']
-        last = float(ticker['last'])
+        last = self.safe_float(ticker, 'last')
         return {
             'symbol': symbol,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'high': float(ticker['high']),
-            'low': float(ticker['low']),
-            'bid': float(ticker['buy']),
+            'high': self.safe_float(ticker, 'high'),
+            'low': self.safe_float(ticker, 'low'),
+            'bid': self.safe_float(ticker, 'buy'),
             'bidVolume': None,
-            'ask': float(ticker['sell']),
+            'ask': self.safe_float(ticker, 'sell'),
             'askVolume': None,
             'vwap': None,
             'open': None,
             'close': last,
             'last': last,
             'previousClose': None,
-            'change': float(ticker['riseRate']),
+            'change': self.safe_float(ticker, 'riseRate'),
             'percentage': None,
             'average': None,
-            'baseVolume': float(ticker['vol']),
+            'baseVolume': self.safe_float(ticker, 'vol'),
             'quoteVolume': None,
             'info': ticker,
         }
@@ -164,17 +171,18 @@ class exx (Exchange):
     def fetch_ticker(self, symbol, params={}):
         self.load_markets()
         market = self.market(symbol)
-        ticker = self.publicGetTicker(self.extend({
+        request = {
             'currency': market['id'],
-        }, params))
-        return self.parse_ticker(ticker, market)
+        }
+        response = self.publicGetTicker(self.extend(request, params))
+        return self.parse_ticker(response, market)
 
     def fetch_tickers(self, symbols=None, params={}):
         self.load_markets()
-        tickers = self.publicGetTickers(params)
+        response = self.publicGetTickers(params)
         result = {}
         timestamp = self.milliseconds()
-        ids = list(tickers.keys())
+        ids = list(response.keys())
         for i in range(0, len(ids)):
             id = ids[i]
             if not(id in list(self.marketsById.keys())):
@@ -183,73 +191,86 @@ class exx (Exchange):
             symbol = market['symbol']
             ticker = {
                 'date': timestamp,
-                'ticker': tickers[id],
+                'ticker': response[id],
             }
             result[symbol] = self.parse_ticker(ticker, market)
         return result
 
     def fetch_order_book(self, symbol, limit=None, params={}):
         self.load_markets()
-        orderbook = self.publicGetDepth(self.extend({
+        request = {
             'currency': self.market_id(symbol),
-        }, params))
-        return self.parse_order_book(orderbook, orderbook['timestamp'])
+        }
+        response = self.publicGetDepth(self.extend(request, params))
+        return self.parse_order_book(response, response['timestamp'])
 
     def parse_trade(self, trade, market=None):
-        timestamp = trade['date'] * 1000
-        price = float(trade['price'])
-        amount = float(trade['amount'])
-        symbol = market['symbol']
-        cost = self.cost_to_precision(symbol, price * amount)
+        timestamp = self.safe_integer(trade, 'date')
+        if timestamp is not None:
+            timestamp *= 1000
+        price = self.safe_float(trade, 'price')
+        amount = self.safe_float(trade, 'amount')
+        cost = None
+        if price is not None:
+            if amount is not None:
+                cost = price * amount
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
+        type = 'limit'
+        side = self.safe_string(trade, 'type')
+        id = self.safe_string(trade, 'tid')
         return {
+            'id': id,
+            'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
             'symbol': symbol,
-            'id': self.safe_string(trade, 'tid'),
             'order': None,
-            'type': 'limit',
-            'side': trade['type'],
+            'type': type,
+            'side': side,
+            'takerOrMaker': None,
             'price': price,
             'amount': amount,
             'cost': cost,
             'fee': None,
-            'info': trade,
         }
 
     def fetch_trades(self, symbol, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        trades = self.publicGetTrades(self.extend({
+        request = {
             'currency': market['id'],
-        }, params))
-        return self.parse_trades(trades, market, since, limit)
+        }
+        response = self.publicGetTrades(self.extend(request, params))
+        return self.parse_trades(response, market, since, limit)
 
     def fetch_balance(self, params={}):
         self.load_markets()
-        balances = self.privateGetGetBalance(params)
-        result = {'info': balances}
-        balances = balances['funds']
+        response = self.privateGetGetBalance(params)
+        result = {'info': response}
+        balances = self.safe_value(response, 'funds')
         currencies = list(balances.keys())
         for i in range(0, len(currencies)):
-            id = currencies[i]
-            balance = balances[id]
-            currency = self.common_currency_code(id)
+            currencyId = currencies[i]
+            balance = balances[currencyId]
+            code = self.common_currency_code(currencyId)
             account = {
-                'free': float(balance['balance']),
-                'used': float(balance['freeze']),
-                'total': float(balance['total']),
+                'free': self.safe_float(balance, 'balance'),
+                'used': self.safe_float(balance, 'freeze'),
+                'total': self.safe_float(balance, 'total'),
             }
-            result[currency] = account
+            result[code] = account
         return self.parse_balance(result)
 
     def parse_order(self, order, market=None):
         symbol = market['symbol']
         timestamp = int(order['trade_date'])
-        price = float(order['price'])
+        price = self.safe_float(order, 'price')
         cost = self.safe_float(order, 'trade_money')
         amount = self.safe_float(order, 'total_amount')
         filled = self.safe_float(order, 'trade_amount', 0.0)
-        remaining = self.amount_to_precision(symbol, amount - filled)
+        remaining = float(self.amount_to_precision(symbol, amount - filled))
         status = self.safe_integer(order, 'status')
         if status == 1:
             status = 'canceled'
@@ -267,7 +288,8 @@ class exx (Exchange):
             'id': self.safe_string(order, 'id'),
             'datetime': self.iso8601(timestamp),
             'timestamp': timestamp,
-            'status': 'open',
+            'lastTradeTimestamp': None,
+            'status': status,
             'symbol': symbol,
             'type': 'limit',
             'side': order['type'],
@@ -284,13 +306,14 @@ class exx (Exchange):
     def create_order(self, symbol, type, side, amount, price=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        response = self.privateGetOrder(self.extend({
+        request = {
             'currency': market['id'],
             'type': side,
             'price': price,
             'amount': amount,
-        }, params))
-        id = response['id']
+        }
+        response = self.privateGetOrder(self.extend(request, params))
+        id = self.safe_string(response, 'id')
         order = self.parse_order({
             'id': id,
             'trade_date': self.milliseconds(),
@@ -305,28 +328,33 @@ class exx (Exchange):
     def cancel_order(self, id, symbol=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        result = self.privateGetCancel(self.extend({
+        request = {
             'id': id,
             'currency': market['id'],
-        }, params))
-        return result
+        }
+        response = self.privateGetCancel(self.extend(request, params))
+        return response
 
     def fetch_order(self, id, symbol=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        order = self.privateGetGetOrder(self.extend({
+        request = {
             'id': id,
             'currency': market['id'],
-        }, params))
-        return self.parse_order(order, market)
+        }
+        response = self.privateGetGetOrder(self.extend(request, params))
+        return self.parse_order(response, market)
 
     def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        orders = self.privateGetOpenOrders(self.extend({
+        request = {
             'currency': market['id'],
-        }, params))
-        return self.parse_orders(orders, market, since, limit)
+        }
+        response = self.privateGetGetOpenOrders(self.extend(request, params))
+        if not isinstance(response, list):
+            return []
+        return self.parse_orders(response, market, since, limit)
 
     def nonce(self):
         return self.milliseconds()
@@ -342,16 +370,39 @@ class exx (Exchange):
                 'accesskey': self.apiKey,
                 'nonce': self.nonce(),
             }, params)))
-            signature = self.hmac(self.encode(query), self.encode(self.secret), hashlib.sha512)
-            url += '?' + query + '&signature=' + signature
+            signed = self.hmac(self.encode(query), self.encode(self.secret), hashlib.sha512)
+            url += '?' + query + '&signature=' + signed
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def request(self, path, api='public', method='GET', params={}, headers=None, body=None):
-        response = self.fetch2(path, api, method, params, headers, body)
-        code = self.safe_integer(response, 'code')
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+        if response is None:
+            return  # fallback to default error handler
+        #
+        #  {"result":false,"message":"服务端忙碌"}
+        #  ... and other formats
+        #
+        code = self.safe_string(response, 'code')
         message = self.safe_string(response, 'message')
-        if code and code != 100 and message:
-            if code == 103:
-                raise AuthenticationError(message)
-            raise ExchangeError(message)
-        return response
+        feedback = self.id + ' ' + self.json(response)
+        if code == '100':
+            return
+        if code is not None:
+            exceptions = self.exceptions
+            if code in exceptions:
+                raise exceptions[code](feedback)
+            elif code == '308':
+                # self is returned by the exchange when there are no open orders
+                # {"code":308,"message":"Not Found Transaction Record"}
+                return
+            else:
+                raise ExchangeError(feedback)
+        result = self.safe_value(response, 'result')
+        if result is not None:
+            if not result:
+                if message == u'服务端忙碌':
+                    raise ExchangeNotAvailable(feedback)
+                else:
+                    raise ExchangeError(feedback)

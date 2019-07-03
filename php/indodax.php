@@ -13,7 +13,7 @@ class indodax extends Exchange {
         return array_replace_recursive (parent::describe (), array (
             'id' => 'indodax',
             'name' => 'INDODAX',
-            'countries' => 'ID', // Indonesia
+            'countries' => array ( 'ID' ), // Indonesia
             'has' => array (
                 'CORS' => false,
                 'createMarketOrder' => false,
@@ -26,15 +26,16 @@ class indodax extends Exchange {
                 'fetchCurrencies' => false,
                 'withdraw' => true,
             ),
-            'version' => '1.7', // as of 6 November 2017
+            'version' => '1.8', // as of 9 April 2018
             'urls' => array (
                 'logo' => 'https://user-images.githubusercontent.com/1294454/37443283-2fddd0e4-281c-11e8-9741-b4f1419001b5.jpg',
                 'api' => array (
-                    'public' => 'https://vip.bitcoin.co.id/api',
-                    'private' => 'https://vip.bitcoin.co.id/tapi',
+                    'public' => 'https://indodax.com/api',
+                    'private' => 'https://indodax.com/tapi',
                 ),
                 'www' => 'https://www.indodax.com',
                 'doc' => 'https://indodax.com/downloads/BITCOINCOID-API-DOCUMENTATION.pdf',
+                'referral' => 'https://indodax.com/ref/testbitcoincoid/1',
             ),
             'api' => array (
                 'public' => array (
@@ -59,29 +60,42 @@ class indodax extends Exchange {
                 ),
             ),
             'markets' => array (
-                'BTC/IDR' => array ( 'id' => 'btc_idr', 'symbol' => 'BTC/IDR', 'base' => 'BTC', 'quote' => 'IDR', 'baseId' => 'btc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.0001, 'max' => null ))),
-                'BCH/IDR' => array ( 'id' => 'bch_idr', 'symbol' => 'BCH/IDR', 'base' => 'BCH', 'quote' => 'IDR', 'baseId' => 'bch', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.001, 'max' => null ))),
-                'BTG/IDR' => array ( 'id' => 'btg_idr', 'symbol' => 'BTG/IDR', 'base' => 'BTG', 'quote' => 'IDR', 'baseId' => 'btg', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'ETH/IDR' => array ( 'id' => 'eth_idr', 'symbol' => 'ETH/IDR', 'base' => 'ETH', 'quote' => 'IDR', 'baseId' => 'eth', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'ETC/IDR' => array ( 'id' => 'etc_idr', 'symbol' => 'ETC/IDR', 'base' => 'ETC', 'quote' => 'IDR', 'baseId' => 'etc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
-                'IGNIS/IDR' => array ( 'id' => 'ignis_idr', 'symbol' => 'IGNIS/IDR', 'base' => 'IGNIS', 'quote' => 'IDR', 'baseId' => 'ignis', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 1, 'max' => null ))),
-                'LTC/IDR' => array ( 'id' => 'ltc_idr', 'symbol' => 'LTC/IDR', 'base' => 'LTC', 'quote' => 'IDR', 'baseId' => 'ltc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'NXT/IDR' => array ( 'id' => 'nxt_idr', 'symbol' => 'NXT/IDR', 'base' => 'NXT', 'quote' => 'IDR', 'baseId' => 'nxt', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 5, 'max' => null ))),
-                'TEN/IDR' => array ( 'id' => 'ten_idr', 'symbol' => 'TEN/IDR', 'base' => 'TEN', 'quote' => 'IDR', 'baseId' => 'ten', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 5, 'max' => null ))),
-                'WAVES/IDR' => array ( 'id' => 'waves_idr', 'symbol' => 'WAVES/IDR', 'base' => 'WAVES', 'quote' => 'IDR', 'baseId' => 'waves', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
-                'XRP/IDR' => array ( 'id' => 'xrp_idr', 'symbol' => 'XRP/IDR', 'base' => 'XRP', 'quote' => 'IDR', 'baseId' => 'xrp', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 10, 'max' => null ))),
-                'XZC/IDR' => array ( 'id' => 'xzc_idr', 'symbol' => 'XZC/IDR', 'base' => 'XZC', 'quote' => 'IDR', 'baseId' => 'xzc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
-                'XLM/IDR' => array ( 'id' => 'str_idr', 'symbol' => 'XLM/IDR', 'base' => 'XLM', 'quote' => 'IDR', 'baseId' => 'str', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array ( 'amount' => array ( 'min' => 20, 'max' => null ))),
-                'BTS/BTC' => array ( 'id' => 'bts_btc', 'symbol' => 'BTS/BTC', 'base' => 'BTS', 'quote' => 'BTC', 'baseId' => 'bts', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'DASH/BTC' => array ( 'id' => 'drk_btc', 'symbol' => 'DASH/BTC', 'base' => 'DASH', 'quote' => 'BTC', 'baseId' => 'drk', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 6 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'DOGE/BTC' => array ( 'id' => 'doge_btc', 'symbol' => 'DOGE/BTC', 'base' => 'DOGE', 'quote' => 'BTC', 'baseId' => 'doge', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 1, 'max' => null ))),
-                'ETH/BTC' => array ( 'id' => 'eth_btc', 'symbol' => 'ETH/BTC', 'base' => 'ETH', 'quote' => 'BTC', 'baseId' => 'eth', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 5 ), 'limits' => array ( 'amount' => array ( 'min' => 0.001, 'max' => null ))),
-                'LTC/BTC' => array ( 'id' => 'ltc_btc', 'symbol' => 'LTC/BTC', 'base' => 'LTC', 'quote' => 'BTC', 'baseId' => 'ltc', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 6 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'NXT/BTC' => array ( 'id' => 'nxt_btc', 'symbol' => 'NXT/BTC', 'base' => 'NXT', 'quote' => 'BTC', 'baseId' => 'nxt', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'TEN/BTC' => array ( 'id' => 'ten_btc', 'symbol' => 'TEN/BTC', 'base' => 'TEN', 'quote' => 'BTC', 'baseId' => 'ten', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'XLM/BTC' => array ( 'id' => 'str_btc', 'symbol' => 'XLM/BTC', 'base' => 'XLM', 'quote' => 'BTC', 'baseId' => 'str', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
-                'XEM/BTC' => array ( 'id' => 'nem_btc', 'symbol' => 'XEM/BTC', 'base' => 'XEM', 'quote' => 'BTC', 'baseId' => 'nem', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 1, 'max' => null ))),
-                'XRP/BTC' => array ( 'id' => 'xrp_btc', 'symbol' => 'XRP/BTC', 'base' => 'XRP', 'quote' => 'BTC', 'baseId' => 'xrp', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array ( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                // HARDCODING IS DEPRECATED
+                // but they don't have a corresponding endpoint in their API
+                'BTC/IDR' => array( 'id' => 'btc_idr', 'symbol' => 'BTC/IDR', 'base' => 'BTC', 'quote' => 'IDR', 'baseId' => 'btc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.0001, 'max' => null ))),
+                'ACT/IDR' => array( 'id' => 'act_idr', 'symbol' => 'ACT/IDR', 'base' => 'ACT', 'quote' => 'IDR', 'baseId' => 'act', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => null, 'max' => null ))),
+                'ADA/IDR' => array( 'id' => 'ada_idr', 'symbol' => 'ADA/IDR', 'base' => 'ADA', 'quote' => 'IDR', 'baseId' => 'ada', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => null, 'max' => null ))),
+                'BCD/IDR' => array( 'id' => 'bcd_idr', 'symbol' => 'BCD/IDR', 'base' => 'BCD', 'quote' => 'IDR', 'baseId' => 'bcd', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => null, 'max' => null ))),
+                'BCH/IDR' => array( 'id' => 'bch_idr', 'symbol' => 'BCH/IDR', 'base' => 'BCH', 'quote' => 'IDR', 'baseId' => 'bch', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.001, 'max' => null ))),
+                'BTG/IDR' => array( 'id' => 'btg_idr', 'symbol' => 'BTG/IDR', 'base' => 'BTG', 'quote' => 'IDR', 'baseId' => 'btg', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'BTS/IDR' => array( 'id' => 'bts_idr', 'symbol' => 'BTS/IDR', 'base' => 'BTS', 'quote' => 'IDR', 'baseId' => 'bts', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'DASH/IDR' => array( 'id' => 'drk_idr', 'symbol' => 'DASH/IDR', 'base' => 'DASH', 'quote' => 'IDR', 'baseId' => 'drk', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'DOGE/IDR' => array( 'id' => 'doge_idr', 'symbol' => 'DOGE/IDR', 'base' => 'DOGE', 'quote' => 'IDR', 'baseId' => 'doge', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 1000, 'max' => null ))),
+                'ETH/IDR' => array( 'id' => 'eth_idr', 'symbol' => 'ETH/IDR', 'base' => 'ETH', 'quote' => 'IDR', 'baseId' => 'eth', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'ETC/IDR' => array( 'id' => 'etc_idr', 'symbol' => 'ETC/IDR', 'base' => 'ETC', 'quote' => 'IDR', 'baseId' => 'etc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
+                'GSC/IDR' => array( 'id' => 'gsc_idr', 'symbol' => 'GSC/IDR', 'base' => 'GSC', 'quote' => 'IDR', 'baseId' => 'gsc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
+                'IGNIS/IDR' => array( 'id' => 'ignis_idr', 'symbol' => 'IGNIS/IDR', 'base' => 'IGNIS', 'quote' => 'IDR', 'baseId' => 'ignis', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 1, 'max' => null ))),
+                'LTC/IDR' => array( 'id' => 'ltc_idr', 'symbol' => 'LTC/IDR', 'base' => 'LTC', 'quote' => 'IDR', 'baseId' => 'ltc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'NPXS/IDR' => array( 'id' => 'npxs_idr', 'symbol' => 'NPXS/IDR', 'base' => 'NPXS', 'quote' => 'IDR', 'baseId' => 'npxs', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 1, 'max' => null ))),
+                'NXT/IDR' => array( 'id' => 'nxt_idr', 'symbol' => 'NXT/IDR', 'base' => 'NXT', 'quote' => 'IDR', 'baseId' => 'nxt', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 5, 'max' => null ))),
+                'STQ/IDR' => array( 'id' => 'stq_idr', 'symbol' => 'STQ/IDR', 'base' => 'STQ', 'quote' => 'IDR', 'baseId' => 'stq', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => null, 'max' => null ))),
+                'TEN/IDR' => array( 'id' => 'ten_idr', 'symbol' => 'TEN/IDR', 'base' => 'TEN', 'quote' => 'IDR', 'baseId' => 'ten', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 5, 'max' => null ))),
+                'TRX/IDR' => array( 'id' => 'trx_idr', 'symbol' => 'TRX/IDR', 'base' => 'TRX', 'quote' => 'IDR', 'baseId' => 'trx', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => null, 'max' => null ))),
+                'WAVES/IDR' => array( 'id' => 'waves_idr', 'symbol' => 'WAVES/IDR', 'base' => 'WAVES', 'quote' => 'IDR', 'baseId' => 'waves', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
+                'XEM/IDR' => array( 'id' => 'nem_idr', 'symbol' => 'XEM/IDR', 'base' => 'XEM', 'quote' => 'IDR', 'baseId' => 'nem', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 1, 'max' => null ))),
+                'XLM/IDR' => array( 'id' => 'str_idr', 'symbol' => 'XLM/IDR', 'base' => 'XLM', 'quote' => 'IDR', 'baseId' => 'str', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 20, 'max' => null ))),
+                'XRP/IDR' => array( 'id' => 'xrp_idr', 'symbol' => 'XRP/IDR', 'base' => 'XRP', 'quote' => 'IDR', 'baseId' => 'xrp', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 10, 'max' => null ))),
+                'XZC/IDR' => array( 'id' => 'xzc_idr', 'symbol' => 'XZC/IDR', 'base' => 'XZC', 'quote' => 'IDR', 'baseId' => 'xzc', 'quoteId' => 'idr', 'precision' => array ( 'amount' => 8, 'price' => 0 ), 'limits' => array( 'amount' => array ( 'min' => 0.1, 'max' => null ))),
+                'BTS/BTC' => array( 'id' => 'bts_btc', 'symbol' => 'BTS/BTC', 'base' => 'BTS', 'quote' => 'BTC', 'baseId' => 'bts', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'DASH/BTC' => array( 'id' => 'drk_btc', 'symbol' => 'DASH/BTC', 'base' => 'DASH', 'quote' => 'BTC', 'baseId' => 'drk', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 6 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'DOGE/BTC' => array( 'id' => 'doge_btc', 'symbol' => 'DOGE/BTC', 'base' => 'DOGE', 'quote' => 'BTC', 'baseId' => 'doge', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 1, 'max' => null ))),
+                'ETH/BTC' => array( 'id' => 'eth_btc', 'symbol' => 'ETH/BTC', 'base' => 'ETH', 'quote' => 'BTC', 'baseId' => 'eth', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 5 ), 'limits' => array( 'amount' => array ( 'min' => 0.001, 'max' => null ))),
+                'LTC/BTC' => array( 'id' => 'ltc_btc', 'symbol' => 'LTC/BTC', 'base' => 'LTC', 'quote' => 'BTC', 'baseId' => 'ltc', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 6 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'NXT/BTC' => array( 'id' => 'nxt_btc', 'symbol' => 'NXT/BTC', 'base' => 'NXT', 'quote' => 'BTC', 'baseId' => 'nxt', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'TEN/BTC' => array( 'id' => 'ten_btc', 'symbol' => 'TEN/BTC', 'base' => 'TEN', 'quote' => 'BTC', 'baseId' => 'ten', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'XEM/BTC' => array( 'id' => 'nem_btc', 'symbol' => 'XEM/BTC', 'base' => 'XEM', 'quote' => 'BTC', 'baseId' => 'nem', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 1, 'max' => null ))),
+                'XLM/BTC' => array( 'id' => 'str_btc', 'symbol' => 'XLM/BTC', 'base' => 'XLM', 'quote' => 'BTC', 'baseId' => 'str', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
+                'XRP/BTC' => array( 'id' => 'xrp_btc', 'symbol' => 'XRP/BTC', 'base' => 'XRP', 'quote' => 'BTC', 'baseId' => 'xrp', 'quoteId' => 'btc', 'precision' => array ( 'amount' => 8, 'price' => 8 ), 'limits' => array( 'amount' => array ( 'min' => 0.01, 'max' => null ))),
             ),
             'fees' => array (
                 'trading' => array (
@@ -96,18 +110,23 @@ class indodax extends Exchange {
 
     public function fetch_balance ($params = array ()) {
         $this->load_markets();
-        $response = $this->privatePostGetInfo ();
-        $balance = $response['return'];
-        $result = array ( 'info' => $balance );
-        $codes = is_array ($this->currencies) ? array_keys ($this->currencies) : array ();
-        for ($i = 0; $i < count ($codes); $i++) {
-            $code = $codes[$i];
-            $currency = $this->currencies[$code];
-            $lowercase = $currency['id'];
+        $response = $this->privatePostGetInfo ($params);
+        $balances = $this->safe_value($response, 'return', array());
+        $free = $this->safe_value($balances, 'balance', array());
+        $used = $this->safe_value($balances, 'balance_hold', array());
+        $result = array( 'info' => $response );
+        $currencyIds = is_array($free) ? array_keys($free) : array();
+        for ($i = 0; $i < count ($currencyIds); $i++) {
+            $currencyId = $currencyIds[$i];
+            $code = $currencyId;
+            if (is_array($this->currencies_by_id) && array_key_exists($code, $this->currencies_by_id)) {
+                $code = $this->currencies_by_id[$currencyId]['code'];
+            } else {
+                $code = $this->common_currency_code(strtoupper($currencyId));
+            }
             $account = $this->account ();
-            $account['free'] = $this->safe_float($balance['balance'], $lowercase, 0.0);
-            $account['used'] = $this->safe_float($balance['balance_hold'], $lowercase, 0.0);
-            $account['total'] = $this->sum ($account['free'], $account['used']);
+            $account['free'] = $this->safe_float($free, $currencyId);
+            $account['used'] = $this->safe_float($used, $currencyId);
             $result[$code] = $account;
         }
         return $this->parse_balance($result);
@@ -115,32 +134,34 @@ class indodax extends Exchange {
 
     public function fetch_order_book ($symbol, $limit = null, $params = array ()) {
         $this->load_markets();
-        $orderbook = $this->publicGetPairDepth (array_merge (array (
+        $request = array (
             'pair' => $this->market_id($symbol),
-        ), $params));
+        );
+        $orderbook = $this->publicGetPairDepth (array_merge ($request, $params));
         return $this->parse_order_book($orderbook, null, 'buy', 'sell');
     }
 
     public function fetch_ticker ($symbol, $params = array ()) {
         $this->load_markets();
         $market = $this->market ($symbol);
-        $response = $this->publicGetPairTicker (array_merge (array (
+        $request = array (
             'pair' => $market['id'],
-        ), $params));
+        );
+        $response = $this->publicGetPairTicker (array_merge ($request, $params));
         $ticker = $response['ticker'];
-        $timestamp = floatval ($ticker['server_time']) * 1000;
-        $baseVolume = 'vol_' . strtolower ($market['baseId']);
-        $quoteVolume = 'vol_' . strtolower ($market['quoteId']);
-        $last = floatval ($ticker['last']);
+        $timestamp = $this->safe_float($ticker, 'server_time') * 1000;
+        $baseVolume = 'vol_' . strtolower($market['baseId']);
+        $quoteVolume = 'vol_' . strtolower($market['quoteId']);
+        $last = $this->safe_float($ticker, 'last');
         return array (
             'symbol' => $symbol,
             'timestamp' => $timestamp,
             'datetime' => $this->iso8601 ($timestamp),
-            'high' => floatval ($ticker['high']),
-            'low' => floatval ($ticker['low']),
-            'bid' => floatval ($ticker['buy']),
+            'high' => $this->safe_float($ticker, 'high'),
+            'low' => $this->safe_float($ticker, 'low'),
+            'bid' => $this->safe_float($ticker, 'buy'),
             'bidVolume' => null,
-            'ask' => floatval ($ticker['sell']),
+            'ask' => $this->safe_float($ticker, 'sell'),
             'askVolume' => null,
             'vwap' => null,
             'open' => null,
@@ -150,40 +171,64 @@ class indodax extends Exchange {
             'change' => null,
             'percentage' => null,
             'average' => null,
-            'baseVolume' => floatval ($ticker[$baseVolume]),
-            'quoteVolume' => floatval ($ticker[$quoteVolume]),
+            'baseVolume' => $this->safe_float($ticker, $baseVolume),
+            'quoteVolume' => $this->safe_float($ticker, $quoteVolume),
             'info' => $ticker,
         );
     }
 
-    public function parse_trade ($trade, $market) {
-        $timestamp = intval ($trade['date']) * 1000;
+    public function parse_trade ($trade, $market = null) {
+        $timestamp = $this->safe_integer($trade, 'date');
+        if ($timestamp !== null) {
+            $timestamp *= 1000;
+        }
+        $id = $this->safe_string($trade, 'tid');
+        $symbol = null;
+        if ($market !== null) {
+            $symbol = $market['symbol'];
+        }
+        $type = null;
+        $side = $this->safe_string($trade, 'type');
+        $price = $this->safe_float($trade, 'price');
+        $amount = $this->safe_float($trade, 'amount');
+        $cost = null;
+        if ($price !== null) {
+            if ($amount !== null) {
+                $cost = $price * $amount;
+            }
+        }
         return array (
-            'id' => $trade['tid'],
+            'id' => $id,
             'info' => $trade,
             'timestamp' => $timestamp,
             'datetime' => $this->iso8601 ($timestamp),
-            'symbol' => $market['symbol'],
-            'type' => null,
-            'side' => $trade['type'],
-            'price' => floatval ($trade['price']),
-            'amount' => floatval ($trade['amount']),
+            'symbol' => $symbol,
+            'type' => $type,
+            'side' => $side,
+            'order' => null,
+            'takerOrMaker' => null,
+            'price' => $price,
+            'amount' => $amount,
+            'cost' => $cost,
+            'fee' => null,
         );
     }
 
     public function fetch_trades ($symbol, $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
         $market = $this->market ($symbol);
-        $response = $this->publicGetPairTrades (array_merge (array (
+        $request = array (
             'pair' => $market['id'],
-        ), $params));
+        );
+        $response = $this->publicGetPairTrades (array_merge ($request, $params));
         return $this->parse_trades($response, $market, $since, $limit);
     }
 
     public function parse_order ($order, $market = null) {
         $side = null;
-        if (is_array ($order) && array_key_exists ('type', $order))
+        if (is_array($order) && array_key_exists('type', $order)) {
             $side = $order['type'];
+        }
         $status = $this->safe_string($order, 'status', 'open');
         if ($status === 'filled') {
             $status = 'closed';
@@ -196,14 +241,16 @@ class indodax extends Exchange {
         $amount = null;
         $remaining = null;
         $filled = null;
-        if ($market) {
+        if ($market !== null) {
             $symbol = $market['symbol'];
             $quoteId = $market['quoteId'];
             $baseId = $market['baseId'];
-            if (($market['quoteId'] === 'idr') && (is_array ($order) && array_key_exists ('order_rp', $order)))
+            if (($market['quoteId'] === 'idr') && (is_array($order) && array_key_exists('order_rp', $order))) {
                 $quoteId = 'rp';
-            if (($market['baseId'] === 'idr') && (is_array ($order) && array_key_exists ('remain_rp', $order)))
+            }
+            if (($market['baseId'] === 'idr') && (is_array($order) && array_key_exists('remain_rp', $order))) {
                 $baseId = 'rp';
+            }
             $cost = $this->safe_float($order, 'order_' . $quoteId);
             if ($cost) {
                 $amount = $cost / $price;
@@ -220,13 +267,15 @@ class indodax extends Exchange {
             }
         }
         $average = null;
-        if ($filled)
+        if ($filled) {
             $average = $cost / $filled;
-        $timestamp = intval ($order['submit_time']);
+        }
+        $timestamp = $this->safe_integer($order, 'submit_time');
         $fee = null;
-        $result = array (
+        $id = $this->safe_string($order, 'order_id');
+        return array (
             'info' => $order,
-            'id' => $order['order_id'],
+            'id' => $id,
             'timestamp' => $timestamp,
             'datetime' => $this->iso8601 ($timestamp),
             'symbol' => $symbol,
@@ -241,42 +290,45 @@ class indodax extends Exchange {
             'status' => $status,
             'fee' => $fee,
         );
-        return $result;
     }
 
     public function fetch_order ($id, $symbol = null, $params = array ()) {
-        if (!$symbol)
-            throw new ExchangeError ($this->id . ' fetchOrder requires a symbol');
+        if ($symbol === null) {
+            throw new ExchangeError($this->id . ' fetchOrder requires a symbol');
+        }
         $this->load_markets();
         $market = $this->market ($symbol);
-        $response = $this->privatePostGetOrder (array_merge (array (
+        $request = array (
             'pair' => $market['id'],
             'order_id' => $id,
-        ), $params));
+        );
+        $response = $this->privatePostGetOrder (array_merge ($request, $params));
         $orders = $response['return'];
-        $order = $this->parse_order(array_merge (array ( 'id' => $id ), $orders['order']), $market);
-        return array_merge (array ( 'info' => $response ), $order);
+        $order = $this->parse_order(array_merge (array( 'id' => $id ), $orders['order']), $market);
+        return array_merge (array( 'info' => $response ), $order);
     }
 
     public function fetch_open_orders ($symbol = null, $since = null, $limit = null, $params = array ()) {
         $this->load_markets();
         $market = null;
-        $request = array ();
-        if ($symbol) {
+        $request = array();
+        if ($symbol !== null) {
             $market = $this->market ($symbol);
             $request['pair'] = $market['id'];
         }
         $response = $this->privatePostOpenOrders (array_merge ($request, $params));
         $rawOrders = $response['return']['orders'];
-        // array ( success => 1, return => { orders => null )} if no orders
-        if (!$rawOrders)
-            return array ();
-        // array ( success => 1, return => { orders => array ( ... objects ) )} for orders fetched by $symbol
-        if ($symbol !== null)
+        // array( success => 1, return => { orders => null )} if no orders
+        if (!$rawOrders) {
+            return array();
+        }
+        // array( success => 1, return => { orders => array ( ... objects ) )} for orders fetched by $symbol
+        if ($symbol !== null) {
             return $this->parse_orders($rawOrders, $market, $since, $limit);
-        // array ( success => 1, return => { orders => array ( marketid => array ( ... objects ) ))} if all orders are fetched
-        $marketIds = is_array ($rawOrders) ? array_keys ($rawOrders) : array ();
-        $exchangeOrders = array ();
+        }
+        // array( success => 1, return => { orders => array ( marketid => array ( ... objects ) ))} if all orders are fetched
+        $marketIds = is_array($rawOrders) ? array_keys($rawOrders) : array();
+        $exchangeOrders = array();
         for ($i = 0; $i < count ($marketIds); $i++) {
             $marketId = $marketIds[$i];
             $marketOrders = $rawOrders[$marketId];
@@ -288,41 +340,44 @@ class indodax extends Exchange {
     }
 
     public function fetch_closed_orders ($symbol = null, $since = null, $limit = null, $params = array ()) {
-        if (!$symbol)
-            throw new ExchangeError ($this->id . ' fetchOrders requires a symbol');
+        if ($symbol === null) {
+            throw new ExchangeError($this->id . ' fetchOrders requires a symbol');
+        }
         $this->load_markets();
-        $request = array ();
+        $request = array();
         $market = null;
-        if ($symbol) {
+        if ($symbol !== null) {
             $market = $this->market ($symbol);
             $request['pair'] = $market['id'];
         }
         $response = $this->privatePostOrderHistory (array_merge ($request, $params));
         $orders = $this->parse_orders($response['return']['orders'], $market, $since, $limit);
         $orders = $this->filter_by($orders, 'status', 'closed');
-        if ($symbol)
+        if ($symbol !== null) {
             return $this->filter_by_symbol($orders, $symbol);
+        }
         return $orders;
     }
 
     public function create_order ($symbol, $type, $side, $amount, $price = null, $params = array ()) {
-        if ($type !== 'limit')
-            throw new ExchangeError ($this->id . ' allows limit orders only');
+        if ($type !== 'limit') {
+            throw new ExchangeError($this->id . ' allows limit orders only');
+        }
         $this->load_markets();
         $market = $this->market ($symbol);
-        $order = array (
+        $request = array (
             'pair' => $market['id'],
             'type' => $side,
             'price' => $price,
         );
         $currency = $market['baseId'];
         if ($side === 'buy') {
-            $order[$market['quoteId']] = $amount * $price;
+            $request[$market['quoteId']] = $amount * $price;
         } else {
-            $order[$market['baseId']] = $amount;
+            $request[$market['baseId']] = $amount;
         }
-        $order[$currency] = $amount;
-        $result = $this->privatePostTrade (array_merge ($order, $params));
+        $request[$currency] = $amount;
+        $result = $this->privatePostTrade (array_merge ($request, $params));
         return array (
             'info' => $result,
             'id' => (string) $result['return']['order_id'],
@@ -330,30 +385,33 @@ class indodax extends Exchange {
     }
 
     public function cancel_order ($id, $symbol = null, $params = array ()) {
-        if ($symbol === null)
-            throw new ExchangeError ($this->id . ' cancelOrder requires a $symbol argument');
+        if ($symbol === null) {
+            throw new ArgumentsRequired($this->id . ' cancelOrder requires a $symbol argument');
+        }
         $side = $this->safe_value($params, 'side');
-        if ($side === null)
-            throw new ExchangeError ($this->id . ' cancelOrder requires an extra "$side" param');
+        if ($side === null) {
+            throw new ExchangeError($this->id . ' cancelOrder requires an extra "$side" param');
+        }
         $this->load_markets();
         $market = $this->market ($symbol);
-        return $this->privatePostCancelOrder (array_merge (array (
+        $request = array (
             'order_id' => $id,
             'pair' => $market['id'],
-            'type' => $params['side'],
-        ), $params));
+            'type' => $side,
+        );
+        return $this->privatePostCancelOrder (array_merge ($request, $params));
     }
 
     public function withdraw ($code, $amount, $address, $tag = null, $params = array ()) {
         $this->check_address($address);
         $this->load_markets();
         $currency = $this->currency ($code);
-        // Custom string you need to provide to identify each withdrawal $request.
+        // Custom string you need to provide to identify each withdrawal.
         // Will be passed to callback URL (assigned via website to the API key)
         // so your system can identify the $request and confirm it.
         // Alphanumeric, max length 255.
         $requestId = $this->milliseconds ();
-        // alternatively:
+        // Alternatively:
         // $requestId = $this->uuid ();
         $request = array (
             'currency' => $currency['id'],
@@ -361,8 +419,9 @@ class indodax extends Exchange {
             'withdraw_address' => $address,
             'request_id' => (string) $requestId,
         );
-        if ($tag)
+        if ($tag) {
             $request['withdraw_memo'] = $tag;
+        }
         $response = $this->privatePostWithdrawCoin (array_merge ($request, $params));
         //
         //     {
@@ -380,8 +439,9 @@ class indodax extends Exchange {
         //     }
         //
         $id = null;
-        if ((is_array ($response) && array_key_exists ('txid', $response)) && (strlen ($response['txid']) > 0))
+        if ((is_array($response) && array_key_exists('txid', $response)) && (strlen ($response['txid']) > 0)) {
             $id = $response['txid'];
+        }
         return array (
             'info' => $response,
             'id' => $id,
@@ -404,42 +464,46 @@ class indodax extends Exchange {
                 'Sign' => $this->hmac ($this->encode ($body), $this->encode ($this->secret), 'sha512'),
             );
         }
-        return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
+        return array( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 
-    public function handle_errors ($code, $reason, $url, $method, $headers, $body, $response = null) {
-        // array ( success => 0, error => "invalid order." )
+    public function handle_errors ($code, $reason, $url, $method, $headers, $body, $response) {
+        if ($response === null) {
+            return;
+        }
+        // array( success => 0, error => "invalid order." )
         // or
-        // [array ( data, ... ), array ( ... ), ... ]
-        if ($response === null)
-            if ($body[0] === '{' || $body[0] === '[')
-                $response = json_decode ($body, $as_associative_array = true);
-        if (gettype ($response) === 'array' && count (array_filter (array_keys ($response), 'is_string')) == 0)
-            return; // public endpoints may return array ()-arrays
-        if (!(is_array ($response) && array_key_exists ('success', $response)))
+        // [array( data, ... ), array( ... ), ... ]
+        if (gettype ($response) === 'array' && count (array_filter (array_keys ($response), 'is_string')) == 0) {
+            return; // public endpoints may return array()-arrays
+        }
+        if (!(is_array($response) && array_key_exists('success', $response))) {
             return; // no 'success' property on public responses
+        }
         if ($response['success'] === 1) {
-            // array ( success => 1, return => { orders => array () )}
-            if (!(is_array ($response) && array_key_exists ('return', $response)))
-                throw new ExchangeError ($this->id . ' => malformed $response => ' . $this->json ($response));
-            else
+            // array( success => 1, return => { orders => array() )}
+            if (!(is_array($response) && array_key_exists('return', $response))) {
+                throw new ExchangeError($this->id . ' => malformed $response => ' . $this->json ($response));
+            } else {
                 return;
+            }
         }
         $message = $response['error'];
-        $feedback = $this->id . ' ' . $this->json ($response);
+        $feedback = $this->id . ' ' . $body;
+        // todo => rewrite this for unified $this->exceptions (exact/broad)
         if ($message === 'Insufficient balance.') {
-            throw new InsufficientFunds ($feedback);
+            throw new InsufficientFunds($feedback);
         } else if ($message === 'invalid order.') {
-            throw new OrderNotFound ($feedback); // cancelOrder(1)
-        } else if (mb_strpos ($message, 'Minimum price ') !== false) {
-            throw new InvalidOrder ($feedback); // price < limits.price.min, on createLimitBuyOrder ('ETH/BTC', 1, 0)
-        } else if (mb_strpos ($message, 'Minimum order ') !== false) {
-            throw new InvalidOrder ($feedback); // cost < limits.cost.min on createLimitBuyOrder ('ETH/BTC', 0, 1)
+            throw new OrderNotFound($feedback); // cancelOrder(1)
+        } else if (mb_strpos($message, 'Minimum price ') !== false) {
+            throw new InvalidOrder($feedback); // price < limits.price.min, on createLimitBuyOrder ('ETH/BTC', 1, 0)
+        } else if (mb_strpos($message, 'Minimum order ') !== false) {
+            throw new InvalidOrder($feedback); // cost < limits.cost.min on createLimitBuyOrder ('ETH/BTC', 0, 1)
         } else if ($message === 'Invalid credentials. API not found or session has expired.') {
-            throw new AuthenticationError ($feedback); // on bad apiKey
+            throw new AuthenticationError($feedback); // on bad apiKey
         } else if ($message === 'Invalid credentials. Bad sign.') {
-            throw new AuthenticationError ($feedback); // on bad secret
+            throw new AuthenticationError($feedback); // on bad secret
         }
-        throw new ExchangeError ($this->id . ' => unknown error => ' . $this->json ($response));
+        throw new ExchangeError($this->id . ' => unknown error => ' . $this->json ($response));
     }
 }

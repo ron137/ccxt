@@ -12,7 +12,7 @@ class okcoincny (okcoinusd):
         return self.deep_extend(super(okcoincny, self).describe(), {
             'id': 'okcoincny',
             'name': 'OKCoin CNY',
-            'countries': 'CN',
+            'countries': ['CN'],
             'has': {
                 'CORS': False,
             },
@@ -25,6 +25,7 @@ class okcoincny (okcoinusd):
                 },
                 'www': 'https://www.okcoin.cn',
                 'doc': 'https://www.okcoin.cn/rest_getStarted.html',
+                'referral': 'https://www.okcoin.cn',
             },
             'markets': {
                 'BTC/CNY': {'id': 'btc_cny', 'symbol': 'BTC/CNY', 'base': 'BTC', 'quote': 'CNY', 'type': 'spot', 'spot': True, 'future': False},
