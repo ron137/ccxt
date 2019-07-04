@@ -541,8 +541,8 @@ module.exports = class binance extends Exchange {
     async fetchTradingFees (params = {}) {
         var accountInfo = await this.privateGetAccount()
         return {
-            'taker': accountInfo['takerComission'] / 100,
-            'maker': accountInfo['makerComission'] / 100,
+            'taker': accountInfo['takerCommission'] / 100,
+            'maker': accountInfo['makerCommission'] / 100,
             'info': accountInfo
         };
     }
