@@ -538,6 +538,15 @@ module.exports = class binance extends Exchange {
         };
     }
 
+    async fetchTradingFees (params = {}) {
+        var accountInfo = await this.privateGetAccount()
+        return {
+            'info': accountInfo,
+            'taker': this.safeFloat (response, 'takerComission'),
+            'maker': this.safeFloat (response, 'makerComission')
+        };
+    }
+
     async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
         const market = this.market (symbol);
