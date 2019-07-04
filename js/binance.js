@@ -542,8 +542,8 @@ module.exports = class binance extends Exchange {
         var accountInfo = await this.privateGetAccount()
         return {
             'info': accountInfo,
-            'taker': this.safeFloat (response, 'takerComission'),
-            'maker': this.safeFloat (response, 'makerComission')
+            'taker': this.safeFloat (accountInfo, 'takerComission'),
+            'maker': this.safeFloat (accountInfo, 'makerComission')
         };
     }
 
