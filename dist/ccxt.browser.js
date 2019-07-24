@@ -43,7 +43,7 @@ const Exchange  = require ('./js/base/Exchange')
 //-----------------------------------------------------------------------------
 // this is updated by vss.js when building
 
-const version = '1.18.882'
+const version = '1.18.980'
 
 Exchange.ccxtVersion = version
 
@@ -70,7 +70,6 @@ const exchanges = {
     'bithumb':                 require ('./js/bithumb.js'),
     'bitkk':                   require ('./js/bitkk.js'),
     'bitlish':                 require ('./js/bitlish.js'),
-    'bitmarket':               require ('./js/bitmarket.js'),
     'bitmex':                  require ('./js/bitmex.js'),
     'bitso':                   require ('./js/bitso.js'),
     'bitstamp':                require ('./js/bitstamp.js'),
@@ -83,7 +82,6 @@ const exchanges = {
     'btcalpha':                require ('./js/btcalpha.js'),
     'btcbox':                  require ('./js/btcbox.js'),
     'btcchina':                require ('./js/btcchina.js'),
-    'btcexchange':             require ('./js/btcexchange.js'),
     'btcmarkets':              require ('./js/btcmarkets.js'),
     'btctradeim':              require ('./js/btctradeim.js'),
     'btctradeua':              require ('./js/btctradeua.js'),
@@ -91,7 +89,6 @@ const exchanges = {
     'buda':                    require ('./js/buda.js'),
     'bxinth':                  require ('./js/bxinth.js'),
     'cex':                     require ('./js/cex.js'),
-    'chbtc':                   require ('./js/chbtc.js'),
     'chilebit':                require ('./js/chilebit.js'),
     'cobinhood':               require ('./js/cobinhood.js'),
     'coinbase':                require ('./js/coinbase.js'),
@@ -106,7 +103,6 @@ const exchanges = {
     'coingi':                  require ('./js/coingi.js'),
     'coinmarketcap':           require ('./js/coinmarketcap.js'),
     'coinmate':                require ('./js/coinmate.js'),
-    'coinnest':                require ('./js/coinnest.js'),
     'coinone':                 require ('./js/coinone.js'),
     'coinspot':                require ('./js/coinspot.js'),
     'cointiger':               require ('./js/cointiger.js'),
@@ -128,7 +124,6 @@ const exchanges = {
     'gateio':                  require ('./js/gateio.js'),
     'gdax':                    require ('./js/gdax.js'),
     'gemini':                  require ('./js/gemini.js'),
-    'hadax':                   require ('./js/hadax.js'),
     'hitbtc':                  require ('./js/hitbtc.js'),
     'hitbtc2':                 require ('./js/hitbtc2.js'),
     'huobipro':                require ('./js/huobipro.js'),
@@ -143,6 +138,7 @@ const exchanges = {
     'kucoin2':                 require ('./js/kucoin2.js'),
     'kuna':                    require ('./js/kuna.js'),
     'lakebtc':                 require ('./js/lakebtc.js'),
+    'latoken':                 require ('./js/latoken.js'),
     'lbank':                   require ('./js/lbank.js'),
     'liqui':                   require ('./js/liqui.js'),
     'liquid':                  require ('./js/liquid.js'),
@@ -185,7 +181,7 @@ module.exports = Object.assign ({ version, Exchange, exchanges: Object.keys (exc
 
 //-----------------------------------------------------------------------------
 
-},{"./js/_1btcxe.js":3,"./js/acx.js":4,"./js/allcoin.js":5,"./js/anxpro.js":6,"./js/base/Exchange":7,"./js/base/errors":8,"./js/base/functions":9,"./js/bcex.js":20,"./js/bequant.js":21,"./js/bibox.js":22,"./js/bigone.js":23,"./js/binance.js":24,"./js/binanceje.js":25,"./js/bit2c.js":26,"./js/bitbank.js":27,"./js/bitbay.js":28,"./js/bitfinex.js":29,"./js/bitfinex2.js":30,"./js/bitflyer.js":31,"./js/bitforex.js":32,"./js/bithumb.js":33,"./js/bitkk.js":34,"./js/bitlish.js":35,"./js/bitmarket.js":36,"./js/bitmex.js":37,"./js/bitso.js":38,"./js/bitstamp.js":39,"./js/bitstamp1.js":40,"./js/bittrex.js":41,"./js/bitz.js":42,"./js/bl3p.js":43,"./js/bleutrade.js":44,"./js/braziliex.js":45,"./js/btcalpha.js":46,"./js/btcbox.js":47,"./js/btcchina.js":48,"./js/btcexchange.js":49,"./js/btcmarkets.js":50,"./js/btctradeim.js":51,"./js/btctradeua.js":52,"./js/btcturk.js":53,"./js/buda.js":54,"./js/bxinth.js":55,"./js/cex.js":56,"./js/chbtc.js":57,"./js/chilebit.js":58,"./js/cobinhood.js":59,"./js/coinbase.js":60,"./js/coinbaseprime.js":61,"./js/coinbasepro.js":62,"./js/coincheck.js":63,"./js/coinegg.js":64,"./js/coinex.js":65,"./js/coinexchange.js":66,"./js/coinfalcon.js":67,"./js/coinfloor.js":68,"./js/coingi.js":69,"./js/coinmarketcap.js":70,"./js/coinmate.js":71,"./js/coinnest.js":72,"./js/coinone.js":73,"./js/coinspot.js":74,"./js/cointiger.js":75,"./js/coolcoin.js":76,"./js/coss.js":77,"./js/crex24.js":78,"./js/crypton.js":79,"./js/deribit.js":80,"./js/dsx.js":81,"./js/dx.js":82,"./js/ethfinex.js":83,"./js/exmo.js":84,"./js/exx.js":85,"./js/fcoin.js":86,"./js/fcoinjp.js":87,"./js/flowbtc.js":88,"./js/foxbit.js":89,"./js/fybse.js":90,"./js/gateio.js":91,"./js/gdax.js":92,"./js/gemini.js":93,"./js/hadax.js":94,"./js/hitbtc.js":95,"./js/hitbtc2.js":96,"./js/huobipro.js":97,"./js/huobiru.js":98,"./js/ice3x.js":99,"./js/independentreserve.js":100,"./js/indodax.js":101,"./js/itbit.js":102,"./js/kkex.js":103,"./js/kraken.js":104,"./js/kucoin.js":105,"./js/kucoin2.js":106,"./js/kuna.js":107,"./js/lakebtc.js":108,"./js/lbank.js":109,"./js/liqui.js":110,"./js/liquid.js":111,"./js/livecoin.js":112,"./js/luno.js":113,"./js/lykke.js":114,"./js/mandala.js":115,"./js/mercado.js":116,"./js/mixcoins.js":117,"./js/negociecoins.js":118,"./js/nova.js":119,"./js/oceanex.js":120,"./js/okcoincny.js":121,"./js/okcoinusd.js":122,"./js/okex.js":123,"./js/okex3.js":124,"./js/paymium.js":125,"./js/poloniex.js":126,"./js/rightbtc.js":127,"./js/southxchange.js":128,"./js/stronghold.js":152,"./js/surbitcoin.js":153,"./js/theocean.js":154,"./js/therock.js":155,"./js/tidebit.js":156,"./js/tidex.js":157,"./js/upbit.js":158,"./js/vaultoro.js":159,"./js/vbtc.js":160,"./js/virwox.js":161,"./js/xbtce.js":162,"./js/yobit.js":163,"./js/zaif.js":164,"./js/zb.js":165}],3:[function(require,module,exports){
+},{"./js/_1btcxe.js":3,"./js/acx.js":4,"./js/allcoin.js":5,"./js/anxpro.js":6,"./js/base/Exchange":7,"./js/base/errors":9,"./js/base/functions":10,"./js/bcex.js":21,"./js/bequant.js":22,"./js/bibox.js":23,"./js/bigone.js":24,"./js/binance.js":25,"./js/binanceje.js":26,"./js/bit2c.js":27,"./js/bitbank.js":28,"./js/bitbay.js":29,"./js/bitfinex.js":30,"./js/bitfinex2.js":31,"./js/bitflyer.js":32,"./js/bitforex.js":33,"./js/bithumb.js":34,"./js/bitkk.js":35,"./js/bitlish.js":36,"./js/bitmex.js":37,"./js/bitso.js":38,"./js/bitstamp.js":39,"./js/bitstamp1.js":40,"./js/bittrex.js":41,"./js/bitz.js":42,"./js/bl3p.js":43,"./js/bleutrade.js":44,"./js/braziliex.js":45,"./js/btcalpha.js":46,"./js/btcbox.js":47,"./js/btcchina.js":48,"./js/btcmarkets.js":49,"./js/btctradeim.js":50,"./js/btctradeua.js":51,"./js/btcturk.js":52,"./js/buda.js":53,"./js/bxinth.js":54,"./js/cex.js":55,"./js/chilebit.js":56,"./js/cobinhood.js":57,"./js/coinbase.js":58,"./js/coinbaseprime.js":59,"./js/coinbasepro.js":60,"./js/coincheck.js":61,"./js/coinegg.js":62,"./js/coinex.js":63,"./js/coinexchange.js":64,"./js/coinfalcon.js":65,"./js/coinfloor.js":66,"./js/coingi.js":67,"./js/coinmarketcap.js":68,"./js/coinmate.js":69,"./js/coinone.js":70,"./js/coinspot.js":71,"./js/cointiger.js":72,"./js/coolcoin.js":73,"./js/coss.js":74,"./js/crex24.js":75,"./js/crypton.js":76,"./js/deribit.js":77,"./js/dsx.js":78,"./js/dx.js":79,"./js/ethfinex.js":80,"./js/exmo.js":81,"./js/exx.js":82,"./js/fcoin.js":83,"./js/fcoinjp.js":84,"./js/flowbtc.js":85,"./js/foxbit.js":86,"./js/fybse.js":87,"./js/gateio.js":88,"./js/gdax.js":89,"./js/gemini.js":90,"./js/hitbtc.js":91,"./js/hitbtc2.js":92,"./js/huobipro.js":93,"./js/huobiru.js":94,"./js/ice3x.js":95,"./js/independentreserve.js":96,"./js/indodax.js":97,"./js/itbit.js":98,"./js/kkex.js":99,"./js/kraken.js":100,"./js/kucoin.js":101,"./js/kucoin2.js":102,"./js/kuna.js":103,"./js/lakebtc.js":104,"./js/latoken.js":105,"./js/lbank.js":106,"./js/liqui.js":107,"./js/liquid.js":108,"./js/livecoin.js":109,"./js/luno.js":110,"./js/lykke.js":111,"./js/mandala.js":112,"./js/mercado.js":113,"./js/mixcoins.js":114,"./js/negociecoins.js":115,"./js/nova.js":116,"./js/oceanex.js":117,"./js/okcoincny.js":118,"./js/okcoinusd.js":119,"./js/okex.js":120,"./js/okex3.js":121,"./js/paymium.js":122,"./js/poloniex.js":123,"./js/rightbtc.js":124,"./js/southxchange.js":125,"./js/stronghold.js":149,"./js/surbitcoin.js":150,"./js/theocean.js":151,"./js/therock.js":152,"./js/tidebit.js":153,"./js/tidex.js":154,"./js/upbit.js":155,"./js/vaultoro.js":156,"./js/vbtc.js":157,"./js/virwox.js":158,"./js/xbtce.js":159,"./js/yobit.js":160,"./js/zaif.js":161,"./js/zb.js":162}],3:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -488,7 +484,7 @@ module.exports = class _1btcxe extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],4:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],4:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -964,7 +960,7 @@ module.exports = class acx extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],5:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],5:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -1108,7 +1104,7 @@ module.exports = class allcoin extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":122}],6:[function(require,module,exports){
+},{"./okcoinusd.js":119}],6:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -1254,6 +1250,7 @@ module.exports = class anxpro extends Exchange {
     }
 
     async fetchTransactions (code = undefined, since = undefined, limit = undefined, params = {}) {
+        // todo: migrate this to fetchLedger
         await this.loadMarkets ();
         const request = {};
         if (since !== undefined) {
@@ -1316,8 +1313,8 @@ module.exports = class anxpro extends Exchange {
         //     }
         //
         const transactions = this.safeValue (response, 'transactions', []);
-        const grouped = this.groupBy (transactions, 'transactionType');
-        const depositsAndWithdrawals = this.arrayConcat (grouped['DEPOSIT'], grouped['WITHDRAWAL']);
+        const grouped = this.groupBy (transactions, 'transactionType', []);
+        const depositsAndWithdrawals = this.arrayConcat (this.safeValue (grouped, 'DEPOSIT', []), this.safeValue (grouped, 'WITHDRAWAL', []));
         return this.parseTransactions (depositsAndWithdrawals, currency, since, limit);
     }
 
@@ -2295,7 +2292,7 @@ module.exports = class anxpro extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],7:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],7:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
@@ -2880,8 +2877,7 @@ module.exports = class Exchange {
         // override me
     }
 
-    defaultErrorHandler (response, responseBody, url, method) {
-        const { status: code, statusText: reason } = response
+    defaultErrorHandler (code, reason, responseBody, url, method) {
         if ((code >= 200) && (code <= 299))
             return
         let ErrorClass = undefined
@@ -2947,7 +2943,7 @@ module.exports = class Exchange {
                 console.log ("handleRestResponse:\n", this.id, method, url, response.status, response.statusText, "\nResponse:\n", responseHeaders, "\n", responseBody, "\n")
 
             this.handleErrors (response.status, response.statusText, url, method, responseHeaders, responseBody, json)
-            this.defaultErrorHandler (response, responseBody, url, method)
+            this.defaultErrorHandler (response.status, response.statusText, responseBody, url, method)
 
             return json || responseBody
         })
@@ -3261,8 +3257,13 @@ module.exports = class Exchange {
     }
 
     implodeParams (string, params) {
-        for (let property in params)
-            string = string.replace ('{' + property + '}', params[property])
+        if (!Array.isArray (params)) {
+            for (let property in params) {
+                if (!Array.isArray (params[property])) {
+                    string = string.replace ('{' + property + '}', params[property])
+                }
+            }
+        }
         return string
     }
 
@@ -3616,44 +3617,6 @@ module.exports = class Exchange {
         }
     }
 
-    mdy (timestamp, infix = '-') {
-        infix = infix || ''
-        const date = new Date (timestamp)
-        const Y = date.getUTCFullYear ().toString ()
-        let m = date.getUTCMonth () + 1
-        let d = date.getUTCDate ()
-        m = m < 10 ? ('0' + m) : m.toString ()
-        d = d < 10 ? ('0' + d) : d.toString ()
-        return m + infix + d + infix + Y
-    }
-
-    ymd (timestamp, infix = '-') {
-        infix = infix || ''
-        const date = new Date (timestamp)
-        const Y = date.getUTCFullYear ().toString ()
-        let m = date.getUTCMonth () + 1
-        let d = date.getUTCDate ()
-        m = m < 10 ? ('0' + m) : m.toString ()
-        d = d < 10 ? ('0' + d) : d.toString ()
-        return Y + infix + m + infix + d
-    }
-
-    ymdhms (timestamp, infix = ' ') {
-        const date = new Date (timestamp)
-        const Y = date.getUTCFullYear ()
-        let m = date.getUTCMonth () + 1
-        let d = date.getUTCDate ()
-        let H = date.getUTCHours ()
-        let M = date.getUTCMinutes ()
-        let S = date.getUTCSeconds ()
-        m = m < 10 ? ('0' + m) : m
-        d = d < 10 ? ('0' + d) : d
-        H = H < 10 ? ('0' + H) : H
-        M = M < 10 ? ('0' + M) : M
-        S = S < 10 ? ('0' + S) : S
-        return Y + '-' + m + '-' + d + infix + H + ':' + M + ':' + S
-    }
-
     // ------------------------------------------------------------------------
     // web3 / 0x methods
     static hasWeb3 () {
@@ -3951,54 +3914,50 @@ module.exports = class Exchange {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./errors":8,"./functions":9,"buffer":171}],8:[function(require,module,exports){
+},{"./errors":9,"./functions":10,"buffer":168}],8:[function(require,module,exports){
 'use strict';
 
-/*  ------------------------------------------------------------------------ */
-
-module.exports = subclass (
-
-/*  Root class                  */
-
-    Error,
-
-/*  Derived class hierarchy     */
-
-    {
-        'BaseError':{
-            'ExchangeError': {
-                'AuthenticationError': {
-                    'PermissionDenied': {},
-                    'AccountSuspended': {},
-                },
-                'ArgumentsRequired': {},
-                'BadRequest': {},
-                'BadResponse': {
-                    'NullResponse': {},
-                },
-                'InsufficientFunds': {},
-                'InvalidAddress': {
-                    'AddressPending': {},
-                },
-                'InvalidOrder': {
-                    'OrderNotFound': {},
-                    'OrderNotCached': {},
-                    'CancelPending': {},
-                    'OrderImmediatelyFillable': {},
-                    'OrderNotFillable': {},
-                    'DuplicateOrderId': {},
-                },
-                'NotSupported': {},
+const errorHierarchy = {
+    'BaseError': {
+        'ExchangeError': {
+            'AuthenticationError': {
+                'PermissionDenied': {},
+                'AccountSuspended': {},
             },
-            'NetworkError': {
-                'DDoSProtection': {},
-                'ExchangeNotAvailable': {},
-                'InvalidNonce': {},
-                'RequestTimeout': {},
+            'ArgumentsRequired': {},
+            'BadRequest': {},
+            'BadResponse': {
+                'NullResponse': {},
             },
+            'InsufficientFunds': {},
+            'InvalidAddress': {
+                'AddressPending': {},
+            },
+            'InvalidOrder': {
+                'OrderNotFound': {},
+                'OrderNotCached': {},
+                'CancelPending': {},
+                'OrderImmediatelyFillable': {},
+                'OrderNotFillable': {},
+                'DuplicateOrderId': {},
+            },
+            'NotSupported': {},
         },
-    }
-)
+        'NetworkError': {
+            'DDoSProtection': {},
+            'ExchangeNotAvailable': {},
+            'InvalidNonce': {},
+            'RequestTimeout': {},
+        },
+    },
+};
+
+module.exports = errorHierarchy;
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+const errorHierarchy = require ('./errorHierarchy.js')
 
 /*  ------------------------------------------------------------------------ */
 
@@ -4041,7 +4000,14 @@ function subclass (BaseClass, classes, namespace = {}) {
 
 /*  ------------------------------------------------------------------------ */
 
-},{}],9:[function(require,module,exports){
+module.exports = subclass (
+    // Root class
+    Error,
+    // Derived class hierarchy
+    errorHierarchy,
+)
+
+},{"./errorHierarchy.js":8}],10:[function(require,module,exports){
 'use strict';
 
 /*  ------------------------------------------------------------------------ */
@@ -4071,7 +4037,7 @@ module.exports = unCamelCasePropertyNames (Object.assign ({}
 
 /*  ------------------------------------------------------------------------ */
 
-},{"./functions/crypto":10,"./functions/encode":11,"./functions/generic":12,"./functions/misc":13,"./functions/number":14,"./functions/platform":15,"./functions/string":16,"./functions/throttle":17,"./functions/time":18,"./functions/type":19}],10:[function(require,module,exports){
+},{"./functions/crypto":11,"./functions/encode":12,"./functions/generic":13,"./functions/misc":14,"./functions/number":15,"./functions/platform":16,"./functions/string":17,"./functions/throttle":18,"./functions/time":19,"./functions/type":20}],11:[function(require,module,exports){
 'use strict'
 
 /*  ------------------------------------------------------------------------ */
@@ -4190,7 +4156,7 @@ module.exports = {
 
 /*  ------------------------------------------------------------------------ */
 
-},{"../../static_dependencies/crypto-js/crypto-js":129,"./../../static_dependencies/node-rsa/NodeRSA":132,"./encode":11,"./string":16}],11:[function(require,module,exports){
+},{"../../static_dependencies/crypto-js/crypto-js":126,"./../../static_dependencies/node-rsa/NodeRSA":129,"./encode":12,"./string":17}],12:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -4231,7 +4197,7 @@ module.exports =
 
 /*  ------------------------------------------------------------------------ */
 
-},{"../../static_dependencies/crypto-js/crypto-js":129,"../../static_dependencies/qs/index":148}],12:[function(require,module,exports){
+},{"../../static_dependencies/crypto-js/crypto-js":126,"../../static_dependencies/qs/index":145}],13:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -4415,18 +4381,26 @@ module.exports =
 
     , omit (x, ...args) {
 
-        const out = clone (x)
+        if (!Array.isArray (x)) {
 
-        for (const k of args) {
+            const out = clone (x)
 
-            if (isArray (k)) // omit (x, ['a', 'b'])
-                for (const kk of k)
-                    delete out[kk]
+            for (const k of args) {
 
-            else delete out[k] // omit (x, 'a', 'b')
+                if (isArray (k)) { // omit (x, ['a', 'b'])
+
+                    for (const kk of k) {
+                        delete out[kk]
+                    }
+                }
+
+                else delete out[k] // omit (x, 'a', 'b')
+            }
+
+            return out
         }
-
-        return out
+        
+        return x
     }
 
 /*  .............................................   */
@@ -4466,7 +4440,7 @@ module.exports =
 
 }
 
-},{"./type":19}],13:[function(require,module,exports){
+},{"./type":20}],14:[function(require,module,exports){
 'use strict';
 
 //-------------------------------------------------------------------------
@@ -4551,7 +4525,7 @@ module.exports = {
 
 /*  ------------------------------------------------------------------------ */
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict'
 
 const { isString, isNumber } = require ('./type')
@@ -4856,7 +4830,7 @@ module.exports = {
 
 /*  ------------------------------------------------------------------------ */
 
-},{"./type":19}],15:[function(require,module,exports){
+},{"./type":20}],16:[function(require,module,exports){
 (function (process){
 "use strict";
 
@@ -4897,7 +4871,7 @@ module.exports = {
     defaultFetch,
 }
 }).call(this,require('_process'))
-},{"../../static_dependencies/fetch-ponyfill/fetch-node":130,"_process":193}],16:[function(require,module,exports){
+},{"../../static_dependencies/fetch-ponyfill/fetch-node":127,"_process":190}],17:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -4919,7 +4893,7 @@ module.exports =
 
 /*  ------------------------------------------------------------------------ */
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -4985,7 +4959,7 @@ module.exports = {
 
 /*  ------------------------------------------------------------------------ */
 
-},{"./time":18}],18:[function(require,module,exports){
+},{"./time":19}],19:[function(require,module,exports){
 'use strict';
 
 /*  ------------------------------------------------------------------------ */
@@ -5097,6 +5071,44 @@ const parseDate = (x) => {
     return parse8601 (x);
 }
 
+const mdy = (timestamp, infix = '-') => {
+    infix = infix || ''
+    const date = new Date (timestamp)
+    const Y = date.getUTCFullYear ().toString ()
+    let m = date.getUTCMonth () + 1
+    let d = date.getUTCDate ()
+    m = m < 10 ? ('0' + m) : m.toString ()
+    d = d < 10 ? ('0' + d) : d.toString ()
+    return m + infix + d + infix + Y
+}
+
+const ymd = (timestamp, infix = '-') => {
+    infix = infix || ''
+    const date = new Date (timestamp)
+    const Y = date.getUTCFullYear ().toString ()
+    let m = date.getUTCMonth () + 1
+    let d = date.getUTCDate ()
+    m = m < 10 ? ('0' + m) : m.toString ()
+    d = d < 10 ? ('0' + d) : d.toString ()
+    return Y + infix + m + infix + d
+}
+
+const ymdhms = (timestamp, infix = ' ') => {
+    const date = new Date (timestamp)
+    const Y = date.getUTCFullYear ()
+    let m = date.getUTCMonth () + 1
+    let d = date.getUTCDate ()
+    let H = date.getUTCHours ()
+    let M = date.getUTCMinutes ()
+    let S = date.getUTCSeconds ()
+    m = m < 10 ? ('0' + m) : m
+    d = d < 10 ? ('0' + d) : d
+    H = H < 10 ? ('0' + H) : H
+    M = M < 10 ? ('0' + M) : M
+    S = S < 10 ? ('0' + S) : S
+    return Y + '-' + m + '-' + d + infix + H + ':' + M + ':' + S
+}
+
 module.exports =
 
     {
@@ -5106,6 +5118,9 @@ module.exports =
         , iso8601
         , parse8601
         , parseDate
+        , mdy
+        , ymd
+        , ymdhms
         , setTimeout_safe
         , sleep: ms => new Promise (resolve => setTimeout_safe (resolve, ms))
         , TimedOut
@@ -5124,7 +5139,7 @@ module.exports =
 
 /*  ------------------------------------------------------------------------ */
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 /*  ------------------------------------------------------------------------ */
@@ -5183,7 +5198,7 @@ module.exports =
 
 /*  ------------------------------------------------------------------------ */
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -5894,7 +5909,7 @@ module.exports = class bcex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],21:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],22:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -5924,7 +5939,7 @@ module.exports = class bequant extends hitbtc2 {
     }
 };
 
-},{"./hitbtc2":96}],22:[function(require,module,exports){
+},{"./hitbtc2":92}],23:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -6863,7 +6878,7 @@ module.exports = class bibox extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],23:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],24:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -7247,17 +7262,9 @@ module.exports = class bigone extends Exchange {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'asset_id');
             const code = this.safeCurrencyCode (currencyId);
-            const total = this.safeFloat (balance, 'balance');
-            const used = this.safeFloat (balance, 'locked_balance');
-            let free = undefined;
-            if (total !== undefined && used !== undefined) {
-                free = total - used;
-            }
-            const account = {
-                'free': free,
-                'used': used,
-                'total': total,
-            };
+            const account = this.account ();
+            account['total'] = this.safeFloat (balance, 'balance');
+            account['used'] = this.safeFloat (balance, 'locked_balance');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -7580,7 +7587,7 @@ module.exports = class bigone extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],24:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],25:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -8935,7 +8942,7 @@ module.exports = class binance extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],25:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],26:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -8989,7 +8996,7 @@ module.exports = class binanceje extends binance {
 };
 
 
-},{"./binance.js":24}],26:[function(require,module,exports){
+},{"./binance.js":25}],27:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -9412,7 +9419,7 @@ module.exports = class bit2c extends Exchange {
 };
 
 
-},{"./base/Exchange":7,"./base/errors":8}],27:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],28:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -9678,11 +9685,8 @@ module.exports = class bitbank extends Exchange {
         const balances = response['data']['assets'];
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
-            const id = balance['asset'];
-            let code = id;
-            if (id in this.currencies_by_id) {
-                code = this.currencies_by_id[id]['code'];
-            }
+            const currencyId = this.safeString (balance, 'asset');
+            const code = this.safeCurrencyCode (currencyId);
             const account = {
                 'free': this.safeFloat (balance, 'free_amount'),
                 'used': this.safeFloat (balance, 'locked_amount'),
@@ -9989,7 +9993,7 @@ module.exports = class bitbank extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],28:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],29:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -10251,6 +10255,7 @@ module.exports = class bitbay extends Exchange {
         const codes = Object.keys (this.currencies);
         for (let i = 0; i < codes.length; i++) {
             const code = codes[i];
+            // rewrite with safeCurrencyCode, traverse by currency ids
             const currencyId = this.currencyId (code);
             const balance = this.safeValue (balances, currencyId);
             if (balance !== undefined) {
@@ -10318,19 +10323,19 @@ module.exports = class bitbay extends Exchange {
         }
     }
 
-    parseMyTrade (trade, market) {
+    parseMyTrade (trade, market = undefined) {
         //
         //     {
-        //         id: '5b6780e2-5bac-4ac7-88f4-b49b5957d33a',
-        //         market: 'BTC-EUR',
-        //         time: '1520719374684',
-        //         amount: '0.3',
-        //         rate: '7502',
-        //         initializedBy: 'Sell',
+        //         amount: "0.29285199",
+        //         commissionValue: "0.00125927",
+        //         id: "11c8203a-a267-11e9-b698-0242ac110007",
+        //         initializedBy: "Buy",
+        //         market: "ETH-EUR",
+        //         offerId: "11c82038-a267-11e9-b698-0242ac110007",
+        //         rate: "277",
+        //         time: "1562689917517",
+        //         userAction: "Buy",
         //         wasTaker: true,
-        //         userAction: 'Sell',
-        //         offerId: 'd093b0aa-b9c9-4a52-b3e2-673443a6188b',
-        //         commissionValue: null
         //     }
         //
         const timestamp = this.safeInteger (trade, 'time');
@@ -10346,16 +10351,37 @@ module.exports = class bitbay extends Exchange {
                 cost = price * amount;
             }
         }
-        const commissionValue = this.safeFloat (trade, 'commissionValue');
+        const feeCost = this.safeFloat (trade, 'commissionValue');
+        const marketId = this.safeString (trade, 'market');
+        let base = undefined;
+        let symbol = undefined;
+        if (marketId !== undefined) {
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+                symbol = market['symbol'];
+                base = market['base'];
+            } else {
+                const [ baseId, quoteId ] = marketId.split ('-');
+                base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
+                symbol = base + '/' + quote;
+            }
+        }
+        if (market !== undefined) {
+            if (symbol === undefined) {
+                symbol = market['symbol'];
+            }
+            if (base === undefined) {
+                base = market['base'];
+            }
+        }
         let fee = undefined;
-        if (commissionValue !== undefined) {
-            // it always seems to be null so don't know what currency to use
+        if (feeCost !== undefined) {
             fee = {
-                'currency': undefined,
-                'cost': commissionValue,
+                'currency': base,
+                'cost': feeCost,
             };
         }
-        const marketId = this.safeString (trade, 'market');
         const order = this.safeString (trade, 'offerId');
         // todo: check this logic
         const type = order ? 'limit' : 'market';
@@ -10364,7 +10390,7 @@ module.exports = class bitbay extends Exchange {
             'order': order,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
-            'symbol': this.findSymbol (marketId.replace ('-', '')),
+            'symbol': symbol,
             'type': type,
             'side': side,
             'price': price,
@@ -10607,7 +10633,7 @@ module.exports = class bitbay extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],29:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],30:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -10915,6 +10941,7 @@ module.exports = class bitfinex extends Exchange {
                 'UDC': 'USDC',
                 'UST': 'USDT',
                 'UTN': 'UTNP',
+                'VSY': 'VSYS',
                 'XCH': 'XCHF',
             },
             'exceptions': {
@@ -11078,8 +11105,16 @@ module.exports = class bitfinex extends Exchange {
                 continue;
             }
             id = id.toUpperCase ();
-            const baseId = id.slice (0, 3);
-            const quoteId = id.slice (3, 6);
+            let baseId = undefined;
+            let quoteId = undefined;
+            if (id.indexOf (':') >= 0) {
+                const parts = id.split (':');
+                baseId = parts[0];
+                quoteId = parts[1];
+            } else {
+                baseId = id.slice (0, 3);
+                quoteId = id.slice (3, 6);
+            }
             const base = this.safeCurrencyCode (baseId);
             const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
@@ -11593,6 +11628,8 @@ module.exports = class bitfinex extends Exchange {
 
     parseTransaction (transaction, currency = undefined) {
         //
+        // crypto
+        //
         //     {
         //         "id": 12042490,
         //         "fee": "-0.02",
@@ -11606,6 +11643,23 @@ module.exports = class bitfinex extends Exchange {
         //         "timestamp": "1551730524.0",
         //         "description": "EA5B5A66000B66855865EFF2494D7C8D1921FCBE996482157EBD749F2C85E13D",
         //         "timestamp_created": "1551730523.0"
+        //     }
+        //
+        // fiat
+        //
+        //     {
+        //         "id": 12725095,
+        //         "fee": "-60.0",
+        //         "txid": null,
+        //         "type": "WITHDRAWAL",
+        //         "amount": "9943.0",
+        //         "method": "WIRE",
+        //         "status": "SENDING",
+        //         "address": null,
+        //         "currency": "EUR",
+        //         "timestamp": "1561802484.0",
+        //         "description": "Name: bob, AccountAddress: some address, Account: someaccountno, Bank: bank address, SWIFT: foo, Country: UK, Details of Payment: withdrawal name, Intermediary Bank Name: , Intermediary Bank Address: , Intermediary Bank City: , Intermediary Bank Country: , Intermediary Bank Account: , Intermediary Bank SWIFT: , Fee: -60.0",
+        //         "timestamp_created": "1561716066.0"
         //     }
         //
         let timestamp = this.safeFloat (transaction, 'timestamp_created');
@@ -11650,6 +11704,7 @@ module.exports = class bitfinex extends Exchange {
 
     parseTransactionStatus (status) {
         const statuses = {
+            'SENDING': 'pending',
             'CANCELED': 'canceled',
             'ZEROCONFIRMED': 'failed', // ZEROCONFIRMED happens e.g. in a double spend attempt (I had one in my movements!)
             'COMPLETED': 'ok',
@@ -11758,7 +11813,7 @@ module.exports = class bitfinex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],30:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],31:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -11976,8 +12031,16 @@ module.exports = class bitfinex2 extends bitfinex {
             const market = response[i];
             let id = this.safeString (market, 'pair');
             id = id.toUpperCase ();
-            let baseId = id.slice (0, 3);
-            let quoteId = id.slice (3, 6);
+            let baseId = undefined;
+            let quoteId = undefined;
+            if (id.indexOf (':') >= 0) {
+                const parts = id.split (':');
+                baseId = parts[0];
+                quoteId = parts[1];
+            } else {
+                baseId = id.slice (0, 3);
+                quoteId = id.slice (3, 6);
+            }
             const base = this.safeCurrencyCode (baseId);
             const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
@@ -12013,6 +12076,9 @@ module.exports = class bitfinex2 extends bitfinex {
                 'precision': precision,
                 'limits': limits,
                 'info': market,
+                'swap': false,
+                'spot': false,
+                'futures': false,
             });
         }
         return result;
@@ -12036,6 +12102,8 @@ module.exports = class bitfinex2 extends bitfinex {
                 }
                 const code = this.safeCurrencyCode (currency);
                 const account = this.account ();
+                // do not fill in zeroes and missing values in the parser
+                // rewrite and unify the following to use the unified parseBalance
                 account['total'] = total;
                 if (!available) {
                     if (available === 0) {
@@ -12414,7 +12482,7 @@ module.exports = class bitfinex2 extends bitfinex {
     }
 };
 
-},{"./base/errors":8,"./bitfinex.js":29}],31:[function(require,module,exports){
+},{"./base/errors":9,"./bitfinex.js":30}],32:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -12901,7 +12969,7 @@ module.exports = class bitflyer extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],32:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],33:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -13465,7 +13533,7 @@ module.exports = class bitforex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],33:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],34:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -13916,7 +13984,7 @@ module.exports = class bithumb extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],34:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],35:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -13944,7 +14012,7 @@ module.exports = class bitkk extends zb {
     }
 };
 
-},{"./zb.js":165}],35:[function(require,module,exports){
+},{"./zb.js":162}],36:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -14323,568 +14391,7 @@ module.exports = class bitlish extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],36:[function(require,module,exports){
-'use strict';
-
-//  ---------------------------------------------------------------------------
-
-const Exchange = require ('./base/Exchange');
-const { ExchangeError, ArgumentsRequired, AuthenticationError, NotSupported } = require ('./base/errors');
-
-//  ---------------------------------------------------------------------------
-
-module.exports = class bitmarket extends Exchange {
-    describe () {
-        return this.deepExtend (super.describe (), {
-            'id': 'bitmarket',
-            'name': 'BitMarket',
-            'countries': [ 'PL', 'EU' ],
-            'rateLimit': 1500,
-            'has': {
-                'CORS': false,
-                'fetchOHLCV': true,
-                'withdraw': true,
-                'fetchWithdrawals': true,
-                'fetchDeposits': false,
-                'fetchMyTrades': true,
-            },
-            'timeframes': {
-                '90m': '90m',
-                '6h': '6h',
-                '1d': '1d',
-                '1w': '7d',
-                '1M': '1m',
-                '3M': '3m',
-                '6M': '6m',
-                '1y': '1y',
-            },
-            'urls': {
-                'logo': 'https://user-images.githubusercontent.com/1294454/27767256-a8555200-5ef9-11e7-96fd-469a65e2b0bd.jpg',
-                'api': {
-                    'public': 'https://www.bitmarket.net',
-                    'private': 'https://www.bitmarket.pl/api2/', // last slash is critical
-                },
-                'www': [
-                    'https://www.bitmarket.pl',
-                    'https://www.bitmarket.net',
-                ],
-                'doc': [
-                    'https://www.bitmarket.net/docs.php?file=api_public.html',
-                    'https://www.bitmarket.net/docs.php?file=api_private.html',
-                    'https://github.com/bitmarket-net/api',
-                ],
-                'referral': 'https://www.bitmarket.net/?ref=23323',
-            },
-            'api': {
-                'public': {
-                    'get': [
-                        'json_internal/all/ticker',
-                        'json/{market}/ticker',
-                        'json/{market}/orderbook',
-                        'json/{market}/trades',
-                        'json/ctransfer',
-                        'graphs/{market}/90m',
-                        'graphs/{market}/6h',
-                        'graphs/{market}/1d',
-                        'graphs/{market}/7d',
-                        'graphs/{market}/1m',
-                        'graphs/{market}/3m',
-                        'graphs/{market}/6m',
-                        'graphs/{market}/1y',
-                    ],
-                },
-                'private': {
-                    'post': [
-                        'info',
-                        'trade',
-                        'cancel',
-                        'orders',
-                        'trades',
-                        'history',
-                        'withdrawals',
-                        'tradingdesk',
-                        'tradingdeskStatus',
-                        'tradingdeskConfirm',
-                        'cryptotradingdesk',
-                        'cryptotradingdeskStatus',
-                        'cryptotradingdeskConfirm',
-                        'withdraw',
-                        'withdrawFiat',
-                        'withdrawPLNPP',
-                        'withdrawFiatFast',
-                        'deposit',
-                        'transfer',
-                        'transfers',
-                        'marginList',
-                        'marginOpen',
-                        'marginClose',
-                        'marginCancel',
-                        'marginModify',
-                        'marginBalanceAdd',
-                        'marginBalanceRemove',
-                        'swapList',
-                        'swapOpen',
-                        'swapClose',
-                    ],
-                },
-            },
-            'commonCurrencies': {
-                'BCC': 'BCH',
-            },
-            'fees': {
-                'trading': {
-                    'tierBased': true,
-                    'percentage': true,
-                    'taker': 0.45 / 100,
-                    'maker': 0.15 / 100,
-                    'tiers': {
-                        'taker': [
-                            [0, 0.45 / 100],
-                            [99.99, 0.44 / 100],
-                            [299.99, 0.43 / 100],
-                            [499.99, 0.42 / 100],
-                            [999.99, 0.41 / 100],
-                            [1999.99, 0.40 / 100],
-                            [2999.99, 0.39 / 100],
-                            [4999.99, 0.38 / 100],
-                            [9999.99, 0.37 / 100],
-                            [19999.99, 0.36 / 100],
-                            [29999.99, 0.35 / 100],
-                            [49999.99, 0.34 / 100],
-                            [99999.99, 0.33 / 100],
-                            [199999.99, 0.32 / 100],
-                            [299999.99, 0.31 / 100],
-                            [499999.99, 0.0 / 100],
-                        ],
-                        'maker': [
-                            [0, 0.15 / 100],
-                            [99.99, 0.14 / 100],
-                            [299.99, 0.13 / 100],
-                            [499.99, 0.12 / 100],
-                            [999.99, 0.11 / 100],
-                            [1999.99, 0.10 / 100],
-                            [2999.99, 0.9 / 100],
-                            [4999.99, 0.8 / 100],
-                            [9999.99, 0.7 / 100],
-                            [19999.99, 0.6 / 100],
-                            [29999.99, 0.5 / 100],
-                            [49999.99, 0.4 / 100],
-                            [99999.99, 0.3 / 100],
-                            [199999.99, 0.2 / 100],
-                            [299999.99, 0.1 / 100],
-                            [499999.99, 0.0 / 100],
-                        ],
-                    },
-                },
-                'funding': {
-                    'tierBased': false,
-                    'percentage': false,
-                    'withdraw': {
-                        'BTC': 0.0008,
-                        'LTC': 0.005,
-                        'BCH': 0.0008,
-                        'BTG': 0.0008,
-                        'DOGE': 1,
-                        'EUR': 2,
-                        'PLN': 2,
-                    },
-                    'deposit': {
-                        'BTC': 0,
-                        'LTC': 0,
-                        'BCH': 0,
-                        'BTG': 0,
-                        'DOGE': 25,
-                        'EUR': 2, // SEPA. Transfer INT (SHA): 5 EUR
-                        'PLN': 0,
-                    },
-                },
-            },
-            'exceptions': {
-                'exact': {
-                    '501': AuthenticationError, // {"error":501,"errorMsg":"Invalid API key","time":1560869976}
-                },
-                'broad': {
-                },
-            },
-            'options': {
-                'fetchMarketsWarning': true,
-            },
-        });
-    }
-
-    async fetchMarkets (params = {}) {
-        const response = await this.publicGetJsonInternalAllTicker (this.extend ({}, params));
-        const ids = Object.keys (response);
-        const result = [];
-        const maxIdLength = 6;
-        for (let i = 0; i < ids.length; i++) {
-            const id = ids[i];
-            const item = response[id];
-            if (id.length > 6) {
-                if (this.options['fetchMarketsWarning']) {
-                    throw new NotSupported (this.id + ' fetchMarkets encountered a market id `' + id + '` (length > ' + maxIdLength + ". Set exchange.options['fetchMarketsWarning'] = false to suppress this warning and skip this market."); // eslint-disable-line quotes
-                } else {
-                    continue;
-                }
-            }
-            const baseId = id.slice (0, 3);
-            const quoteId = id.slice (3, 6);
-            const base = this.safeCurrencyCode (baseId);
-            const quote = this.safeCurrencyCode (quoteId);
-            const symbol = base + '/' + quote;
-            result.push ({
-                'id': id,
-                'info': item,
-                'symbol': symbol,
-                'base': base,
-                'quote': quote,
-                'baseId': baseId,
-                'quoteId': quoteId,
-                'active': undefined,
-            });
-        }
-        return result;
-    }
-
-    async fetchWithdrawals (code = undefined, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const request = {
-        };
-        if (limit !== undefined) {
-            request['limit'] = limit;
-        }
-        const response = await this.privatePostWithdrawals (this.extend (request, params));
-        const items = response['data']['results'];
-        return this.parseTransactions (items, undefined, since, limit);
-    }
-
-    parseTransaction (item, currency = undefined) {
-        //
-        //     {
-        //         id: 240565,
-        //         transaction_id: '78cbf0405f07a578164644aa67f5c6a08197574bc100a50aaee40ef2e11dc2d7',
-        //         received_in: '1EdAqY4cqHoJGAgNfUFER7yZpg1Jc9DUa3',
-        //         currency: 'BTC',
-        //         amount: 0.49926113,
-        //         time: 1518353534,
-        //         commission: 0.0008,
-        //         withdraw_type: 'Cryptocurrency'
-        //     }
-        //
-        let timestamp = this.safeInteger (item, 'time');
-        if (timestamp !== undefined) {
-            timestamp *= 1000;
-        }
-        const currencyId = this.safeString (item, 'currency');
-        const code = this.safeCurrencyCode (currencyId, currency);
-        let type = undefined;
-        if ('withdraw_type' in item) {
-            type = 'withdrawal';
-            // only withdrawals are supported right now
-        }
-        return {
-            'id': this.safeString (item, 'id'),
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'tag': undefined,
-            'type': type,
-            'amount': this.safeFloat (item, 'amount'),
-            'currency': code,
-            'status': 'ok',
-            'address': this.safeString (item, 'received_in'),
-            'txid': this.safeString (item, 'transaction_id'),
-            'updated': undefined,
-            'fee': {
-                'cost': this.safeFloat (item, 'commission'),
-                'currency': code,
-            },
-            'info': item,
-        };
-    }
-
-    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        if (symbol === undefined) {
-            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires a symbol argument');
-        }
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'market': market['id'],
-            'count': limit,
-        };
-        if (limit !== undefined) {
-            request['count'] = limit;
-        }
-        const response = await this.privatePostTrades (this.extend (request, params));
-        const data = this.safeValue (response, 'data', {});
-        const results = this.safeValue (data, 'results', []);
-        return this.parseTrades (results, market, since, limit);
-    }
-
-    async fetchBalance (params = {}) {
-        await this.loadMarkets ();
-        const response = await this.privatePostInfo (params);
-        const data = this.safeValue (response, 'data', {});
-        const balances = this.safeValue (data, 'balances', {});
-        const available = this.safeValue (balances, 'available', {});
-        const blocked = this.safeValue (balances, 'blocked', {});
-        const result = { 'info': response };
-        const codes = Object.keys (this.currencies);
-        for (let i = 0; i < codes.length; i++) {
-            const code = codes[i];
-            const currencyId = this.currencyId (code);
-            const free = this.safeFloat (available, currencyId);
-            if (free !== undefined) {
-                const account = this.account ();
-                account['free'] = this.safeFloat (available, currencyId);
-                account['used'] = this.safeFloat (blocked, currencyId);
-                result[code] = account;
-            }
-        }
-        return this.parseBalance (result);
-    }
-
-    async fetchOrderBook (symbol, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const request = {
-            'market': this.marketId (symbol),
-        };
-        const orderbook = await this.publicGetJsonMarketOrderbook (this.extend (request, params));
-        return this.parseOrderBook (orderbook);
-    }
-
-    async fetchTicker (symbol, params = {}) {
-        await this.loadMarkets ();
-        const request = {
-            'market': this.marketId (symbol),
-        };
-        const ticker = await this.publicGetJsonMarketTicker (this.extend (request, params));
-        const timestamp = this.milliseconds ();
-        const vwap = this.safeFloat (ticker, 'vwap');
-        const baseVolume = this.safeFloat (ticker, 'volume');
-        let quoteVolume = undefined;
-        if (baseVolume !== undefined && vwap !== undefined) {
-            quoteVolume = baseVolume * vwap;
-        }
-        const last = this.safeFloat (ticker, 'last');
-        return {
-            'symbol': symbol,
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'high': this.safeFloat (ticker, 'high'),
-            'low': this.safeFloat (ticker, 'low'),
-            'bid': this.safeFloat (ticker, 'bid'),
-            'bidVolume': undefined,
-            'ask': this.safeFloat (ticker, 'ask'),
-            'askVolume': undefined,
-            'vwap': vwap,
-            'open': undefined,
-            'close': last,
-            'last': last,
-            'previousClose': undefined,
-            'change': undefined,
-            'percentage': undefined,
-            'average': undefined,
-            'baseVolume': baseVolume,
-            'quoteVolume': quoteVolume,
-            'info': ticker,
-        };
-    }
-
-    parseTrade (trade, market = undefined) {
-        let side = this.safeString (trade, 'type');
-        if (side === 'bid') {
-            side = 'buy';
-        } else if (side === 'ask') {
-            side = 'sell';
-        }
-        let timestamp = this.safeInteger2 (trade, 'date', 'time');
-        if (timestamp !== undefined) {
-            timestamp *= 1000;
-        }
-        const id = this.safeString2 (trade, 'tid', 'id');
-        let symbol = undefined;
-        if (market !== undefined) {
-            symbol = market['symbol'];
-        }
-        const price = this.safeFloat2 (trade, 'price', 'rate');
-        const amount = this.safeFloat2 (trade, 'amount', 'amountCrypto');
-        let cost = this.safeFloat (trade, 'amountFiat');
-        if (cost === undefined) {
-            if (price !== undefined) {
-                if (amount !== undefined) {
-                    cost = price * amount;
-                }
-            }
-        }
-        return {
-            'id': id,
-            'info': trade,
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'symbol': symbol,
-            'order': undefined,
-            'type': undefined,
-            'side': side,
-            'takerOrMaker': undefined,
-            'price': price,
-            'amount': amount,
-            'cost': cost,
-            'fee': undefined,
-        };
-    }
-
-    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'market': market['id'],
-        };
-        const response = await this.publicGetJsonMarketTrades (this.extend (request, params));
-        return this.parseTrades (response, market, since, limit);
-    }
-
-    parseOHLCV (ohlcv, market = undefined, timeframe = '90m', since = undefined, limit = undefined) {
-        return [
-            ohlcv['time'] * 1000,
-            parseFloat (ohlcv['open']),
-            parseFloat (ohlcv['high']),
-            parseFloat (ohlcv['low']),
-            parseFloat (ohlcv['close']),
-            parseFloat (ohlcv['vol']),
-        ];
-    }
-
-    async fetchOHLCV (symbol, timeframe = '90m', since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const method = 'publicGetGraphsMarket' + this.timeframes[timeframe];
-        const market = this.market (symbol);
-        const request = {
-            'market': market['id'],
-        };
-        const response = await this[method] (this.extend (request, params));
-        return this.parseOHLCVs (response, market, timeframe, since, limit);
-    }
-
-    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        await this.loadMarkets ();
-        const request = {
-            'market': this.marketId (symbol),
-            'type': side,
-            'amount': amount,
-            'rate': price,
-        };
-        const response = await this.privatePostTrade (this.extend (request, params));
-        const result = {
-            'info': response,
-        };
-        if ('id' in response['data']) {
-            result['id'] = response['id'];
-        }
-        return result;
-    }
-
-    async cancelOrder (id, symbol = undefined, params = {}) {
-        return await this.privatePostCancel ({ 'id': id });
-    }
-
-    isFiat (currency) {
-        if (currency === 'EUR') {
-            return true;
-        }
-        if (currency === 'PLN') {
-            return true;
-        }
-        return false;
-    }
-
-    async withdraw (code, amount, address, tag = undefined, params = {}) {
-        this.checkAddress (address);
-        await this.loadMarkets ();
-        const currency = this.currency (code);
-        let method = undefined;
-        const request = {
-            'currency': currency['id'],
-            'quantity': amount,
-        };
-        if (this.isFiat (code)) {
-            method = 'privatePostWithdrawFiat';
-            if ('account' in params) {
-                request['account'] = params['account']; // bank account code for withdrawal
-            } else {
-                throw new ExchangeError (this.id + ' requires account parameter to withdraw fiat currency');
-            }
-            if ('account2' in params) {
-                request['account2'] = params['account2']; // bank SWIFT code (EUR only)
-            } else {
-                if (currency === 'EUR') {
-                    throw new ExchangeError (this.id + ' requires account2 parameter to withdraw EUR');
-                }
-            }
-            if ('withdrawal_note' in params) {
-                request['withdrawal_note'] = params['withdrawal_note']; // a 10-character user-specified withdrawal note (PLN only)
-            } else {
-                if (currency === 'PLN') {
-                    throw new ExchangeError (this.id + ' requires withdrawal_note parameter to withdraw PLN');
-                }
-            }
-        } else {
-            method = 'privatePostWithdraw';
-            request['address'] = address;
-        }
-        const response = await this[method] (this.extend (request, params));
-        return {
-            'info': response,
-            'id': response,
-        };
-    }
-
-    sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        let url = this.urls['api'][api];
-        if (api === 'public') {
-            url += '/' + this.implodeParams (path + '.json', params);
-        } else {
-            this.checkRequiredCredentials ();
-            const nonce = this.nonce ();
-            const query = this.extend ({
-                'tonce': nonce,
-                'method': path,
-            }, params);
-            body = this.urlencode (query);
-            headers = {
-                'API-Key': this.apiKey,
-                'API-Hash': this.hmac (this.encode (body), this.encode (this.secret), 'sha512'),
-            };
-        }
-        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
-    }
-
-    handleErrors (httpCode, reason, url, method, headers, body, response) {
-        if (response === undefined) {
-            return; // fallback to default error handler
-        }
-        //
-        //     {"error":501,"errorMsg":"Invalid API key","time":1560869976}
-        //
-        const code = this.safeString (response, 'error');
-        const message = this.safeString (response, 'errorMsg');
-        const feedback = this.id + ' ' + this.json (response);
-        const exact = this.exceptions['exact'];
-        if (code in exact) {
-            throw new exact[code] (feedback);
-        } else if (message in exact) {
-            throw new exact[message] (feedback);
-        }
-        const broad = this.exceptions['broad'];
-        const broadKey = this.findBroadlyMatchedKey (broad, message);
-        if (broadKey !== undefined) {
-            throw new broad[broadKey] (feedback);
-        }
-        // throw new ExchangeError (feedback); // unknown message
-    }
-};
-
-},{"./base/Exchange":7,"./base/errors":8}],37:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],37:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -16145,8 +15652,7 @@ module.exports = class bitmex extends Exchange {
             }
         }
         const url = this.urls['api'] + query;
-        if (api === 'private') {
-            this.checkRequiredCredentials ();
+        if (this.apiKey && this.secret) {
             let auth = method + query;
             let expires = this.safeInteger (this.options, 'api-expires');
             headers = {
@@ -16169,7 +15675,7 @@ module.exports = class bitmex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],38:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],38:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -16729,7 +16235,7 @@ module.exports = class bitso extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],39:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],39:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -17847,7 +17353,7 @@ module.exports = class bitstamp extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],40:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],40:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -18037,9 +17543,9 @@ module.exports = class bitstamp1 extends Exchange {
             const currency = this.currency (code);
             const currencyId = currency['id'];
             const account = this.account ();
-            account['free'] = this.safeFloat (balance, currencyId + '_available', 0.0);
-            account['used'] = this.safeFloat (balance, currencyId + '_reserved', 0.0);
-            account['total'] = this.safeFloat (balance, currencyId + '_balance', 0.0);
+            account['free'] = this.safeFloat (balance, currencyId + '_available');
+            account['used'] = this.safeFloat (balance, currencyId + '_reserved');
+            account['total'] = this.safeFloat (balance, currencyId + '_balance');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -18143,7 +17649,7 @@ module.exports = class bitstamp1 extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],41:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],41:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -18424,8 +17930,8 @@ module.exports = class bittrex extends Exchange {
             const id = this.safeString (market, 'MarketName');
             const baseId = this.safeString (market, 'MarketCurrency');
             const quoteId = this.safeString (market, 'BaseCurrency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             let pricePrecision = 8;
             if (quote in this.options['pricePrecisionByCode']) {
@@ -18473,24 +17979,15 @@ module.exports = class bittrex extends Exchange {
         const balances = this.safeValue (response, 'result');
         const result = { 'info': balances };
         const indexed = this.indexBy (balances, 'Currency');
-        const keys = Object.keys (indexed);
-        for (let i = 0; i < keys.length; i++) {
-            const id = keys[i];
-            const currency = this.commonCurrencyCode (id);
+        const currencyIds = Object.keys (indexed);
+        for (let i = 0; i < currencyIds.length; i++) {
+            const currencyId = currencyIds[i];
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
-            const balance = indexed[id];
-            const free = this.safeFloat (balance, 'Available', 0);
-            const total = this.safeFloat (balance, 'Balance', 0);
-            let used = undefined;
-            if (total !== undefined) {
-                if (free !== undefined) {
-                    used = total - free;
-                }
-            }
-            account['free'] = free;
-            account['used'] = used;
-            account['total'] = total;
-            result[currency] = account;
+            const balance = indexed[currencyId];
+            account['free'] = this.safeFloat (balance, 'Available');
+            account['total'] = this.safeFloat (balance, 'Balance');
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -18591,7 +18088,7 @@ module.exports = class bittrex extends Exchange {
             // todo: will need to rethink the fees
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const precision = 8; // default precision, todo: fix "magic constants"
             const address = this.safeValue (currency, 'BaseAddress');
             const fee = this.safeFloat (currency, 'TxFee'); // todo: redesign
@@ -18975,8 +18472,8 @@ module.exports = class bittrex extends Exchange {
 
     parseSymbol (id) {
         const [ quoteId, baseId ] = id.split (this.options['symbolSeparator']);
-        const base = this.commonCurrencyCode (baseId);
-        const quote = this.commonCurrencyCode (quoteId);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         return base + '/' + quote;
     }
 
@@ -19030,8 +18527,8 @@ module.exports = class bittrex extends Exchange {
         let feeCurrency = undefined;
         if (marketSymbol !== undefined) {
             const [ baseId, quoteId ] = marketSymbol.split ('-');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             symbol = base + '/' + quote;
             feeCurrency = quote;
         }
@@ -19543,7 +19040,7 @@ module.exports = class bittrex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],42:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],42:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -20626,7 +20123,7 @@ module.exports = class bitz extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],43:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],43:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -20709,11 +20206,6 @@ module.exports = class bl3p extends Exchange {
             const account = this.account ();
             account['free'] = this.safeFloat (available, 'value');
             account['total'] = this.safeFloat (balance, 'value');
-            if (account['total']) {
-                if (account['free']) {
-                    account['used'] = account['total'] - account['free'];
-                }
-            }
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -20966,7 +20458,23 @@ module.exports = class bleutrade extends bittrex {
                 },
                 'v3Private': {
                     'get': [
+                        'getbalance',
+                        'getbalances',
+                        'buylimit',
+                        'selllimit',
+                        'buylimitami',
+                        'selllimitami',
+                        'buystoplimit',
+                        'sellstoplimit',
+                        'ordercancel',
+                        'getopenorders',
+                        'getdeposithistory',
+                        'getdepositaddress',
                         'getmytransactions',
+                        'withdraw',
+                        'directtransfer',
+                        'getwithdrawhistory',
+                        'getlimits',
                     ],
                 },
             },
@@ -21170,7 +20678,7 @@ module.exports = class bleutrade extends bittrex {
         } else if (trade['OrderType'] === 'SELL') {
             side = 'sell';
         }
-        const id = this.safeString (trade, 'TradeID');
+        const id = this.safeString2 (trade, 'TradeID', 'ID');
         let symbol = undefined;
         if (market !== undefined) {
             symbol = market['symbol'];
@@ -21577,7 +21085,7 @@ module.exports = class bleutrade extends bittrex {
     }
 };
 
-},{"./base/errors":8,"./bittrex.js":41}],45:[function(require,module,exports){
+},{"./base/errors":9,"./bittrex.js":41}],45:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -22166,7 +21674,7 @@ module.exports = class braziliex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],46:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],46:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -22420,19 +21928,10 @@ module.exports = class btcalpha extends Exchange {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
             const code = this.safeCurrencyCode (currencyId);
-            const used = this.safeFloat (balance, 'reserve');
-            const total = this.safeFloat (balance, 'balance');
-            let free = undefined;
-            if (used !== undefined) {
-                if (total !== undefined) {
-                    free = total - used;
-                }
-            }
-            result[code] = {
-                'free': free,
-                'used': used,
-                'total': total,
-            };
+            const account = this.account ();
+            account['used'] = this.safeFloat (balance, 'reserve');
+            account['total'] = this.safeFloat (balance, 'balance');
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -22610,7 +22109,7 @@ module.exports = class btcalpha extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],47:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],47:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -23011,7 +22510,7 @@ module.exports = class btcbox extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],48:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],48:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -23396,38 +22895,6 @@ module.exports = class btcchina extends Exchange {
 },{"./base/Exchange":7}],49:[function(require,module,exports){
 'use strict';
 
-// ---------------------------------------------------------------------------
-
-const btcturk = require ('./btcturk.js');
-
-// ---------------------------------------------------------------------------
-
-module.exports = class btcexchange extends btcturk {
-    describe () {
-        return this.deepExtend (super.describe (), {
-            'id': 'btcexchange',
-            'name': 'BTCExchange',
-            'countries': [ 'PH' ], // Philippines
-            'rateLimit': 1500,
-            'has': {
-                'CORS': false,
-            },
-            'urls': {
-                'logo': 'https://user-images.githubusercontent.com/1294454/27993052-4c92911a-64aa-11e7-96d8-ec6ac3435757.jpg',
-                'api': 'https://www.btcexchange.ph/api',
-                'www': 'https://www.btcexchange.ph',
-                'doc': 'https://github.com/BTCTrader/broker-api-docs',
-            },
-            'markets': {
-                'BTC/PHP': { 'id': 'BTC/PHP', 'symbol': 'BTC/PHP', 'base': 'BTC', 'quote': 'PHP' },
-            },
-        });
-    }
-};
-
-},{"./btcturk.js":53}],50:[function(require,module,exports){
-'use strict';
-
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
@@ -23696,14 +23163,17 @@ module.exports = class btcmarkets extends Exchange {
             const currencyId = this.safeString (balance, 'currency');
             const code = this.safeCurrencyCode (currencyId);
             const multiplier = 100000000;
-            const total = this.safeFloat (balance, 'balance') / multiplier;
-            const used = this.safeFloat (balance, 'pendingFunds') / multiplier;
-            const free = total - used;
-            const account = {
-                'free': free,
-                'used': used,
-                'total': total,
-            };
+            let total = this.safeFloat (balance, 'balance');
+            if (total !== undefined) {
+                total /= multiplier;
+            }
+            let used = this.safeFloat (balance, 'pendingFunds');
+            if (used !== undefined) {
+                used /= multiplier;
+            }
+            const account = this.account ();
+            account['used'] = used;
+            account['total'] = total;
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -23985,7 +23455,7 @@ module.exports = class btcmarkets extends Exchange {
             cost = 0;
             for (let i = 0; i < numTrades; i++) {
                 const trade = trades[i];
-                cost = this.sum (cost, trade[i]['cost']);
+                cost = this.sum (cost, trade['cost']);
             }
             if (filled > 0) {
                 average = cost / filled;
@@ -24139,7 +23609,7 @@ module.exports = class btcmarkets extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],51:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],50:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24212,7 +23682,7 @@ module.exports = class btctradeim extends coinegg {
     }
 };
 
-},{"./base/errors":8,"./coinegg.js":64}],52:[function(require,module,exports){
+},{"./base/errors":9,"./coinegg.js":62}],51:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24235,6 +23705,7 @@ module.exports = class btctradeua extends Exchange {
                 'fetchOpenOrders': true,
             },
             'urls': {
+                'referral': 'https://btc-trade.com.ua/registration/22689',
                 'logo': 'https://user-images.githubusercontent.com/1294454/27941483-79fc7350-62d9-11e7-9f61-ac47f28fcd96.jpg',
                 'api': 'https://btc-trade.com.ua/api',
                 'www': 'https://btc-trade.com.ua',
@@ -24307,17 +23778,14 @@ module.exports = class btctradeua extends Exchange {
         await this.loadMarkets ();
         const response = await this.privatePostBalance (params);
         const result = { 'info': response };
-        const accounts = this.safeValue (response, 'accounts');
-        for (let i = 0; i < accounts.length; i++) {
-            const account = accounts[i];
-            const currencyId = account['currency'];
+        const balances = this.safeValue (response, 'accounts');
+        for (let i = 0; i < balances.length; i++) {
+            const balance = balances[i];
+            const currencyId = this.safeString (balance, 'currency');
             const code = this.safeCurrencyCode (currencyId);
-            const balance = this.safeFloat (account, 'balance');
-            result[code] = {
-                'free': balance,
-                'used': 0.0,
-                'total': balance,
-            };
+            const account = this.account ();
+            account['total'] = this.safeFloat (balance, 'balance');
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -24596,7 +24064,7 @@ module.exports = class btctradeua extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],53:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],52:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -24928,7 +24396,7 @@ module.exports = class btcturk extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],54:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],53:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -25723,7 +25191,7 @@ module.exports = class buda extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],55:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],54:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -25746,6 +25214,7 @@ module.exports = class bxinth extends Exchange {
                 'fetchOpenOrders': true,
             },
             'urls': {
+                'referral': 'https://bx.in.th/ref/cYHknT/',
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766412-567b1eb4-5ed7-11e7-94a8-ff6a3884f6c5.jpg',
                 'api': 'https://bx.in.th/api',
                 'www': 'https://bx.in.th',
@@ -25813,8 +25282,8 @@ module.exports = class bxinth extends Exchange {
             const baseId = this.safeString (market, 'secondary_currency');
             const quoteId = this.safeString (market, 'primary_currency');
             const active = this.safeValue (market, 'active');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -25838,7 +25307,7 @@ module.exports = class bxinth extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const balance = this.safeValue (balances, currencyId, {});
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
@@ -26079,7 +25548,7 @@ module.exports = class bxinth extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],56:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],55:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -26433,8 +25902,8 @@ module.exports = class cex extends Exchange {
             const baseId = this.safeString (market, 'symbol1');
             const quoteId = this.safeString (market, 'symbol2');
             const id = baseId + '/' + quoteId;
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -26479,8 +25948,9 @@ module.exports = class cex extends Exchange {
             const balance = this.safeValue (balances, currencyId, {});
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
-            account['used'] = this.safeFloat (balance, 'orders');
-            const code = this.commonCurrencyCode (currencyId);
+            // https://github.com/ccxt/ccxt/issues/5484
+            account['used'] = this.safeFloat (balance, 'orders', 0.0);
+            const code = this.safeCurrencyCode (currencyId);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -26707,8 +26177,8 @@ module.exports = class cex extends Exchange {
         if (market === undefined) {
             const baseId = this.safeString (order, 'symbol1');
             const quoteId = this.safeString (order, 'symbol2');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             symbol = base + '/' + quote;
             if (symbol in this.markets) {
                 market = this.market (symbol);
@@ -27032,72 +26502,7 @@ module.exports = class cex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],57:[function(require,module,exports){
-'use strict';
-
-// ---------------------------------------------------------------------------
-
-const zb = require ('./zb.js');
-const { ExchangeError } = require ('./base/errors');
-
-// ---------------------------------------------------------------------------
-
-module.exports = class chbtc extends zb {
-    describe () {
-        return this.deepExtend (super.describe (), {
-            'id': 'chbtc',
-            'name': 'CHBTC',
-            'countries': [ 'CN' ],
-            'rateLimit': 1000,
-            'version': 'v1',
-            'has': {
-                'CORS': false,
-                'fetchOrder': true,
-            },
-            'urls': {
-                'logo': 'https://user-images.githubusercontent.com/1294454/28555659-f0040dc2-7109-11e7-9d99-688a438bf9f4.jpg',
-                'api': {
-                    'public': 'http://api.chbtc.com/data', // no https for public API
-                    'private': 'https://trade.chbtc.com/api',
-                },
-                'www': 'https://trade.chbtc.com/api',
-                'doc': 'https://www.chbtc.com/i/developer',
-            },
-            'markets': {
-                'BTC/CNY': { 'id': 'btc_cny', 'symbol': 'BTC/CNY', 'base': 'BTC', 'quote': 'CNY' },
-                'LTC/CNY': { 'id': 'ltc_cny', 'symbol': 'LTC/CNY', 'base': 'LTC', 'quote': 'CNY' },
-                'ETH/CNY': { 'id': 'eth_cny', 'symbol': 'ETH/CNY', 'base': 'ETH', 'quote': 'CNY' },
-                'ETC/CNY': { 'id': 'etc_cny', 'symbol': 'ETC/CNY', 'base': 'ETC', 'quote': 'CNY' },
-                'BTS/CNY': { 'id': 'bts_cny', 'symbol': 'BTS/CNY', 'base': 'BTS', 'quote': 'CNY' },
-                // 'EOS/CNY': { 'id': 'eos_cny', 'symbol': 'EOS/CNY', 'base': 'EOS', 'quote': 'CNY' },
-                'BCH/CNY': { 'id': 'bcc_cny', 'symbol': 'BCH/CNY', 'base': 'BCH', 'quote': 'CNY' },
-                'HSR/CNY': { 'id': 'hsr_cny', 'symbol': 'HSR/CNY', 'base': 'HSR', 'quote': 'CNY' },
-                'QTUM/CNY': { 'id': 'qtum_cny', 'symbol': 'QTUM/CNY', 'base': 'QTUM', 'quote': 'CNY' },
-            },
-        });
-    }
-
-    getMarketFieldName () {
-        return 'currency';
-    }
-
-    async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        const response = await this.fetch2 (path, api, method, params, headers, body);
-        if (api === 'private') {
-            if ('code' in response) {
-                throw new ExchangeError (this.id + ' ' + this.json (response));
-            }
-        }
-        if ('result' in response) {
-            if (!response['result']) {
-                throw new ExchangeError (this.id + ' ' + this.json (response));
-            }
-        }
-        return response;
-    }
-};
-
-},{"./base/errors":8,"./zb.js":165}],58:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],56:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -27131,7 +26536,7 @@ module.exports = class chilebit extends foxbit {
     }
 };
 
-},{"./foxbit.js":89}],59:[function(require,module,exports){
+},{"./foxbit.js":86}],57:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -27333,7 +26738,7 @@ module.exports = class cobinhood extends Exchange {
             const currency = currencies[i];
             const id = this.safeString (currency, 'currency');
             const name = this.safeString (currency, 'name');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const minUnit = this.safeFloat (currency, 'min_unit');
             result[code] = {
                 'id': id,
@@ -27382,8 +26787,8 @@ module.exports = class cobinhood extends Exchange {
             const market = markets[i];
             const id = this.safeString (market, 'id');
             const [ baseId, quoteId ] = id.split ('-');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': 8,
@@ -27427,8 +26832,8 @@ module.exports = class cobinhood extends Exchange {
                 market = this.markets_by_id[marketId];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('-');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -27592,12 +26997,7 @@ module.exports = class cobinhood extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['used'] = this.safeFloat (balance, 'on_order');
             account['total'] = this.safeFloat (balance, 'total');
@@ -27912,18 +27312,8 @@ module.exports = class cobinhood extends Exchange {
 
     parseTransaction (transaction, currency = undefined) {
         const timestamp = this.safeInteger (transaction, 'created_at');
-        let code = undefined;
-        if (currency === undefined) {
-            const currencyId = this.safeString (transaction, 'currency');
-            if (currencyId in this.currencies_by_id) {
-                currency = this.currencies_by_id[currencyId];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const currencyId = this.safeString (transaction, 'currency');
+        const code = this.safeCurrencyCode (currencyId, currency);
         let id = undefined;
         const withdrawalId = this.safeString (transaction, 'withdrawal_id');
         const depositId = this.safeString (transaction, 'deposit_id');
@@ -28012,7 +27402,7 @@ module.exports = class cobinhood extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],60:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],58:[function(require,module,exports){
 'use strict';
 
 // ----------------------------------------------------------------------------
@@ -28051,6 +27441,7 @@ module.exports = class coinbase extends Exchange {
                 'fetchOrder': false,
                 'fetchOrderBook': false,
                 'fetchL2OrderBook': false,
+                'fetchLedger': true,
                 'fetchOrders': false,
                 'fetchTicker': true,
                 'fetchTickers': false,
@@ -28159,6 +27550,14 @@ module.exports = class coinbase extends Exchange {
                 'LTC/USD': { 'id': 'ltc-usd', 'symbol': 'LTC/USD', 'base': 'LTC', 'quote': 'USD' },
                 'ETH/USD': { 'id': 'eth-usd', 'symbol': 'ETH/USD', 'base': 'ETH', 'quote': 'USD' },
                 'BCH/USD': { 'id': 'bch-usd', 'symbol': 'BCH/USD', 'base': 'BCH', 'quote': 'USD' },
+                'BTC/EUR': { 'id': 'btc-eur', 'symbol': 'BTC/EUR', 'base': 'BTC', 'quote': 'EUR' },
+                'LTC/EUR': { 'id': 'ltc-eur', 'symbol': 'LTC/EUR', 'base': 'LTC', 'quote': 'EUR' },
+                'ETH/EUR': { 'id': 'eth-eur', 'symbol': 'ETH/EUR', 'base': 'ETH', 'quote': 'EUR' },
+                'BCH/EUR': { 'id': 'bch-eur', 'symbol': 'BCH/EUR', 'base': 'BCH', 'quote': 'EUR' },
+                'BTC/GBP': { 'id': 'btc-gbp', 'symbol': 'BTC/GBP', 'base': 'BTC', 'quote': 'GBP' },
+                'LTC/GBP': { 'id': 'ltc-gbp', 'symbol': 'LTC/GBP', 'base': 'LTC', 'quote': 'GBP' },
+                'ETH/GBP': { 'id': 'eth-gbp', 'symbol': 'ETH/GBP', 'base': 'ETH', 'quote': 'GBP' },
+                'BCH/GBP': { 'id': 'bch-gbp', 'symbol': 'BCH/GBP', 'base': 'BCH', 'quote': 'GBP' },
             },
             'options': {
                 'accounts': [
@@ -28214,7 +27613,7 @@ module.exports = class coinbase extends Exchange {
             const account = data[i];
             const currency = this.safeValue (account, 'currency', {});
             const currencyId = this.safeString (currency, 'code');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             result.push ({
                 'id': this.safeString (account, 'id'),
                 'type': this.safeString (account, 'type'),
@@ -28294,54 +27693,37 @@ module.exports = class coinbase extends Exchange {
 
     async fetchMySells (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         // they don't have an endpoint for all historical trades
-        const accountId = this.safeString2 (params, 'account_id', 'accountId');
-        if (accountId === undefined) {
-            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.');
-        }
+        const request = await this.prepareAccountRequest (limit, params);
         await this.loadMarkets ();
         const query = this.omit (params, [ 'account_id', 'accountId' ]);
-        const sells = await this.privateGetAccountsAccountIdSells (this.extend ({
-            'account_id': accountId,
-        }, query));
+        const sells = await this.privateGetAccountsAccountIdSells (this.extend (request, query));
         return this.parseTrades (sells['data'], undefined, since, limit);
     }
 
     async fetchMyBuys (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         // they don't have an endpoint for all historical trades
-        const accountId = this.safeString2 (params, 'account_id', 'accountId');
-        if (accountId === undefined) {
-            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.');
-        }
+        const request = await this.prepareAccountRequest (limit, params);
         await this.loadMarkets ();
         const query = this.omit (params, [ 'account_id', 'accountId' ]);
-        const buys = await this.privateGetAccountsAccountIdBuys (this.extend ({
-            'account_id': accountId,
-        }, query));
+        const buys = await this.privateGetAccountsAccountIdBuys (this.extend (request, query));
         return this.parseTrades (buys['data'], undefined, since, limit);
     }
 
     async fetchTransactionsWithMethod (method, code = undefined, since = undefined, limit = undefined, params = {}) {
-        const accountId = this.safeString2 (params, 'account_id', 'accountId');
-        if (accountId === undefined) {
-            throw new ArgumentsRequired (this.id + ' fetchTransactionsWithMethod requires an account_id or accountId extra parameter, use fetchAccounts or loadAccounts to get ids of all your accounts.');
-        }
+        const request = await this.prepareAccountRequestWithCurrencyCode (code, limit, params);
         await this.loadMarkets ();
         const query = this.omit (params, [ 'account_id', 'accountId' ]);
-        const request = {
-            'account_id': accountId,
-        };
-        if (limit !== undefined) {
-            request['limit'] = limit;
-        }
         const response = await this[method] (this.extend (request, query));
         return this.parseTransactions (response['data'], undefined, since, limit);
     }
 
     async fetchWithdrawals (code = undefined, since = undefined, limit = undefined, params = {}) {
+        // fiat only, for crypto transactions use fetchLedger
         return await this.fetchTransactionsWithMethod ('privateGetAccountsAccountIdWithdrawals', code, since, limit, params);
     }
 
     async fetchDeposits (code = undefined, since = undefined, limit = undefined, params = {}) {
+        // fiat only, for crypto transactions use fetchLedger
         return await this.fetchTransactionsWithMethod ('privateGetAccountsAccountIdDeposits', code, since, limit, params);
     }
 
@@ -28356,58 +27738,68 @@ module.exports = class coinbase extends Exchange {
 
     parseTransaction (transaction, market = undefined) {
         //
-        //    DEPOSIT
-        //        id: '406176b1-92cf-598f-ab6e-7d87e4a6cac1',
-        //        status: 'completed',
-        //        payment_method: [Object],
-        //        transaction: [Object],
-        //        user_reference: 'JQKBN85B',
-        //        created_at: '2018-10-01T14:58:21Z',
-        //        updated_at: '2018-10-01T17:57:27Z',
-        //        resource: 'deposit',
-        //        resource_path: '/v2/accounts/7702be4f-de96-5f08-b13b-32377c449ecf/deposits/406176b1-92cf-598f-ab6e-7d87e4a6cac1',
-        //        committed: true,
-        //        payout_at: '2018-10-01T14:58:34Z',
-        //        instant: true,
-        //        fee: [Object],
-        //        amount: [Object],
-        //        subtotal: [Object],
-        //        hold_until: '2018-10-04T07:00:00Z',
-        //        hold_days: 3
+        // fiat deposit
         //
-        //    WITHDRAWAL
-        //       {
-        //           "id": "67e0eaec-07d7-54c4-a72c-2e92826897df",
-        //           "status": "completed",
-        //           "payment_method": {
-        //             "id": "83562370-3e5c-51db-87da-752af5ab9559",
+        //     {
+        //         "id": "f34c19f3-b730-5e3d-9f72",
+        //         "status": "completed",
+        //         "payment_method": {
+        //             "id": "a022b31d-f9c7-5043-98f2",
         //             "resource": "payment_method",
-        //             "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
-        //           },
-        //           "transaction": {
-        //             "id": "441b9494-b3f0-5b98-b9b0-4d82c21c252a",
+        //             "resource_path": "/v2/payment-methods/a022b31d-f9c7-5043-98f2"
+        //         },
+        //         "transaction": {
+        //             "id": "04ed4113-3732-5b0c-af86-b1d2146977d0",
         //             "resource": "transaction",
-        //             "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
-        //           },
-        //           "amount": {
-        //             "amount": "10.00",
-        //             "currency": "USD"
-        //           },
-        //           "subtotal": {
-        //             "amount": "10.00",
-        //             "currency": "USD"
-        //           },
-        //           "created_at": "2015-01-31T20:49:02Z",
-        //           "updated_at": "2015-02-11T16:54:02-08:00",
-        //           "resource": "withdrawal",
-        //           "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/withdrawals/67e0eaec-07d7-54c4-a72c-2e92826897df",
-        //           "committed": true,
-        //           "fee": {
-        //             "amount": "0.00",
-        //             "currency": "USD"
-        //           },
-        //           "payout_at": "2015-02-18T16:54:00-08:00"
-        //         }
+        //             "resource_path": "/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/transactions/04ed4113-3732-5b0c-af86"
+        //         },
+        //         "user_reference": "2VTYTH",
+        //         "created_at": "2017-02-09T07:01:18Z",
+        //         "updated_at": "2017-02-09T07:01:26Z",
+        //         "resource": "deposit",
+        //         "resource_path": "/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/deposits/f34c19f3-b730-5e3d-9f72",
+        //         "committed": true,
+        //         "payout_at": "2017-02-12T07:01:17Z",
+        //         "instant": false,
+        //         "fee": { "amount": "0.00", "currency": "EUR" },
+        //         "amount": { "amount": "114.02", "currency": "EUR" },
+        //         "subtotal": { "amount": "114.02", "currency": "EUR" },
+        //         "hold_until": null,
+        //         "hold_days": 0,
+        //         "hold_business_days": 0,
+        //         "next_step": null
+        //     }
+        //
+        // fiat_withdrawal
+        //
+        //     {
+        //         "id": "cfcc3b4a-eeb6-5e8c-8058",
+        //         "status": "completed",
+        //         "payment_method": {
+        //             "id": "8b94cfa4-f7fd-5a12-a76a",
+        //             "resource": "payment_method",
+        //             "resource_path": "/v2/payment-methods/8b94cfa4-f7fd-5a12-a76a"
+        //         },
+        //         "transaction": {
+        //             "id": "fcc2550b-5104-5f83-a444",
+        //             "resource": "transaction",
+        //             "resource_path": "/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/transactions/fcc2550b-5104-5f83-a444"
+        //         },
+        //         "user_reference": "MEUGK",
+        //         "created_at": "2018-07-26T08:55:12Z",
+        //         "updated_at": "2018-07-26T08:58:18Z",
+        //         "resource": "withdrawal",
+        //         "resource_path": "/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/withdrawals/cfcc3b4a-eeb6-5e8c-8058",
+        //         "committed": true,
+        //         "payout_at": "2018-07-31T08:55:12Z",
+        //         "instant": false,
+        //         "fee": { "amount": "0.15", "currency": "EUR" },
+        //         "amount": { "amount": "13130.69", "currency": "EUR" },
+        //         "subtotal": { "amount": "13130.84", "currency": "EUR" },
+        //         "idem": "e549dee5-63ed-4e79-8a96",
+        //         "next_step": null
+        //     }
+        //
         const amountObject = this.safeValue (transaction, 'amount', {});
         const feeObject = this.safeValue (transaction, 'fee', {});
         const id = this.safeString (transaction, 'id');
@@ -28416,10 +27808,10 @@ module.exports = class coinbase extends Exchange {
         const type = this.safeString (transaction, 'resource');
         const amount = this.safeFloat (amountObject, 'amount');
         const currencyId = this.safeString (amountObject, 'currency');
-        const currency = this.commonCurrencyCode (currencyId);
+        const currency = this.safeCurrencyCode (currencyId);
         const feeCost = this.safeFloat (feeObject, 'amount');
         const feeCurrencyId = this.safeString (feeObject, 'currency');
-        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const feeCurrency = this.safeCurrencyCode (feeCurrencyId);
         const fee = {
             'cost': feeCost,
             'currency': feeCurrency,
@@ -28449,41 +27841,29 @@ module.exports = class coinbase extends Exchange {
     parseTrade (trade, market = undefined) {
         //
         //     {
-        //       "id": "67e0eaec-07d7-54c4-a72c-2e92826897df",
-        //       "status": "completed",
-        //       "payment_method": {
-        //         "id": "83562370-3e5c-51db-87da-752af5ab9559",
-        //         "resource": "payment_method",
-        //         "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
-        //       },
-        //       "transaction": {
-        //         "id": "441b9494-b3f0-5b98-b9b0-4d82c21c252a",
-        //         "resource": "transaction",
-        //         "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
-        //       },
-        //       "amount": {
-        //         "amount": "1.00000000",
-        //         "currency": "BTC"
-        //       },
-        //       "total": {
-        //         "amount": "10.25",
-        //         "currency": "USD"
-        //       },
-        //       "subtotal": {
-        //         "amount": "10.10",
-        //         "currency": "USD"
-        //       },
-        //       "created_at": "2015-01-31T20:49:02Z",
-        //       "updated_at": "2015-02-11T16:54:02-08:00",
-        //       "resource": "buy",
-        //       "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/buys/67e0eaec-07d7-54c4-a72c-2e92826897df",
-        //       "committed": true,
-        //       "instant": false,
-        //       "fee": {
-        //         "amount": "0.15",
-        //         "currency": "USD"
-        //       },
-        //       "payout_at": "2015-02-18T16:54:00-08:00"
+        //         "id": "67e0eaec-07d7-54c4-a72c-2e92826897df",
+        //         "status": "completed",
+        //         "payment_method": {
+        //             "id": "83562370-3e5c-51db-87da-752af5ab9559",
+        //             "resource": "payment_method",
+        //             "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
+        //         },
+        //         "transaction": {
+        //             "id": "441b9494-b3f0-5b98-b9b0-4d82c21c252a",
+        //             "resource": "transaction",
+        //             "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
+        //         },
+        //         "amount": { "amount": "1.00000000", "currency": "BTC" },
+        //         "total": { "amount": "10.25", "currency": "USD" },
+        //         "subtotal": { "amount": "10.10", "currency": "USD" },
+        //         "created_at": "2015-01-31T20:49:02Z",
+        //         "updated_at": "2015-02-11T16:54:02-08:00",
+        //         "resource": "buy",
+        //         "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/buys/67e0eaec-07d7-54c4-a72c-2e92826897df",
+        //         "committed": true,
+        //         "instant": false,
+        //         "fee": { "amount": "0.15", "currency": "USD" },
+        //         "payout_at": "2015-02-18T16:54:00-08:00"
         //     }
         //
         let symbol = undefined;
@@ -28497,8 +27877,8 @@ module.exports = class coinbase extends Exchange {
             const baseId = this.safeString (totalObject, 'currency');
             const quoteId = this.safeString (amountObject, 'currency');
             if ((baseId !== undefined) && (quoteId !== undefined)) {
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -28515,7 +27895,7 @@ module.exports = class coinbase extends Exchange {
         }
         const feeCost = this.safeFloat (feeObject, 'amount');
         const feeCurrencyId = this.safeString (feeObject, 'currency');
-        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const feeCurrency = this.safeCurrencyCode (feeCurrencyId);
         const fee = {
             'cost': feeCost,
             'currency': feeCurrency,
@@ -28545,7 +27925,7 @@ module.exports = class coinbase extends Exchange {
             const currency = currencies[i];
             const id = this.safeString (currency, 'id');
             const name = this.safeString (currency, 'name');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const minimum = this.safeFloat (currency, 'min_size');
             result[code] = {
                 'id': id,
@@ -28628,11 +28008,8 @@ module.exports = class coinbase extends Exchange {
         for (let b = 0; b < balances.length; b++) {
             const balance = balances[b];
             if (this.inArray (balance['type'], accounts)) {
-                const currencyId = balance['balance']['currency'];
-                let code = currencyId;
-                if (currencyId in this.currencies_by_id) {
-                    code = this.currencies_by_id[currencyId]['code'];
-                }
+                const currencyId = this.safeString (balance['balance'], 'currency');
+                const code = this.safeCurrencyCode (currencyId);
                 const total = this.safeFloat (balance['balance'], 'amount');
                 const free = total;
                 const used = undefined;
@@ -28650,6 +28027,394 @@ module.exports = class coinbase extends Exchange {
             }
         }
         return this.parseBalance (result);
+    }
+
+    async fetchLedger (code = undefined, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        const request = await this.prepareAccountRequestWithCurrencyCode (code, limit, params);
+        const query = this.omit (params, ['account_id', 'accountId']);
+        // for pagination use parameter 'starting_after'
+        // the value for the next page can be obtained from the result of the previous call in the 'pagination' field
+        // eg: instance.last_json_response.pagination.next_starting_after
+        const response = await this.privateGetAccountsAccountIdTransactions (this.extend (request, query));
+        return this.parseLedger (response['data'], undefined, since, limit);
+    }
+
+    parseLedgerEntryStatus (status) {
+        const types = {
+            'completed': 'ok',
+        };
+        return this.safeString (types, status, status);
+    }
+
+    parseLedgerEntryType (type) {
+        const types = {
+            'buy': 'trade',
+            'sell': 'trade',
+            'fiat_deposit': 'transaction',
+            'fiat_withdrawal': 'transaction',
+            'exchange_deposit': 'transaction', // fiat withdrawal (from coinbase to coinbasepro)
+            'exchange_withdrawal': 'transaction', // fiat deposit (to coinbase from coinbasepro)
+            'send': 'transaction', // crypto deposit OR withdrawal
+            'pro_deposit': 'transaction', // crypto withdrawal (from coinbase to coinbasepro)
+            'pro_withdrawal': 'transaction', // crypto deposit (to coinbase from coinbasepro)
+        };
+        return this.safeString (types, type, type);
+    }
+
+    parseLedgerEntry (item, currency = undefined) {
+        //
+        // crypto deposit transaction
+        //
+        //     {
+        //         id: '34e4816b-4c8c-5323-a01c-35a9fa26e490',
+        //         type: 'send',
+        //         status: 'completed',
+        //         amount: { amount: '28.31976528', currency: 'BCH' },
+        //         native_amount: { amount: '2799.65', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2019-02-28T12:35:20Z',
+        //         updated_at: '2019-02-28T12:43:24Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c01d7364-edd7-5f3a-bd1d-de53d4cbb25e/transactions/34e4816b-4c8c-5323-a01c-35a9fa26e490',
+        //         instant_exchange: false,
+        //         network: {
+        //             status: 'confirmed',
+        //             hash: '56222d865dae83774fccb2efbd9829cf08c75c94ce135bfe4276f3fb46d49701',
+        //             transaction_url: 'https://bch.btc.com/56222d865dae83774fccb2efbd9829cf08c75c94ce135bfe4276f3fb46d49701'
+        //         },
+        //         from: { resource: 'bitcoin_cash_network', currency: 'BCH' },
+        //         details: { title: 'Received Bitcoin Cash', subtitle: 'From Bitcoin Cash address' }
+        //     }
+        //
+        // crypto withdrawal transaction
+        //
+        //     {
+        //         id: '459aad99-2c41-5698-ac71-b6b81a05196c',
+        //         type: 'send',
+        //         status: 'completed',
+        //         amount: { amount: '-0.36775642', currency: 'BTC' },
+        //         native_amount: { amount: '-1111.65', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2019-03-20T08:37:07Z',
+        //         updated_at: '2019-03-20T08:49:33Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c6afbd34-4bd0-501e-8616-4862c193cd84/transactions/459aad99-2c41-5698-ac71-b6b81a05196c',
+        //         instant_exchange: false,
+        //         network: {
+        //             status: 'confirmed',
+        //             hash: '2732bbcf35c69217c47b36dce64933d103895277fe25738ffb9284092701e05b',
+        //             transaction_url: 'https://blockchain.info/tx/2732bbcf35c69217c47b36dce64933d103895277fe25738ffb9284092701e05b',
+        //             transaction_fee: { amount: '0.00000000', currency: 'BTC' },
+        //             transaction_amount: { amount: '0.36775642', currency: 'BTC' },
+        //             confirmations: 15682
+        //         },
+        //         to: {
+        //             resource: 'bitcoin_address',
+        //             address: '1AHnhqbvbYx3rnZx8uC7NbFZaTe4tafFHX',
+        //             currency: 'BTC',
+        //             address_info: { address: '1AHnhqbvbYx3rnZx8uC7NbFZaTe4tafFHX' }
+        //         },
+        //         idem: 'da0a2f14-a2af-4c5a-a37e-d4484caf582bsend',
+        //         application: {
+        //             id: '5756ab6e-836b-553b-8950-5e389451225d',
+        //             resource: 'application',
+        //             resource_path: '/v2/applications/5756ab6e-836b-553b-8950-5e389451225d'
+        //         },
+        //         details: { title: 'Sent Bitcoin', subtitle: 'To Bitcoin address' }
+        //     }
+        //
+        // withdrawal transaction from coinbase to coinbasepro
+        //
+        //     {
+        //         id: '5b1b9fb8-5007-5393-b923-02903b973fdc',
+        //         type: 'pro_deposit',
+        //         status: 'completed',
+        //         amount: { amount: '-0.00001111', currency: 'BCH' },
+        //         native_amount: { amount: '0.00', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2019-02-28T13:31:58Z',
+        //         updated_at: '2019-02-28T13:31:58Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c01d7364-edd7-5f3a-bd1d-de53d4cbb25e/transactions/5b1b9fb8-5007-5393-b923-02903b973fdc',
+        //         instant_exchange: false,
+        //         application: {
+        //             id: '5756ab6e-836b-553b-8950-5e389451225d',
+        //             resource: 'application',
+        //             resource_path: '/v2/applications/5756ab6e-836b-553b-8950-5e389451225d'
+        //         },
+        //         details: { title: 'Transferred Bitcoin Cash', subtitle: 'To Coinbase Pro' }
+        //     }
+        //
+        // withdrawal transaction from coinbase to gdax
+        //
+        //     {
+        //         id: 'badb7313-a9d3-5c07-abd0-00f8b44199b1',
+        //         type: 'exchange_deposit',
+        //         status: 'completed',
+        //         amount: { amount: '-0.43704149', currency: 'BCH' },
+        //         native_amount: { amount: '-51.90', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2019-03-19T10:30:40Z',
+        //         updated_at: '2019-03-19T10:30:40Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c01d7364-edd7-5f3a-bd1d-de53d4cbb25e/transactions/badb7313-a9d3-5c07-abd0-00f8b44199b1',
+        //         instant_exchange: false,
+        //         details: { title: 'Transferred Bitcoin Cash', subtitle: 'To GDAX' }
+        //     }
+        //
+        // deposit transaction from gdax to coinbase
+        //
+        //     {
+        //         id: '9c4b642c-8688-58bf-8962-13cef64097de',
+        //         type: 'exchange_withdrawal',
+        //         status: 'completed',
+        //         amount: { amount: '0.57729420', currency: 'BTC' },
+        //         native_amount: { amount: '4418.72', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2018-02-17T11:33:33Z',
+        //         updated_at: '2018-02-17T11:33:33Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c6afbd34-4bd0-501e-8616-4862c193cd84/transactions/9c4b642c-8688-58bf-8962-13cef64097de',
+        //         instant_exchange: false,
+        //         details: { title: 'Transferred Bitcoin', subtitle: 'From GDAX' }
+        //     }
+        //
+        // deposit transaction from coinbasepro to coinbase
+        //
+        //     {
+        //         id: '8d6dd0b9-3416-568a-889d-8f112fae9e81',
+        //         type: 'pro_withdrawal',
+        //         status: 'completed',
+        //         amount: { amount: '0.40555386', currency: 'BTC' },
+        //         native_amount: { amount: '1140.27', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2019-03-04T19:41:58Z',
+        //         updated_at: '2019-03-04T19:41:58Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c6afbd34-4bd0-501e-8616-4862c193cd84/transactions/8d6dd0b9-3416-568a-889d-8f112fae9e81',
+        //         instant_exchange: false,
+        //         application: {
+        //             id: '5756ab6e-836b-553b-8950-5e389451225d',
+        //             resource: 'application',
+        //             resource_path: '/v2/applications/5756ab6e-836b-553b-8950-5e389451225d'
+        //         },
+        //         details: { title: 'Transferred Bitcoin', subtitle: 'From Coinbase Pro' }
+        //     }
+        //
+        // sell trade
+        //
+        //     {
+        //         id: 'a9409207-df64-585b-97ab-a50780d2149e',
+        //         type: 'sell',
+        //         status: 'completed',
+        //         amount: { amount: '-9.09922880', currency: 'BTC' },
+        //         native_amount: { amount: '-7285.73', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2017-03-27T15:38:34Z',
+        //         updated_at: '2017-03-27T15:38:34Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/c6afbd34-4bd0-501e-8616-4862c193cd84/transactions/a9409207-df64-585b-97ab-a50780d2149e',
+        //         instant_exchange: false,
+        //         sell: {
+        //             id: 'e3550b4d-8ae6-5de3-95fe-1fb01ba83051',
+        //             resource: 'sell',
+        //             resource_path: '/v2/accounts/c6afbd34-4bd0-501e-8616-4862c193cd84/sells/e3550b4d-8ae6-5de3-95fe-1fb01ba83051'
+        //         },
+        //         details: {
+        //             title: 'Sold Bitcoin',
+        //             subtitle: 'Using EUR Wallet',
+        //             payment_method_name: 'EUR Wallet'
+        //         }
+        //     }
+        //
+        // buy trade
+        //
+        //     {
+        //         id: '63eeed67-9396-5912-86e9-73c4f10fe147',
+        //         type: 'buy',
+        //         status: 'completed',
+        //         amount: { amount: '2.39605772', currency: 'ETH' },
+        //         native_amount: { amount: '98.31', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2017-03-27T09:07:56Z',
+        //         updated_at: '2017-03-27T09:07:57Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/8902f85d-4a69-5d74-82fe-8e390201bda7/transactions/63eeed67-9396-5912-86e9-73c4f10fe147',
+        //         instant_exchange: false,
+        //         buy: {
+        //             id: '20b25b36-76c6-5353-aa57-b06a29a39d82',
+        //             resource: 'buy',
+        //             resource_path: '/v2/accounts/8902f85d-4a69-5d74-82fe-8e390201bda7/buys/20b25b36-76c6-5353-aa57-b06a29a39d82'
+        //         },
+        //         details: {
+        //             title: 'Bought Ethereum',
+        //             subtitle: 'Using EUR Wallet',
+        //             payment_method_name: 'EUR Wallet'
+        //         }
+        //     }
+        //
+        // fiat deposit transaction
+        //
+        //     {
+        //         id: '04ed4113-3732-5b0c-af86-b1d2146977d0',
+        //         type: 'fiat_deposit',
+        //         status: 'completed',
+        //         amount: { amount: '114.02', currency: 'EUR' },
+        //         native_amount: { amount: '97.23', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2017-02-09T07:01:21Z',
+        //         updated_at: '2017-02-09T07:01:22Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/transactions/04ed4113-3732-5b0c-af86-b1d2146977d0',
+        //         instant_exchange: false,
+        //         fiat_deposit: {
+        //             id: 'f34c19f3-b730-5e3d-9f72-96520448677a',
+        //             resource: 'fiat_deposit',
+        //             resource_path: '/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/deposits/f34c19f3-b730-5e3d-9f72-96520448677a'
+        //         },
+        //         details: {
+        //             title: 'Deposited funds',
+        //             subtitle: 'From SEPA Transfer (GB47 BARC 20..., reference CBADVI)',
+        //             payment_method_name: 'SEPA Transfer (GB47 BARC 20..., reference CBADVI)'
+        //         }
+        //     }
+        //
+        // fiat withdrawal transaction
+        //
+        //     {
+        //         id: '957d98e2-f80e-5e2f-a28e-02945aa93079',
+        //         type: 'fiat_withdrawal',
+        //         status: 'completed',
+        //         amount: { amount: '-11000.00', currency: 'EUR' },
+        //         native_amount: { amount: '-9698.22', currency: 'GBP' },
+        //         description: null,
+        //         created_at: '2017-12-06T13:19:19Z',
+        //         updated_at: '2017-12-06T13:19:19Z',
+        //         resource: 'transaction',
+        //         resource_path: '/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/transactions/957d98e2-f80e-5e2f-a28e-02945aa93079',
+        //         instant_exchange: false,
+        //         fiat_withdrawal: {
+        //             id: 'f4bf1fd9-ab3b-5de7-906d-ed3e23f7a4e7',
+        //             resource: 'fiat_withdrawal',
+        //             resource_path: '/v2/accounts/91cd2d36-3a91-55b6-a5d4-0124cf105483/withdrawals/f4bf1fd9-ab3b-5de7-906d-ed3e23f7a4e7'
+        //         },
+        //         details: {
+        //             title: 'Withdrew funds',
+        //             subtitle: 'To HSBC BANK PLC (GB74 MIDL...)',
+        //             payment_method_name: 'HSBC BANK PLC (GB74 MIDL...)'
+        //         }
+        //     }
+        //
+        const amountInfo = this.safeValue (item, 'amount', {});
+        let amount = this.safeFloat (amountInfo, 'amount');
+        let direction = undefined;
+        if (amount < 0) {
+            direction = 'out';
+            amount = -amount;
+        } else {
+            direction = 'in';
+        }
+        const currencyId = this.safeString (amountInfo, 'currency');
+        const code = this.safeCurrencyCode (currencyId, currency);
+        //
+        // the address and txid do not belong to the unified ledger structure
+        //
+        //     let address = undefined;
+        //     if (item['to']) {
+        //         address = this.safeString (item['to'], 'address');
+        //     }
+        //     let txid = undefined;
+        //
+        let fee = undefined;
+        const networkInfo = this.safeValue (item, 'network', {});
+        // txid = network['hash']; // txid does not belong to the unified ledger structure
+        const feeInfo = this.safeValue (networkInfo, 'transaction_fee');
+        if (feeInfo !== undefined) {
+            const feeCurrencyId = this.safeString (feeInfo, 'currency');
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId, currency);
+            const feeAmount = this.safeFloat (feeInfo, 'amount');
+            fee = {
+                'cost': feeAmount,
+                'currency': feeCurrencyCode,
+            };
+        }
+        const timestamp = this.parse8601 (this.safeValue (item, 'created_at'));
+        const id = this.safeString (item, 'id');
+        const type = this.parseLedgerEntryType (this.safeString (item, 'type'));
+        const status = this.parseLedgerEntryStatus (this.safeString (item, 'status'));
+        const path = this.safeString (item, 'resource_path');
+        let accountId = undefined;
+        if (path !== undefined) {
+            const parts = path.split ('/');
+            const numParts = parts.length;
+            if (numParts > 3) {
+                accountId = parts[3];
+            }
+        }
+        return {
+            'info': item,
+            'id': id,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'direction': direction,
+            'account': accountId,
+            'referenceId': undefined,
+            'referenceAccount': undefined,
+            'type': type,
+            'currency': code,
+            'amount': amount,
+            'before': undefined,
+            'after': undefined,
+            'status': status,
+            'fee': fee,
+        };
+    }
+
+    async findAccountId (code) {
+        await this.loadMarkets ();
+        await this.loadAccounts ();
+        for (let i = 0; i < this.accounts.length; i++) {
+            const account = this.accounts[i];
+            if (account['code'] === code) {
+                return account['id'];
+            }
+        }
+        return undefined;
+    }
+
+    prepareAccountRequest (limit = undefined, params = {}) {
+        const accountId = this.safeString2 (params, 'account_id', 'accountId');
+        if (accountId === undefined) {
+            throw new ArgumentsRequired (this.id + ' method requires an account_id (or accountId) parameter');
+        }
+        const request = {
+            'account_id': accountId,
+        };
+        if (limit !== undefined) {
+            request['limit'] = limit;
+        }
+        return request;
+    }
+
+    async prepareAccountRequestWithCurrencyCode (code = undefined, limit = undefined, params = {}) {
+        let accountId = this.safeString2 (params, 'account_id', 'accountId');
+        if (accountId === undefined) {
+            if (code === undefined) {
+                throw new ArgumentsRequired (this.id + ' method requires an account_id (or accountId) parameter OR a currency code argument');
+            }
+            accountId = await this.findAccountId (code);
+            if (accountId === undefined) {
+                throw new ExchangeError (this.id + ' could not find account id for ' + code);
+            }
+        }
+        const request = {
+            'account_id': accountId,
+        };
+        if (limit !== undefined) {
+            request['limit'] = limit;
+        }
+        return request;
     }
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
@@ -28735,7 +28500,7 @@ module.exports = class coinbase extends Exchange {
 };
 
 
-},{"./base/Exchange":7,"./base/errors":8}],61:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],59:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -28761,7 +28526,7 @@ module.exports = class coinbaseprime extends gdax {
     }
 };
 
-},{"./gdax.js":92}],62:[function(require,module,exports){
+},{"./gdax.js":89}],60:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -28790,7 +28555,7 @@ module.exports = class coinbasepro extends gdax {
     }
 };
 
-},{"./gdax.js":92}],63:[function(require,module,exports){
+},{"./gdax.js":89}],61:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -28978,8 +28743,8 @@ module.exports = class coincheck extends Exchange {
                 symbol = market['symbol'];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -29065,8 +28830,8 @@ module.exports = class coincheck extends Exchange {
                 const ids = marketId.split ('_');
                 baseId = ids[0];
                 quoteId = ids[1];
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -29225,7 +28990,7 @@ module.exports = class coincheck extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],64:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],62:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -29394,8 +29159,8 @@ module.exports = class coinegg extends Exchange {
                 const baseId = id.split ('_')[0];
                 let base = baseId.toUpperCase ();
                 let quote = quoteId.toUpperCase ();
-                base = this.commonCurrencyCode (base);
-                quote = this.commonCurrencyCode (quote);
+                base = this.safeCurrencyCode (base);
+                quote = this.safeCurrencyCode (quote);
                 const symbol = base + '/' + quote;
                 const precision = {
                     'amount': 8,
@@ -29546,12 +29311,7 @@ module.exports = class coinegg extends Exchange {
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             const [ currencyId, accountType ] = key.split ('_');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             if (!(code in result)) {
                 result[code] = this.account ();
             }
@@ -29740,7 +29500,7 @@ module.exports = class coinegg extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],65:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],63:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -29877,8 +29637,8 @@ module.exports = class coinex extends Exchange {
             const id = this.safeString (market, 'market');
             const quoteId = this.safeString (market, 'buy_asset_type');
             const baseId = this.safeString (market, 'sell_asset_type');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'sell_asset_type_places'),
@@ -30020,11 +29780,7 @@ module.exports = class coinex extends Exchange {
         const feeCost = this.safeFloat (trade, 'fee');
         if (feeCost !== undefined) {
             const feeCurrencyId = this.safeString (trade, 'fee_asset');
-            const feeCurrency = this.safeValue (this.currencies_by_id, feeCurrencyId);
-            let feeCurrencyCode = undefined;
-            if (feeCurrency !== undefined) {
-                feeCurrencyCode = feeCurrency['code'];
-            }
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -30109,12 +29865,7 @@ module.exports = class coinex extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const balance = this.safeValue (balances, currencyId, {});
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
@@ -30171,12 +29922,8 @@ module.exports = class coinex extends Exchange {
         let symbol = undefined;
         const marketId = this.safeString (order, 'market');
         market = this.safeValue (this.markets_by_id, marketId);
-        let feeCurrency = undefined;
         const feeCurrencyId = this.safeString (order, 'fee_asset');
-        const currency = this.safeValue (this.currencies_by_id, feeCurrencyId);
-        if (currency !== undefined) {
-            feeCurrency = currency['code'];
-        }
+        let feeCurrency = this.safeCurrencyCode (feeCurrencyId);
         if (market !== undefined) {
             symbol = market['symbol'];
             if (feeCurrency === undefined) {
@@ -30445,16 +30192,8 @@ module.exports = class coinex extends Exchange {
                 txid = undefined;
             }
         }
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'coin_type');
-        if (currencyId in this.currencies_by_id) {
-            currency = this.currencies_by_id[currencyId];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         let timestamp = this.safeInteger (transaction, 'create_time');
         if (timestamp !== undefined) {
             timestamp = timestamp * 1000;
@@ -30651,7 +30390,7 @@ module.exports = class coinex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],66:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],64:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -31227,7 +30966,7 @@ module.exports = class coinexchange extends Exchange {
         for (let i = 0; i < currencies.length; i++) {
             const currency = currencies[i];
             const id = this.safeString (currency, 'CurrencyID');
-            const code = this.commonCurrencyCode (this.safeString (currency, 'TickerCode'));
+            const code = this.safeCurrencyCode (this.safeString (currency, 'TickerCode'));
             const walletStatus = this.safeString (currency, 'WalletStatus');
             const active = walletStatus === 'online';
             const name = this.safeString (currency, 'Name');
@@ -31271,8 +31010,8 @@ module.exports = class coinexchange extends Exchange {
             const baseId = this.safeString (market, 'MarketAssetCode');
             const quoteId = this.safeString (market, 'BaseCurrencyCode');
             if (baseId !== undefined && quoteId !== undefined) {
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 const symbol = base + '/' + quote;
                 result.push ({
                     'id': id,
@@ -31381,7 +31120,7 @@ module.exports = class coinexchange extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],67:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],65:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -31456,8 +31195,8 @@ module.exports = class coinfalcon extends Exchange {
         for (let i = 0; i < markets.length; i++) {
             const market = markets[i];
             const [ baseId, quoteId ] = market['name'].split ('-');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'size_precision'),
@@ -31636,11 +31375,7 @@ module.exports = class coinfalcon extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency_code');
-            const uppercase = currencyId.toUpperCase ();
-            let code = this.commonCurrencyCode (uppercase);
-            if (uppercase in this.currencies_by_id) {
-                code = this.currencies_by_id[uppercase]['code'];
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = {
                 'free': this.safeFloat (balance, 'available_balance'),
                 'used': this.safeFloat (balance, 'hold_balance'),
@@ -31816,7 +31551,7 @@ module.exports = class coinfalcon extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],68:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],66:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -31865,7 +31600,7 @@ module.exports = class coinfloor extends Exchange {
                         '{id}/balance/',
                         '{id}/user_transactions/',
                         '{id}/open_orders/',
-                        '{id}/cancel_order/',
+                        '{symbol}/cancel_order/',
                         '{id}/buy/',
                         '{id}/sell/',
                         '{id}/buy_market/',
@@ -32037,7 +31772,16 @@ module.exports = class coinfloor extends Exchange {
     }
 
     async cancelOrder (id, symbol = undefined, params = {}) {
-        return await this.privatePostIdCancelOrder ({ 'id': id });
+        if (symbol === undefined) {
+            throw new NotSupported (this.id + ' cancelOrder requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+            'id': id,
+        };
+        return await this.privatePostSymbolCancelOrder (request);
     }
 
     parseOrder (order, market = undefined) {
@@ -32091,6 +31835,13 @@ module.exports = class coinfloor extends Exchange {
             'id': market['id'],
         };
         const response = await this.privatePostIdOpenOrders (this.extend (request, params));
+        //   {
+        //     "amount": "1.0000",
+        //     "datetime": "2019-07-12 13:28:16",
+        //     "id": 233123443,
+        //     "price": "1000.00",
+        //     "type": 0
+        //   }
         return this.parseOrders (response, market, since, limit, { 'status': 'open' });
     }
 
@@ -32117,7 +31868,7 @@ module.exports = class coinfloor extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],69:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],67:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -32224,8 +31975,8 @@ module.exports = class coingi extends Exchange {
             const [ baseId, quoteId ] = id.split ('-');
             let base = baseId.toUpperCase ();
             let quote = quoteId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            base = this.safeCurrencyCode (base);
+            quote = this.safeCurrencyCode (quote);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': 8,
@@ -32276,11 +32027,13 @@ module.exports = class coingi extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance['currency'], 'name');
-            let code = currencyId.toUpperCase ();
-            code = this.commonCurrencyCode (code);
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
-            account['free'] = balance['available'];
-            account['used'] = balance['blocked'] + balance['inOrders'] + balance['withdrawing'];
+            account['free'] = this.safeFloat (balance, 'available');
+            const blocked = this.safeFloat (balance, 'blocked');
+            const inOrders = this.safeFloat (balance, 'inOrders');
+            const withdrawing = this.safeFloat (balance, 'withdrawing');
+            account['used'] = this.sum (blocked, inOrders, withdrawing);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -32464,7 +32217,7 @@ module.exports = class coingi extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],70:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],68:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -32786,7 +32539,7 @@ module.exports = class coinmarketcap extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],71:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],69:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -32916,8 +32669,8 @@ module.exports = class coinmate extends Exchange {
             const id = this.safeString (market, 'name');
             const baseId = this.safeString (market, 'firstCurrency');
             const quoteId = this.safeString (market, 'secondCurrency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -32959,7 +32712,7 @@ module.exports = class coinmate extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const balance = this.safeValue (balances, currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
@@ -33089,13 +32842,8 @@ module.exports = class coinmate extends Exchange {
         const txid = this.safeString (item, 'txid');
         const address = this.safeString (item, 'destination');
         const tag = this.safeString (item, 'destinationTag');
-        let code = undefined;
         const currencyId = this.safeString (item, 'amountCurrency');
-        if (currencyId in this.currencies_by_id) {
-            code = this.currencies_by_id[currencyId]['code'];
-        } else {
-            code = this.commonCurrencyCide (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         let type = this.safeString (item, 'transferType');
         if (type !== undefined) {
             type = type.toLowerCase ();
@@ -33174,8 +32922,8 @@ module.exports = class coinmate extends Exchange {
                 quote = market['quote'];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -33326,419 +33074,7 @@ module.exports = class coinmate extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],72:[function(require,module,exports){
-'use strict';
-
-//  ---------------------------------------------------------------------------
-
-const Exchange = require ('./base/Exchange');
-const { ExchangeError, AuthenticationError, DDoSProtection } = require ('./base/errors');
-
-//  ---------------------------------------------------------------------------
-
-module.exports = class coinnest extends Exchange {
-    describe () {
-        return this.deepExtend (super.describe (), {
-            'id': 'coinnest',
-            'name': 'coinnest',
-            'countries': [ 'KR' ],
-            'rateLimit': 1000,
-            'has': {
-                'fetchOpenOrders': true,
-            },
-            'urls': {
-                'logo': 'https://user-images.githubusercontent.com/1294454/38065728-7289ff5c-330d-11e8-9cc1-cf0cbcb606bc.jpg',
-                'api': {
-                    'public': 'https://api.coinnest.co.kr/api',
-                    'private': 'https://api.coinnest.co.kr/api',
-                    'web': 'https://www.coinnest.co.kr',
-                },
-                'www': 'https://www.coinnest.co.kr',
-                'doc': 'https://www.coinnest.co.kr/doc/intro.html',
-                'fees': [
-                    'https://coinnesthelp.zendesk.com/hc/ko/articles/115002110252-%EA%B1%B0%EB%9E%98-%EC%88%98%EC%88%98%EB%A3%8C%EB%8A%94-%EC%96%BC%EB%A7%88%EC%9D%B8%EA%B0%80%EC%9A%94-',
-                    'https://coinnesthelp.zendesk.com/hc/ko/articles/115002110272-%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8-%EC%88%98%EC%88%98%EB%A3%8C%EB%A5%BC-%EC%84%A0%ED%83%9D%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94-',
-                ],
-            },
-            'api': {
-                'web': {
-                    'get': [
-                        'coin/allcoin',
-                    ],
-                },
-                'public': {
-                    'get': [
-                        'pub/ticker',
-                        'pub/depth',
-                        'pub/trades',
-                    ],
-                },
-                'private': {
-                    'post': [
-                        'account/balance',
-                        'trade/add',
-                        'trade/cancel',
-                        'trade/fetchtrust',
-                        'trade/trust',
-                    ],
-                },
-            },
-            'fees': {
-                'trading': {
-                    'maker': 0.1 / 100,
-                    'taker': 0.1 / 100,
-                },
-                'funding': {
-                    'withdraw': {
-                        'BTC': '0.002',
-                    },
-                },
-            },
-            'precision': {
-                'amount': 8,
-                'price': 8,
-            },
-        });
-    }
-
-    async fetchMarkets (params = {}) {
-        const quote = 'KRW';
-        const quoteId = quote.toLowerCase ();
-        // todo: rewrite this for web endpoint
-        const coins = [
-            'btc',
-            'bch',
-            'btg',
-            'bcd',
-            'ubtc',
-            'btn',
-            'kst',
-            'ltc',
-            'act',
-            'eth',
-            'etc',
-            'ada',
-            'qtum',
-            'xlm',
-            'neo',
-            'gas',
-            'rpx',
-            'hsr',
-            'knc',
-            'tsl',
-            'tron',
-            'omg',
-            'wtc',
-            'mco',
-            'storm',
-            'gto',
-            'pxs',
-            'chat',
-            'ink',
-            'oc',
-            'hlc',
-            'ent',
-            'qbt',
-            'spc',
-            'put',
-        ];
-        const result = [];
-        for (let i = 0; i < coins.length; i++) {
-            const baseId = coins[i];
-            const id = baseId + '/' + quoteId;
-            const base = this.commonCurrencyCode (baseId.toUpperCase ());
-            const symbol = base + '/' + quote;
-            result.push ({
-                'id': id,
-                'symbol': symbol,
-                'base': base,
-                'quote': quote,
-                'baseId': baseId,
-                'quoteId': quoteId,
-                'active': true,
-                'info': undefined,
-            });
-        }
-        return result;
-    }
-
-    parseTicker (ticker, market = undefined) {
-        const timestamp = this.safeInteger (ticker, 'time') * 1000;
-        const symbol = market['symbol'];
-        const last = this.safeFloat (ticker, 'last');
-        return {
-            'symbol': symbol,
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'high': this.safeFloat (ticker, 'high'),
-            'low': this.safeFloat (ticker, 'low'),
-            'bid': this.safeFloat (ticker, 'buy'),
-            'bidVolume': undefined,
-            'ask': this.safeFloat (ticker, 'sell'),
-            'askVolume': undefined,
-            'vwap': undefined,
-            'open': undefined,
-            'close': last,
-            'last': last,
-            'previousClose': undefined,
-            'change': undefined,
-            'percentage': undefined,
-            'average': undefined,
-            'baseVolume': this.safeFloat (ticker, 'vol'),
-            'quoteVolume': undefined,
-            'info': ticker,
-        };
-    }
-
-    async fetchTicker (symbol, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'coin': market['baseId'],
-        };
-        const response = await this.publicGetPubTicker (this.extend (request, params));
-        return this.parseTicker (response, market);
-    }
-
-    async fetchOrderBook (symbol, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'coin': market['baseId'],
-        };
-        const response = await this.publicGetPubDepth (this.extend (request, params));
-        return this.parseOrderBook (response);
-    }
-
-    parseTrade (trade, market = undefined) {
-        let timestamp = this.safeInteger (trade, 'date');
-        if (timestamp !== undefined) {
-            timestamp *= 1000;
-        }
-        const price = this.safeFloat (trade, 'price');
-        const amount = this.safeFloat (trade, 'amount');
-        let cost = undefined;
-        if (price !== undefined) {
-            if (amount !== undefined) {
-                cost = amount * price;
-            }
-        }
-        let symbol = undefined;
-        if (market !== undefined) {
-            symbol = market['symbol'];
-        }
-        const type = 'limit';
-        const side = this.safeString (trade, 'type');
-        const id = this.safeString (trade, 'tid');
-        return {
-            'id': id,
-            'info': trade,
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'symbol': symbol,
-            'order': undefined,
-            'type': type,
-            'side': side,
-            'takerOrMaker': undefined,
-            'price': price,
-            'amount': amount,
-            'cost': cost,
-            'fee': undefined,
-        };
-    }
-
-    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'coin': market['baseId'],
-        };
-        const response = await this.publicGetPubTrades (this.extend (request, params));
-        return this.parseTrades (response, market, since, limit);
-    }
-
-    async fetchBalance (params = {}) {
-        await this.loadMarkets ();
-        const response = await this.privatePostAccountBalance (params);
-        const result = { 'info': response };
-        const balancKeys = Object.keys (response);
-        for (let i = 0; i < balancKeys.length; i++) {
-            const key = balancKeys[i];
-            const parts = key.split ('_');
-            const numParts = parts.length;
-            if (numParts !== 2) {
-                continue;
-            }
-            let type = parts[1];
-            if (type !== 'reserved' && type !== 'balance') {
-                continue;
-            }
-            const currencyId = parts[0];
-            const uppercase = currencyId.toUpperCase ();
-            const code = this.commonCurrencyCode (uppercase);
-            if (!(code in result)) {
-                result[code] = this.account ();
-            }
-            type = (type === 'reserved' ? 'used' : 'free');
-            result[code][type] = this.safeFloat (response, key);
-            const otherType = (type === 'used' ? 'free' : 'used');
-            if (otherType in result[code]) {
-                result[code]['total'] = this.sum (result[code]['free'], result[code]['used']);
-            }
-        }
-        return this.parseBalance (result);
-    }
-
-    parseOrderStatus (status) {
-        const statuses = {
-            '1': 'open',
-            '2': 'open',
-            '3': 'canceled',
-            '4': 'closed',
-        };
-        return this.safeString (statuses, status, status);
-    }
-
-    parseOrder (order, market) {
-        const symbol = market['symbol'];
-        const timestamp = this.safeInteger (order, 'time') * 1000;
-        const status = this.parseOrderStatus (this.safeString (order, 'status'));
-        const amount = this.safeFloat (order, 'amount_total');
-        const remaining = this.safeFloat (order, 'amount_over');
-        let filled = this.safeValue (order, 'deals');
-        if (filled) {
-            filled = this.safeFloat (filled, 'sum_amount');
-        } else {
-            filled = amount - remaining;
-        }
-        return {
-            'id': this.safeString (order, 'id'),
-            'datetime': this.iso8601 (timestamp),
-            'timestamp': timestamp,
-            'lastTradeTimestamp': undefined,
-            'status': status,
-            'symbol': symbol,
-            'type': 'limit',
-            'side': order['type'],
-            'price': this.safeFloat (order, 'price'),
-            'cost': undefined,
-            'amount': amount,
-            'filled': filled,
-            'remaining': remaining,
-            'trades': undefined,
-            'fee': undefined,
-            'info': this.safeValue (order, 'info', order),
-        };
-    }
-
-    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'coin': market['baseId'],
-            'type': side,
-            'number': amount,
-            'price': price,
-        };
-        const response = await this.privatePostTradeAdd (this.extend (request, params));
-        const order = {
-            'id': response['id'],
-            'time': this.seconds (),
-            'type': side,
-            'price': price,
-            'amount_total': amount,
-            'amount_over': amount,
-            'info': response,
-        };
-        const id = order['id'];
-        this.orders[id] = this.parseOrder (order, market);
-        return order;
-    }
-
-    async cancelOrder (id, symbol = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'id': id,
-            'coin': market['baseId'],
-        };
-        return await this.privatePostTradeCancel (this.extend (request, params));
-    }
-
-    async fetchOrder (id, symbol = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'id': id,
-            'coin': market['baseId'],
-        };
-        const response = await this.privatePostTradeFetchtrust (this.extend (request, params));
-        return this.parseOrder (response, market);
-    }
-
-    async fetchOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        await this.loadMarkets ();
-        const market = this.market (symbol);
-        const request = {
-            'coin': market['baseId'],
-        };
-        if (since !== undefined) {
-            request['since'] = parseInt (since / 1000);
-        }
-        if (limit !== undefined) {
-            request['limit'] = limit;
-        }
-        const response = await this.privatePostTradeTrust (this.extend (request, params));
-        return this.parseOrders (response, market);
-    }
-
-    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        const request = {
-            'type': '1',
-        };
-        return await this.fetchOrders (symbol, since, limit, this.extend (request, params));
-    }
-
-    sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        let url = this.urls['api'][api] + '/' + path;
-        let query = undefined;
-        if (api === 'public') {
-            query = this.urlencode (params);
-            if (query.length) {
-                url += '?' + query;
-            }
-        } else {
-            this.checkRequiredCredentials ();
-            body = this.urlencode (this.extend (params, {
-                'key': this.apiKey,
-                'nonce': this.nonce (),
-            }));
-            const secret = this.hash (this.secret);
-            body += '&signature=' + this.hmac (this.encode (body), this.encode (secret));
-            headers = { 'Content-type': 'application/x-www-form-urlencoded' };
-        }
-        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
-    }
-
-    async request (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
-        const response = await this.fetch2 (path, api, method, params, headers, body);
-        const status = this.safeString (response, 'status');
-        if (!response || response === 'nil' || status) {
-            const ErrorClass = this.safeValue ({
-                '100': DDoSProtection,
-                '101': DDoSProtection,
-                '104': AuthenticationError,
-                '105': AuthenticationError,
-                '106': DDoSProtection,
-            }, status, ExchangeError);
-            const message = this.safeString (response, 'msg', this.json (response));
-            throw new ErrorClass (message);
-        }
-        return response;
-    }
-};
-
-},{"./base/Exchange":7,"./base/errors":8}],73:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],70:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -33870,22 +33206,14 @@ module.exports = class coinone extends Exchange {
             'result',
             'normalWallets',
         ]);
-        const ids = Object.keys (balances);
-        for (let i = 0; i < ids.length; i++) {
-            const id = ids[i];
-            const balance = balances[id];
-            let code = id.toUpperCase ();
-            if (id in this.currencies_by_id) {
-                code = this.currencies_by_id[id]['code'];
-            }
-            const free = this.safeFloat (balance, 'avail');
-            const total = this.safeFloat (balance, 'balance');
-            const used = total - free;
-            const account = {
-                'free': free,
-                'used': used,
-                'total': total,
-            };
+        const currencyIds = Object.keys (balances);
+        for (let i = 0; i < currencyIds.length; i++) {
+            const currencyId = currencyIds[i];
+            const balance = balances[currencyId];
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
+            account['free'] = this.safeFloat (balance, 'avail');
+            account['total'] = this.safeFloat (balance, 'balance');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -34265,7 +33593,7 @@ module.exports = class coinone extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],74:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],71:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -34338,14 +33666,9 @@ module.exports = class coinspot extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            const uppercase = currencyId.toUpperCase ();
-            const code = this.commonCurrencyCode (uppercase);
-            const total = this.safeFloat (balances, currencyId);
-            const account = {
-                'free': total,
-                'used': 0.0,
-                'total': total,
-            };
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
+            account['total'] = this.safeFloat (balances, currencyId);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -34443,7 +33766,7 @@ module.exports = class coinspot extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],75:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],72:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -34601,10 +33924,8 @@ module.exports = class cointiger extends huobipro {
                 const market = partition[j];
                 const baseId = this.safeString (market, 'baseCurrency');
                 const quoteId = this.safeString (market, 'quoteCurrency');
-                let base = baseId.toUpperCase ();
-                let quote = quoteId.toUpperCase ();
-                base = this.commonCurrencyCode (base);
-                quote = this.commonCurrencyCode (quote);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 const id = baseId + quoteId;
                 const uppercaseId = id.toUpperCase ();
                 const symbol = base + '/' + quote;
@@ -34935,12 +34256,7 @@ module.exports = class cointiger extends huobipro {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'coin');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = currencyId.toUpperCase ();
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['used'] = this.safeFloat (balance, 'lock');
             account['free'] = this.safeFloat (balance, 'normal');
@@ -35433,7 +34749,7 @@ module.exports = class cointiger extends huobipro {
     }
 };
 
-},{"./base/errors":8,"./huobipro.js":97}],76:[function(require,module,exports){
+},{"./base/errors":9,"./huobipro.js":93}],73:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -35505,7 +34821,7 @@ module.exports = class coolcoin extends coinegg {
     }
 };
 
-},{"./coinegg.js":64}],77:[function(require,module,exports){
+},{"./coinegg.js":62}],74:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -35617,8 +34933,8 @@ module.exports = class coss extends Exchange {
                 'trading': {
                     'tierBased': true,
                     'percentage': true,
-                    'taker': 0.0020,
-                    'maker': 0.0014,
+                    'taker': 0.0025,
+                    'maker': 0.0,
                 },
                 'funding': {
                     'tierBased': false,
@@ -35668,8 +34984,8 @@ module.exports = class coss extends Exchange {
             const market = markets[i];
             const marketId = market['symbol'];
             const [ baseId, quoteId ] = marketId.split ('_');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'amount_limit_decimal'),
@@ -35745,7 +35061,7 @@ module.exports = class coss extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const currency = response[i];
             const currencyId = this.safeString (currency, 'currency_code');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const name = this.safeString (currency, 'name');
             const allowBuy = this.safeValue (currency, 'allow_buy');
             const allowSell = this.safeValue (currency, 'allow_sell');
@@ -35822,7 +35138,7 @@ module.exports = class coss extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency_code');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const total = this.safeFloat (balance, 'total');
             const used = this.safeFloat (balance, 'in_order');
             const free = this.safeFloat (balance, 'available');
@@ -35924,8 +35240,8 @@ module.exports = class coss extends Exchange {
         if (market === undefined) {
             if (marketId !== undefined) {
                 const [ baseId, quoteId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -36063,7 +35379,7 @@ module.exports = class coss extends Exchange {
         const cost = parts[0];
         let code = undefined;
         if (numParts > 1) {
-            code = this.commonCurrencyCode (parts[1]);
+            code = this.safeCurrencyCode (parts[1]);
         }
         return {
             'cost': cost,
@@ -36107,8 +35423,8 @@ module.exports = class coss extends Exchange {
             market = this.safeValue (this.markets_by_id, marketId, market);
             if (market === undefined) {
                 const [ baseId, quoteId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         } else if (market !== undefined) {
@@ -36313,8 +35629,8 @@ module.exports = class coss extends Exchange {
             market = this.safeValue (this.markets_by_id, marketId, market);
             if (market === undefined) {
                 const [ baseId, quoteId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             } else {
                 symbol = market['symbol'];
@@ -36450,7 +35766,7 @@ module.exports = class coss extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],78:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],75:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -36620,8 +35936,8 @@ module.exports = class crex24 extends Exchange {
             const id = this.safeString (market, 'symbol');
             const baseId = this.safeString (market, 'baseCurrency');
             const quoteId = this.safeString (market, 'quoteCurrency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const tickSize = this.safeValue (market, 'tickSize');
             const minPrice = this.safeValue (market, 'minPrice');
@@ -36692,7 +36008,7 @@ module.exports = class crex24 extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const currency = response[i];
             const id = this.safeString (currency, 'symbol');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const precision = this.safeInteger (currency, 'withdrawalPrecision');
             const address = this.safeValue (currency, 'BaseAddress');
             const active = (currency['depositsAllowed'] && currency['withdrawalsAllowed'] && !currency['isDelisted']);
@@ -36757,12 +36073,7 @@ module.exports = class crex24 extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (code);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
             account['used'] = this.safeFloat (balance, 'reserved');
@@ -36825,8 +36136,8 @@ module.exports = class crex24 extends Exchange {
             symbol = market['symbol'];
         } else if (marketId !== undefined) {
             const [ baseId, quoteId ] = marketId.split ('-');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             symbol = base + '/' + quote;
         }
         const last = this.safeFloat (ticker, 'last');
@@ -36970,13 +36281,7 @@ module.exports = class crex24 extends Exchange {
         }
         let fee = undefined;
         const feeCurrencyId = this.safeString (trade, 'feeCurrency');
-        const feeCurrency = this.safeValue (this.currencies_by_id, feeCurrencyId);
-        let feeCode = undefined;
-        if (feeCurrency !== undefined) {
-            feeCode = feeCurrency['code'];
-        } else if (market !== undefined) {
-            feeCode = market['quote'];
-        }
+        const feeCode = this.safeCurrencyCode (feeCurrencyId);
         const feeCost = this.safeFloat (trade, 'fee');
         if (feeCost !== undefined) {
             fee = {
@@ -37529,16 +36834,8 @@ module.exports = class crex24 extends Exchange {
         const address = this.safeString (transaction, 'address');
         const tag = this.safeString (transaction, 'paymentId');
         const txid = this.safeValue (transaction, 'txId');
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        if (currencyId in this.currencies_by_id) {
-            currency = this.currencies_by_id[currencyId];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const type = this.safeString (transaction, 'type');
         const timestamp = this.parse8601 (this.safeString (transaction, 'createdAt'));
         const updated = this.parse8601 (this.safeString (transaction, 'processedAt'));
@@ -37676,7 +36973,7 @@ module.exports = class crex24 extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],79:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],76:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -37758,8 +37055,8 @@ module.exports = class crypton extends Exchange {
             const market = markets[id];
             const baseId = this.safeString (market, 'base');
             const quoteId = this.safeString (market, 'quote');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': 8,
@@ -37799,16 +37096,16 @@ module.exports = class crypton extends Exchange {
         await this.loadMarkets ();
         const balances = await this.privateGetBalances (params);
         const result = { 'info': balances };
-        const keys = Object.keys (balances);
-        for (let i = 0; i < keys.length; i++) {
-            const id = keys[i];
-            const currency = this.commonCurrencyCode (id);
+        const currencyIds = Object.keys (balances);
+        for (let i = 0; i < currencyIds.length; i++) {
+            const currencyId = currencyIds[i];
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
-            const balance = balances[id];
+            const balance = balances[currencyId];
             account['total'] = this.safeFloat (balance, 'total');
             account['free'] = this.safeFloat (balance, 'free');
             account['used'] = this.safeFloat (balance, 'locked');
-            result[currency] = account;
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -37891,7 +37188,7 @@ module.exports = class crypton extends Exchange {
         let fee = undefined;
         if (feeCost !== undefined) {
             const feeCurrencyId = this.safeString (trade, 'feeCurrency');
-            const feeCurrencyCode = this.commonCurrencyCode (feeCurrencyId);
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -37982,7 +37279,7 @@ module.exports = class crypton extends Exchange {
         let fee = undefined;
         if (feeCost !== undefined) {
             const feeCurrencyId = this.safeString (order, 'feeCurrency');
-            const feeCurrencyCode = this.commonCurrencyCode (feeCurrencyId);
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -38057,8 +37354,8 @@ module.exports = class crypton extends Exchange {
 
     parseSymbol (id) {
         let [ base, quote ] = id.split ('-');
-        base = this.commonCurrencyCode (base);
-        quote = this.commonCurrencyCode (quote);
+        base = this.safeCurrencyCode (base);
+        quote = this.safeCurrencyCode (quote);
         return base + '/' + quote;
     }
 
@@ -38123,7 +37420,7 @@ module.exports = class crypton extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],80:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],77:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -38268,8 +37565,8 @@ module.exports = class deribit extends Exchange {
             const id = this.safeString (market, 'instrumentName');
             const baseId = this.safeString (market, 'baseCurrency');
             const quoteId = this.safeString (market, 'currency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             result.push ({
                 'id': id,
                 'symbol': id,
@@ -38314,7 +37611,7 @@ module.exports = class deribit extends Exchange {
         const response = await this.privateGetAccount (params);
         const address = this.safeString (response, 'depositAddress');
         return {
-            'currency': this.commonCurrencyCode ('BTC'),
+            'currency': this.safeCurrencyCode ('BTC'),
             'address': address,
             'tag': undefined,
             'info': response,
@@ -38417,7 +37714,7 @@ module.exports = class deribit extends Exchange {
         const feeCost = this.safeFloat (trade, 'fee');
         if (feeCost !== undefined) {
             const feeCurrencyId = this.safeString (trade, 'feeCurrency');
-            const feeCurrencyCode = this.commonCurrencyCode (feeCurrencyId);
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -38775,7 +38072,7 @@ module.exports = class deribit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],81:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],78:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -38957,13 +38254,7 @@ module.exports = class dsx extends liqui {
             }
         }
         const currencyId = this.safeString (transaction, 'currency');
-        let code = undefined;
-        if (currencyId in this.currencies_by_id) {
-            const ccy = this.currencies_by_id[currencyId];
-            code = ccy['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
         return {
             'id': this.safeString (transaction, 'id'),
@@ -38994,8 +38285,8 @@ module.exports = class dsx extends liqui {
             const market = markets[id];
             const baseId = this.safeString (market, 'base_currency');
             const quoteId = this.safeString (market, 'quoted_currency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'decimal_places'),
@@ -39072,7 +38363,7 @@ module.exports = class dsx extends liqui {
         const currencyIds = Object.keys (funds);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const balance = this.safeValue (funds, currencyId, {});
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
@@ -39318,15 +38609,8 @@ module.exports = class dsx extends liqui {
         let fee = undefined;
         const feeCost = this.safeFloat (trade, 'commission');
         if (feeCost !== undefined) {
-            let feeCurrencyId = this.safeString (trade, 'commissionCurrency');
-            feeCurrencyId = feeCurrencyId.toUpperCase ();
-            const feeCurrency = this.safeValue (this.currencies_by_id, feeCurrencyId);
-            let feeCurrencyCode = undefined;
-            if (feeCurrency !== undefined) {
-                feeCurrencyCode = feeCurrency['code'];
-            } else {
-                feeCurrencyCode = this.commonCurrencyCode (feeCurrencyId);
-            }
+            const feeCurrencyId = this.safeString (trade, 'commissionCurrency');
+            const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -39632,7 +38916,7 @@ module.exports = class dsx extends liqui {
     }
 };
 
-},{"./base/errors":8,"./liqui.js":110}],82:[function(require,module,exports){
+},{"./base/errors":9,"./liqui.js":107}],79:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -39813,10 +39097,10 @@ module.exports = class dx extends Exchange {
             let [ base, quote ] = fullName.split ('/');
             let amountPrecision = 0;
             if (instrument['meQuantityMultiplier'] !== 0) {
-                amountPrecision = Math.log10 (instrument['meQuantityMultiplier']);
+                amountPrecision = parseInt (Math.log10 (instrument['meQuantityMultiplier']));
             }
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            base = this.safeCurrencyCode (base);
+            quote = this.safeCurrencyCode (quote);
             const baseId = this.safeString (asset, 'baseCurrencyId');
             const quoteId = this.safeString (asset, 'quotedCurrencyId');
             const baseNumericId = this.safeInteger (asset, 'baseCurrencyId');
@@ -40057,15 +39341,13 @@ module.exports = class dx extends Exchange {
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
             const balance = this.safeValue (balances, currencyId, {});
-            if (currencyId in this.currencies_by_id) {
-                const code = this.currencies_by_id[currencyId]['code'];
-                const account = {
-                    'free': this.safeFloat (balance, 'available'),
-                    'used': this.safeFloat (balance, 'frozen'),
-                    'total': this.safeFloat (balance, 'total'),
-                };
-                result[code] = account;
-            }
+            const code = this.safeCurrencyCode (currencyId);
+            const account = {
+                'free': this.safeFloat (balance, 'available'),
+                'used': this.safeFloat (balance, 'frozen'),
+                'total': this.safeFloat (balance, 'total'),
+            };
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -40161,7 +39443,7 @@ module.exports = class dx extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],83:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],80:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -40229,7 +39511,7 @@ module.exports = class ethfinex extends bitfinex {
     }
 };
 
-},{"./bitfinex.js":29}],84:[function(require,module,exports){
+},{"./bitfinex.js":30}],81:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -40683,7 +39965,7 @@ module.exports = class exmo extends Exchange {
         const items = groupsByGroup['crypto']['items'];
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
-            const code = this.commonCurrencyCode (this.safeString (item, 'prov'));
+            const code = this.safeCurrencyCode (this.safeString (item, 'prov'));
             const withdrawalFee = this.safeString (item, 'wd');
             const depositFee = this.safeString (item, 'dep');
             if (withdrawalFee !== undefined) {
@@ -40700,7 +39982,7 @@ module.exports = class exmo extends Exchange {
         // sets fiat fees to undefined
         const fiatGroups = this.toArray (this.omit (groupsByGroup, 'crypto'));
         for (let i = 0; i < fiatGroups.length; i++) {
-            const code = this.commonCurrencyCode (this.safeString (fiatGroups[i], 'title'));
+            const code = this.safeCurrencyCode (this.safeString (fiatGroups[i], 'title'));
             withdraw[code] = undefined;
             deposit[code] = undefined;
         }
@@ -40730,8 +40012,8 @@ module.exports = class exmo extends Exchange {
             const marketId = marketIds[i];
             const limit = limitsByMarketId[marketId];
             const [ baseId, quoteId ] = marketId.split ('/');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const maxAmount = this.safeFloat (limit, 'max_q');
             const maxPrice = this.safeFloat (limit, 'max_p');
             const maxCost = this.safeFloat (limit, 'max_a');
@@ -40748,7 +40030,7 @@ module.exports = class exmo extends Exchange {
         const result = {};
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const fee = this.safeValue (fees['withdraw'], code);
             const active = true;
             result[code] = {
@@ -40788,8 +40070,8 @@ module.exports = class exmo extends Exchange {
             const market = response[id];
             const symbol = id.replace ('_', '/');
             const [ baseId, quoteId ] = symbol.split ('/');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -40828,17 +40110,18 @@ module.exports = class exmo extends Exchange {
         await this.loadMarkets ();
         const response = await this.privatePostUserInfo (params);
         const result = { 'info': response };
-        const currencies = Object.keys (this.currencies);
-        for (let i = 0; i < currencies.length; i++) {
-            const currency = currencies[i];
+        const codes = Object.keys (this.currencies);
+        for (let i = 0; i < codes.length; i++) {
+            const code = codes[i];
+            const currencyId = this.currencyId (code);
             const account = this.account ();
-            if (currency in response['balances']) {
-                account['free'] = this.safeFloat (response['balances'], currency);
+            if (currencyId in response['balances']) {
+                account['free'] = this.safeFloat (response['balances'], currencyId);
             }
-            if (currency in response['reserved']) {
-                account['used'] = this.safeFloat (response['reserved'], currency);
+            if (currencyId in response['reserved']) {
+                account['used'] = this.safeFloat (response['reserved'], currencyId);
             }
-            result[currency] = account;
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -40992,29 +40275,57 @@ module.exports = class exmo extends Exchange {
             'pair': market['id'],
         };
         const response = await this.publicGetTrades (this.extend (request, params));
-        return this.parseTrades (response[market['id']], market, since, limit);
+        const data = this.safeValue (response, market['id'], []);
+        return this.parseTrades (data, market, since, limit);
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        // their docs does not mention it, but if you don't supply a symbol
-        // their API will return an empty response as if you don't have any trades
-        // therefore we make it required here as calling it without a symbol is useless
+        // a symbol is required but it can be a single string, or a non-empty array
         if (symbol === undefined) {
-            throw new ArgumentsRequired (this.id + ' fetchMyTrades() requires a symbol argument');
+            throw new ArgumentsRequired (this.id + ' fetchMyTrades() requires a symbol argument (a single symbol or an array)');
         }
         await this.loadMarkets ();
-        const market = this.market (symbol);
+        let pair = undefined;
+        let market = undefined;
+        if (Array.isArray (symbol)) {
+            const numSymbols = symbol.length;
+            if (numSymbols < 1) {
+                throw new ArgumentsRequired (this.id + ' fetchMyTrades() requires a non-empty symbol array');
+            }
+            const marketIds = this.marketIds (symbol);
+            pair = marketIds.join (',');
+        } else {
+            market = this.market (symbol);
+            pair = market['id'];
+        }
         const request = {
-            'pair': market['id'],
+            'pair': pair,
         };
         if (limit !== undefined) {
             request['limit'] = limit;
         }
-        let response = await this.privatePostUserTrades (this.extend (request, params));
-        if (market !== undefined) {
-            response = response[market['id']];
+        const response = await this.privatePostUserTrades (this.extend (request, params));
+        let result = [];
+        const marketIds = Object.keys (response);
+        for (let i = 0; i < marketIds.length; i++) {
+            const marketId = marketIds[i];
+            let symbol = undefined;
+            if (marketId in this.markets_by_id) {
+                market = this.markets_by_id[marketId];
+                symbol = market['symbol'];
+            } else {
+                const [ baseId, quoteId ] = marketId.split ('_');
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
+                symbol = base + '/' + quote;
+            }
+            const items = response[marketId];
+            const trades = this.parseTrades (items, market, since, limit, {
+                'symbol': symbol,
+            });
+            result = this.arrayConcat (result, trades);
         }
-        return this.parseTrades (response, market, since, limit);
+        return this.filterBySinceLimit (result, since, limit);
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
@@ -41447,15 +40758,8 @@ module.exports = class exmo extends Exchange {
         const status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
         const txid = this.safeString (transaction, 'txid');
         const type = this.safeString (transaction, 'type');
-        let code = this.safeString (transaction, 'curr');
-        if (currency === undefined) {
-            currency = this.safeValue (this.currencies_by_id, code);
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (code);
-        }
+        const currencyId = this.safeString (transaction, 'curr');
+        const code = this.safeCurrencyCode (currencyId, currency);
         let address = this.safeString (transaction, 'account');
         if (address !== undefined) {
             const parts = address.split (':');
@@ -41612,7 +40916,7 @@ module.exports = class exmo extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],85:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],82:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -41714,10 +41018,8 @@ module.exports = class exx extends Exchange {
             const id = ids[i];
             const market = response[id];
             const [ baseId, quoteId ] = id.split ('_');
-            const upper = id.toUpperCase ();
-            let [ base, quote ] = upper.split ('_');
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const active = market['isOpen'] === true;
             const precision = {
@@ -41879,7 +41181,7 @@ module.exports = class exx extends Exchange {
         for (let i = 0; i < currencies.length; i++) {
             const currencyId = currencies[i];
             const balance = balances[currencyId];
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const account = {
                 'free': this.safeFloat (balance, 'balance'),
                 'used': this.safeFloat (balance, 'freeze'),
@@ -42055,7 +41357,7 @@ module.exports = class exx extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],86:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],83:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -42196,10 +41498,8 @@ module.exports = class fcoin extends Exchange {
             const id = this.safeString (market, 'name');
             const baseId = this.safeString (market, 'base_currency');
             const quoteId = this.safeString (market, 'quote_currency');
-            let base = baseId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            let quote = quoteId.toUpperCase ();
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'price': market['price_decimal'],
@@ -42238,17 +41538,12 @@ module.exports = class fcoin extends Exchange {
         const balances = this.safeValue (response, 'data');
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
-            const currencyId = balance['currency'];
-            let code = currencyId.toUpperCase ();
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (code);
-            }
+            const currencyId = this.safeString (balance, 'currency');
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
-            account['free'] = parseFloat (balance['available']);
-            account['total'] = parseFloat (balance['balance']);
-            account['used'] = parseFloat (balance['frozen']);
+            account['free'] = this.safeFloat (balance, 'available');
+            account['total'] = this.safeFloat (balance, 'balance');
+            account['used'] = this.safeFloat (balance, 'frozen');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -42525,7 +41820,7 @@ module.exports = class fcoin extends Exchange {
     }
 
     async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
-        const request = { 'states': 'filled' };
+        const request = { 'states': 'partial_canceled,filled' };
         return await this.fetchOrders (symbol, since, limit, this.extend (request, params));
     }
 
@@ -42635,7 +41930,7 @@ module.exports = class fcoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],87:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],84:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -42661,7 +41956,7 @@ module.exports = class fcoinjp extends fcoin {
     }
 };
 
-},{"./fcoin.js":86}],88:[function(require,module,exports){
+},{"./fcoin.js":83}],85:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -42684,8 +41979,8 @@ module.exports = class flowbtc extends Exchange {
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/28162465-cd815d4c-67cf-11e7-8e57-438bea0523a2.jpg',
-                'api': 'https://api.flowbtc.com:8405/ajax',
-                'www': 'https://trader.flowbtc.com',
+                'api': 'https://publicapi.flowbtc.com.br',
+                'www': 'https://www.flowbtc.com.br',
                 'doc': 'https://www.flowbtc.com.br/api.html',
             },
             'requiredCredentials': {
@@ -42726,8 +42021,8 @@ module.exports = class flowbtc extends Exchange {
                 'trading': {
                     'tierBased': false,
                     'percentage': true,
-                    'maker': 0.0035,
-                    'taker': 0.0035,
+                    'maker': 0.0025,
+                    'taker': 0.005,
                 },
             },
         });
@@ -42742,8 +42037,8 @@ module.exports = class flowbtc extends Exchange {
             const id = this.safeString (market, 'name');
             const baseId = this.safeString (market, 'product1Label');
             const quoteId = this.safeString (market, 'product2Label');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commoCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const precision = {
                 'amount': this.safeInteger (market, 'product1DecimalPlaces'),
                 'price': this.safeInteger (market, 'product2DecimalPlaces'),
@@ -42785,7 +42080,7 @@ module.exports = class flowbtc extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = balance['name'];
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'balance');
             account['total'] = this.safeFloat (balance, 'hold');
@@ -42937,7 +42232,7 @@ module.exports = class flowbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],89:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],86:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -42965,8 +42260,8 @@ module.exports = class foxbit extends Exchange {
                     'public': 'https://api.blinktrade.com/api',
                     'private': 'https://api.blinktrade.com/tapi',
                 },
-                'www': 'https://foxbit.exchange',
-                'doc': 'https://blinktrade.com/docs',
+                'www': 'https://foxbit.com.br/exchange',
+                'doc': 'https://foxbit.com.br/api/',
             },
             'comment': 'Blinktrade API',
             'api': {
@@ -43018,14 +42313,21 @@ module.exports = class foxbit extends Exchange {
             const currencyIds = Object.keys (this.currencies_by_id);
             for (let i = 0; i < currencyIds.length; i++) {
                 const currencyId = currencyIds[i];
-                const currency = this.currencies_by_id[currencyId];
-                const code = currency['code'];
+                const code = this.safeCurrencyCode (currencyId);
                 // we only set the balance for the currency if that currency is present in response
                 // otherwise we will lose the info if the currency balance has been funded or traded or not
                 if (currencyId in balances) {
                     const account = this.account ();
-                    account['used'] = parseFloat (balances[currencyId + '_locked']) * 1e-8;
-                    account['total'] = parseFloat (balances[currencyId]) * 1e-8;
+                    let used = this.safeFloat (balances, currencyId + '_locked');
+                    if (used !== undefined) {
+                        used *= 1e-8;
+                    }
+                    let total = this.safeFloat (balances, currencyId);
+                    if (total !== undefined) {
+                        total *= 1e-8;
+                    }
+                    account['used'] = used;
+                    account['total'] = total;
                     result[code] = account;
                 }
             }
@@ -43192,7 +42494,7 @@ module.exports = class foxbit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],90:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],87:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -43253,17 +42555,11 @@ module.exports = class fybse extends Exchange {
         const quote = this.markets[symbol]['quote'];
         const lowercase = quote.toLowerCase () + 'Bal';
         const fiat = this.safeFloat (response, lowercase);
-        const crypto = {
-            'free': btc,
-            'used': 0.0,
-            'total': btc,
-        };
+        const crypto = this.account ();
+        crypto['total'] = btc;
         const result = { 'BTC': crypto };
-        result[quote] = {
-            'free': fiat,
-            'used': 0.0,
-            'total': fiat,
-        };
+        result[quote] = this.account ();
+        result[quote]['total'] = fiat;
         result['info'] = response;
         return this.parseBalance (result);
     }
@@ -43398,7 +42694,7 @@ module.exports = class fybse extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],91:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],88:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -43573,10 +42869,8 @@ module.exports = class gateio extends Exchange {
                 baseId = parts[0] + '_' + parts[1];
                 quoteId = parts[2];
             }
-            let base = baseId.toUpperCase ();
-            let quote = quoteId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': 8,
@@ -43632,7 +42926,7 @@ module.exports = class gateio extends Exchange {
         const currencyIds = Object.keys (available);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            const code = this.commonCurrencyCode (currencyId.toUpperCase ());
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (available, currencyId);
             account['used'] = this.safeFloat (locked, currencyId);
@@ -43688,7 +42982,8 @@ module.exports = class gateio extends Exchange {
         //         ]
         //     }
         //
-        return this.parseOHLCVs (response['data'], market, timeframe, since, limit);
+        const data = this.safeValue (response, 'data', []);
+        return this.parseOHLCVs (data, market, timeframe, since, limit);
     }
 
     parseTicker (ticker, market = undefined) {
@@ -43726,8 +43021,8 @@ module.exports = class gateio extends Exchange {
             'change': change,
             'percentage': percentage,
             'average': average,
-            'baseVolume': this.safeFloat (ticker, 'baseVolume'),
-            'quoteVolume': this.safeFloat (ticker, 'quoteVolume'),
+            'baseVolume': this.safeFloat (ticker, 'quoteVolume'), // gateio has them reversed
+            'quoteVolume': this.safeFloat (ticker, 'baseVolume'),
             'info': ticker,
         };
     }
@@ -43766,8 +43061,8 @@ module.exports = class gateio extends Exchange {
             const [ baseId, quoteId ] = id.split ('_');
             let base = baseId.toUpperCase ();
             let quote = quoteId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            base = this.safeCurrencyCode (base);
+            quote = this.safeCurrencyCode (quote);
             const symbol = base + '/' + quote;
             let market = undefined;
             if (symbol in this.markets) {
@@ -43776,12 +43071,7 @@ module.exports = class gateio extends Exchange {
             if (id in this.markets_by_id) {
                 market = this.markets_by_id[id];
             }
-            const ticker = this.parseTicker (response[id], market);
-            // https://github.com/ccxt/ccxt/pull/5138
-            const baseVolume = ticker['baseVolume'];
-            ticker['baseVolume'] = ticker['quoteVolume'];
-            ticker['quoteVolume'] = baseVolume;
-            result[symbol] = ticker;
+            result[symbol] = this.parseTicker (response[id], market);
         }
         return result;
     }
@@ -43907,15 +43197,11 @@ module.exports = class gateio extends Exchange {
         // In the order status response, this field has a different name.
         const remaining = this.safeFloat2 (order, 'leftAmount', 'left');
         const feeCost = this.safeFloat (order, 'feeValue');
-        let feeCurrency = this.safeString (order, 'feeCurrency');
+        const feeCurrencyId = this.safeString (order, 'feeCurrency');
+        const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
         let feeRate = this.safeFloat (order, 'feePercentage');
         if (feeRate !== undefined) {
             feeRate = feeRate / 100;
-        }
-        if (feeCurrency !== undefined) {
-            if (feeCurrency in this.currencies_by_id) {
-                feeCurrency = this.currencies_by_id[feeCurrency]['code'];
-            }
         }
         return {
             'id': id,
@@ -43933,7 +43219,7 @@ module.exports = class gateio extends Exchange {
             'trades': undefined,
             'fee': {
                 'cost': feeCost,
-                'currency': feeCurrency,
+                'currency': feeCurrencyCode,
                 'rate': feeRate,
             },
             'info': order,
@@ -44032,7 +43318,7 @@ module.exports = class gateio extends Exchange {
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         if (symbol === undefined) {
-            throw new ExchangeError (this.id + ' fetchMyTrades requires symbol param');
+            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires symbol param');
         }
         await this.loadMarkets ();
         const market = this.market (symbol);
@@ -44091,7 +43377,7 @@ module.exports = class gateio extends Exchange {
         if (since !== undefined) {
             request['start'] = since;
         }
-        const response = this.privatePostDepositsWithdrawals (this.extend (request, params));
+        const response = await this.privatePostDepositsWithdrawals (this.extend (request, params));
         let transactions = undefined;
         if (type === undefined) {
             const deposits = this.safeValue (response, 'deposits', []);
@@ -44147,15 +43433,8 @@ module.exports = class gateio extends Exchange {
         //         'type': 'withdrawal'
         //     }
         //
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency === undefined) {
-            code = this.commonCurrencyCode (currencyId);
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const id = this.safeString (transaction, 'id');
         const txid = this.safeString (transaction, 'txid');
         const amount = this.safeFloat (transaction, 'amount');
@@ -44220,7 +43499,7 @@ module.exports = class gateio extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],92:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],89:[function(require,module,exports){
 'use strict';
 
 // ----------------------------------------------------------------------------
@@ -44386,8 +43665,8 @@ module.exports = class gdax extends Exchange {
             const id = this.safeString (market, 'id');
             const baseId = this.safeString (market, 'base_currency');
             const quoteId = this.safeString (market, 'quote_currency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const priceLimits = {
                 'min': this.safeFloat (market, 'quote_increment'),
@@ -44456,7 +43735,7 @@ module.exports = class gdax extends Exchange {
             const account = response[i];
             const accountId = this.safeString (account, 'id');
             const currencyId = this.safeString (account, 'currency');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             result.push ({
                 'id': accountId,
                 'type': undefined,
@@ -44474,7 +43753,7 @@ module.exports = class gdax extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const account = {
                 'free': this.safeFloat (balance, 'available'),
                 'used': this.safeFloat (balance, 'hold'),
@@ -44932,14 +44211,8 @@ module.exports = class gdax extends Exchange {
         const txid = this.safeString (details, 'crypto_transaction_hash');
         const timestamp = this.parse8601 (this.safeString (transaction, 'created_at'));
         const updated = this.parse8601 (this.safeString (transaction, 'processed_at'));
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        if (currencyId in this.currencies_by_id) {
-            currency = this.currencies_by_id[currencyId];
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const fee = undefined;
         const status = this.parseTransactionStatus (transaction);
         const amount = this.safeFloat (transaction, 'amount');
@@ -45089,7 +44362,7 @@ module.exports = class gdax extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],93:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],90:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -45123,6 +44396,7 @@ module.exports = class gemini extends Exchange {
                 'fetchTransactions': true,
                 'fetchWithdrawals': false,
                 'fetchDeposits': false,
+                'fetchOHLCV': true,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27816857-ce7be644-6096-11e7-82d6-3c257263229c.jpg',
@@ -45151,30 +44425,32 @@ module.exports = class gemini extends Exchange {
                 },
                 'public': {
                     'get': [
-                        'symbols',
-                        'pubticker/{symbol}',
-                        'book/{symbol}',
-                        'trades/{symbol}',
-                        'auction/{symbol}',
-                        'auction/{symbol}/history',
+                        'v1/symbols',
+                        'v1/pubticker/{symbol}',
+                        'v1/book/{symbol}',
+                        'v1/trades/{symbol}',
+                        'v1/auction/{symbol}',
+                        'v1/auction/{symbol}/history',
+                        'v2/candles/{symbol}/{timeframe}',
+                        'v2/ticker/{symbol}',
                     ],
                 },
                 'private': {
                     'post': [
-                        'order/new',
-                        'order/cancel',
-                        'order/cancel/session',
-                        'order/cancel/all',
-                        'order/status',
-                        'orders',
-                        'mytrades',
-                        'tradevolume',
-                        'transfers',
-                        'balances',
-                        'deposit/{currency}/newAddress',
-                        'withdraw/{currency}',
-                        'heartbeat',
-                        'transfers',
+                        'v1/order/new',
+                        'v1/order/cancel',
+                        'v1/order/cancel/session',
+                        'v1/order/cancel/all',
+                        'v1/order/status',
+                        'v1/orders',
+                        'v1/mytrades',
+                        'v1/tradevolume',
+                        'v1/transfers',
+                        'v1/balances',
+                        'v1/deposit/{currency}/newAddress',
+                        'v1/withdraw/{currency}',
+                        'v1/heartbeat',
+                        'v1/transfers',
                     ],
                 },
             },
@@ -45193,6 +44469,15 @@ module.exports = class gemini extends Exchange {
                 '500': ExchangeError, // The server encountered an error
                 '502': ExchangeError, // Technical issues are preventing the request from being satisfied
                 '503': ExchangeNotAvailable, // The exchange is down for maintenance
+            },
+            'timeframes': {
+                '1m': '1m',
+                '5m': '5m',
+                '15m': '15m',
+                '30m': '30m',
+                '1h': '1hr',
+                '6h': '6hr',
+                '1d': '1day',
             },
             'exceptions': {
                 'exact': {
@@ -45290,11 +44575,11 @@ module.exports = class gemini extends Exchange {
             const minAmount = minAmountAsString.split (' ');
             const amountPrecision = amountTickSizeAsString.split (' ');
             const pricePrecision = priceTickSizeAsString.split (' ');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
-            const symbol = base + '/' + quote;
             baseId = baseId.toLowerCase ();
             quoteId = quoteId.toLowerCase ();
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
+            const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.precisionFromString (amountPrecision[0]),
                 'price': this.precisionFromString (pricePrecision[0]),
@@ -45330,17 +44615,15 @@ module.exports = class gemini extends Exchange {
     }
 
     async fetchMarketsFromAPI (params = {}) {
-        const response = await this.publicGetSymbols (params);
+        const response = await this.publicGetV1Symbols (params);
         const result = [];
         for (let i = 0; i < response.length; i++) {
             const id = response[i];
             const market = id;
             const baseId = id.slice (0, 3);
             const quoteId = id.slice (3, 6);
-            let base = baseId.toUpperCase ();
-            let quote = quoteId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': undefined,
@@ -45383,7 +44666,7 @@ module.exports = class gemini extends Exchange {
             request['limit_bids'] = limit;
             request['limit_asks'] = limit;
         }
-        const response = await this.publicGetBookSymbol (this.extend (request, params));
+        const response = await this.publicGetV1BookSymbol (this.extend (request, params));
         return this.parseOrderBook (response, undefined, 'bids', 'asks', 'price', 'amount');
     }
 
@@ -45393,10 +44676,10 @@ module.exports = class gemini extends Exchange {
         const request = {
             'symbol': market['id'],
         };
-        const ticker = await this.publicGetPubtickerSymbol (this.extend (request, params));
+        const ticker = await this.publicGetV1PubtickerSymbol (this.extend (request, params));
         const timestamp = this.safeInteger (ticker['volume'], 'timestamp');
-        const baseVolume = this.safeFloat (market, 'base');
-        const quoteVolume = this.safeFloat (market, 'quote');
+        const baseCurrency = market['base']; // unified structures are guaranteed to have unified fields
+        const quoteCurrency = market['quote']; // so we don't need safe-methods for unified structures
         const last = this.safeFloat (ticker, 'last');
         return {
             'symbol': symbol,
@@ -45416,8 +44699,8 @@ module.exports = class gemini extends Exchange {
             'change': undefined,
             'percentage': undefined,
             'average': undefined,
-            'baseVolume': this.safeFloat (ticker['volume'], baseVolume),
-            'quoteVolume': this.safeFloat (ticker['volume'], quoteVolume),
+            'baseVolume': this.safeFloat (ticker['volume'], baseCurrency),
+            'quoteVolume': this.safeFloat (ticker['volume'], quoteCurrency),
             'info': ticker,
         };
     }
@@ -45426,20 +44709,12 @@ module.exports = class gemini extends Exchange {
         const timestamp = this.safeInteger (trade, 'timestampms');
         const id = this.safeString (trade, 'tid');
         const orderId = this.safeString (trade, 'order_id');
-        let fee = this.safeFloat (trade, 'fee_amount');
-        if (fee !== undefined) {
-            let currency = this.safeString (trade, 'fee_currency');
-            if (currency !== undefined) {
-                if (currency in this.currencies_by_id) {
-                    currency = this.currencies_by_id[currency]['code'];
-                }
-                currency = this.commonCurrencyCode (currency);
-            }
-            fee = {
-                'cost': this.safeFloat (trade, 'fee_amount'),
-                'currency': currency,
-            };
-        }
+        const feeCurrencyId = this.safeString (trade, 'fee_currency');
+        const feeCurrencyCode = this.safeCurrencyCode (feeCurrencyId);
+        const fee = {
+            'cost': this.safeFloat (trade, 'fee_amount'),
+            'currency': feeCurrencyCode,
+        };
         const price = this.safeFloat (trade, 'price');
         const amount = this.safeFloat (trade, 'amount');
         let cost = undefined;
@@ -45480,18 +44755,18 @@ module.exports = class gemini extends Exchange {
         const request = {
             'symbol': market['id'],
         };
-        const response = await this.publicGetTradesSymbol (this.extend (request, params));
+        const response = await this.publicGetV1TradesSymbol (this.extend (request, params));
         return this.parseTrades (response, market, since, limit);
     }
 
     async fetchBalance (params = {}) {
         await this.loadMarkets ();
-        const response = await this.privatePostBalances (params);
+        const response = await this.privatePostV1Balances (params);
         const result = { 'info': response };
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
             account['total'] = this.safeFloat (balance, 'amount');
@@ -45565,13 +44840,13 @@ module.exports = class gemini extends Exchange {
         const request = {
             'order_id': id,
         };
-        const response = await this.privatePostOrderStatus (this.extend (request, params));
+        const response = await this.privatePostV1OrderStatus (this.extend (request, params));
         return this.parseOrder (response);
     }
 
     async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
-        const response = await this.privatePostOrders (params);
+        const response = await this.privatePostV1Orders (params);
         let orders = this.parseOrders (response, undefined, since, limit);
         if (symbol !== undefined) {
             const market = this.market (symbol); // throws on non-existent symbol
@@ -45594,7 +44869,7 @@ module.exports = class gemini extends Exchange {
             'side': side,
             'type': 'exchange limit', // gemini allows limit orders only
         };
-        const response = await this.privatePostOrderNew (this.extend (request, params));
+        const response = await this.privatePostV1OrderNew (this.extend (request, params));
         return {
             'info': response,
             'id': response['order_id'],
@@ -45606,7 +44881,7 @@ module.exports = class gemini extends Exchange {
         const request = {
             'order_id': id,
         };
-        return await this.privatePostOrderCancel (this.extend (request, params));
+        return await this.privatePostV1OrderCancel (this.extend (request, params));
     }
 
     async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
@@ -45624,7 +44899,7 @@ module.exports = class gemini extends Exchange {
         if (since !== undefined) {
             request['timestamp'] = parseInt (since / 1000);
         }
-        const response = await this.privatePostMytrades (this.extend (request, params));
+        const response = await this.privatePostV1Mytrades (this.extend (request, params));
         return this.parseTrades (response, market, since, limit);
     }
 
@@ -45637,7 +44912,7 @@ module.exports = class gemini extends Exchange {
             'amount': amount,
             'address': address,
         };
-        const response = await this.privatePostWithdrawCurrency (this.extend (request, params));
+        const response = await this.privatePostV1WithdrawCurrency (this.extend (request, params));
         return {
             'info': response,
             'id': this.safeString (response, 'txHash'),
@@ -45657,22 +44932,14 @@ module.exports = class gemini extends Exchange {
         if (since !== undefined) {
             request['timestamp'] = since;
         }
-        const response = await this.privatePostTransfers (this.extend (request, params));
+        const response = await this.privatePostV1Transfers (this.extend (request, params));
         return this.parseTransactions (response);
     }
 
     parseTransaction (transaction, currency = undefined) {
         const timestamp = this.safeInteger (transaction, 'timestampms');
-        let code = undefined;
-        if (currency === undefined) {
-            const currencyId = this.safeString (transaction, 'currency');
-            if (currencyId in this.currencies_by_id) {
-                currency = this.currencies_by_id[currencyId];
-            }
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const currencyId = this.safeString (transaction, 'currency');
+        const code = this.safeCurrencyCode (currencyId, currency);
         const address = this.safeString (transaction, 'destination');
         let type = this.safeString (transaction, 'type');
         if (type !== undefined) {
@@ -45710,9 +44977,6 @@ module.exports = class gemini extends Exchange {
 
     sign (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
         let url = '/' + this.implodeParams (path, params);
-        if (api !== 'web') {
-            url = '/' + this.version + url;
-        }
         const query = this.omit (params, this.extractParams (path));
         if (api === 'private') {
             this.checkRequiredCredentials ();
@@ -45776,7 +45040,7 @@ module.exports = class gemini extends Exchange {
         const request = {
             'currency': currency['id'],
         };
-        const response = await this.privatePostDepositCurrencyNewAddress (this.extend (request, params));
+        const response = await this.privatePostV1DepositCurrencyNewAddress (this.extend (request, params));
         const address = this.safeString (response, 'address');
         this.checkAddress (address);
         return {
@@ -45786,97 +45050,20 @@ module.exports = class gemini extends Exchange {
             'info': response,
         };
     }
-};
 
-},{"./base/Exchange":7,"./base/errors":8}],94:[function(require,module,exports){
-'use strict';
-
-// ---------------------------------------------------------------------------
-
-const huobipro = require ('./huobipro.js');
-const { PermissionDenied } = require ('./base/errors');
-
-// ---------------------------------------------------------------------------
-
-module.exports = class hadax extends huobipro {
-    describe () {
-        return this.deepExtend (super.describe (), {
-            'id': 'hadax',
-            'name': 'HADAX',
-            'countries': [ 'CN' ],
-            'hostname': 'api.hadax.com',
-            'urls': {
-                'logo': 'https://user-images.githubusercontent.com/1294454/38059952-4756c49e-32f1-11e8-90b9-45c1eccba9cd.jpg',
-                'api': {
-                    'market': 'https://api.hadax.com',
-                    'public': 'https://api.hadax.com',
-                    'private': 'https://api.hadax.com',
-                },
-                'www': 'https://www.hadax.com',
-                'doc': 'https://github.com/huobiapi/API_Docs/wiki',
-            },
-            'has': {
-                'fetchCurrencies': false,
-            },
-            'api': {
-                'public': {
-                    'get': [
-                        'hadax/common/symbols', // 查询系统支持的所有交易对
-                        'hadax/common/currencys', // 查询系统支持的所有币种
-                        'common/timestamp', // 查询系统当前时间
-                        'hadax/settings/currencys', // ?language=en-US
-                    ],
-                },
-                'private': {
-                    'get': [
-                        'account/accounts', // 查询当前用户的所有账户(即account-id)
-                        'hadax/account/accounts/{id}/balance', // 查询指定账户的余额
-                        'order/orders/{id}', // 查询某个订单详情
-                        'order/orders/{id}/matchresults', // 查询某个订单的成交明细
-                        'order/orders', // 查询当前委托、历史委托
-                        'order/matchresults', // 查询当前成交、历史成交
-                        'dw/withdraw-virtual/addresses', // 查询虚拟币提现地址
-                        'dw/deposit-virtual/addresses',
-                        'query/deposit-withdraw',
-                        'margin/loan-orders', // 借贷订单
-                        'margin/accounts/balance', // 借贷账户详情
-                    ],
-                    'post': [
-                        'hadax/order/orders/place', // 创建并执行一个新订单 (一步下单， 推荐使用)
-                        'order/orders', // 创建一个新的订单请求 （仅创建订单，不执行下单）
-                        'order/orders/{id}/place', // 执行一个订单 （仅执行已创建的订单）
-                        'order/orders/{id}/submitcancel', // 申请撤销一个订单请求
-                        'order/orders/batchcancel', // 批量撤销订单
-                        'dw/balance/transfer', // 资产划转
-                        'dw/withdraw/api/create', // 申请提现虚拟币
-                        'dw/withdraw-virtual/create', // 申请提现虚拟币
-                        'dw/withdraw-virtual/{id}/place', // 确认申请虚拟币提现
-                        'dw/withdraw-virtual/{id}/cancel', // 申请取消提现虚拟币
-                        'dw/transfer-in/margin', // 现货账户划入至借贷账户
-                        'dw/transfer-out/margin', // 借贷账户划出至现货账户
-                        'margin/orders', // 申请借贷
-                        'margin/orders/{id}/repay', // 归还借贷
-                    ],
-                },
-            },
-            'exceptions': {
-                'not-allow-entry-hadax': PermissionDenied,
-            },
-            'options': {
-                'fetchMarketsMethod': 'publicGetHadaxCommonSymbols',
-                'fetchBalanceMethod': 'privateGetHadaxAccountAccountsIdBalance',
-                'createOrderMethod': 'privatePostHadaxOrderOrdersPlace',
-            },
-            'commonCurrencies': {
-                'FAIR': 'FairGame',
-                'GET': 'Themis',
-                'HOT': 'Hydro Protocol',
-            },
-        });
+    async fetchOHLCV (symbol, timeframe = '5m', since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'timeframe': this.timeframes[timeframe],
+            'symbol': market['id'],
+        };
+        const response = await this.publicGetV2CandlesSymbolTimeframe (this.extend (request, params));
+        return this.parseOHLCVs (response, market, timeframe, since, limit);
     }
 };
 
-},{"./base/errors":8,"./huobipro.js":97}],95:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],91:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -46363,7 +45550,6 @@ module.exports = class hitbtc extends Exchange {
                 },
             },
             'commonCurrencies': {
-                'BCH': 'Bitcoin Cash',
                 'BET': 'DAO.Casino',
                 'CAT': 'BitClave',
                 'DRK': 'DASH',
@@ -46392,8 +45578,8 @@ module.exports = class hitbtc extends Exchange {
             const quoteId = this.safeString (market, 'currency');
             const lot = this.safeFloat (market, 'lot');
             const step = this.safeFloat (market, 'step');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'info': market,
@@ -46442,12 +45628,7 @@ module.exports = class hitbtc extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency_code');
-            let code = currencyId.toUpperCase ();
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (code);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat2 (balance, 'cash', 'balance');
             account['used'] = this.safeFloat (balance, 'reserved');
@@ -46882,7 +46063,7 @@ module.exports = class hitbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],96:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],92:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -47450,8 +46631,8 @@ module.exports = class hitbtc2 extends hitbtc {
             const id = this.safeString (market, 'id');
             const baseId = this.safeString (market, 'baseCurrency');
             const quoteId = this.safeString (market, 'quoteCurrency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const lot = this.safeFloat (market, 'quantityIncrement');
             const step = this.safeFloat (market, 'tickSize');
@@ -47504,7 +46685,7 @@ module.exports = class hitbtc2 extends hitbtc {
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
             const precision = 8; // default precision, todo: fix "magic constants"
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const payin = this.safeValue (currency, 'payinEnabled');
             const payout = this.safeValue (currency, 'payoutEnabled');
             const transfer = this.safeValue (currency, 'transferEnabled');
@@ -47584,12 +46765,7 @@ module.exports = class hitbtc2 extends hitbtc {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId.toUpperCase ();
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (code);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
             account['used'] = this.safeFloat (balance, 'reserved');
@@ -47697,10 +46873,16 @@ module.exports = class hitbtc2 extends hitbtc {
         const result = {};
         for (let i = 0; i < response.length; i++) {
             const ticker = response[i];
-            const id = ticker['symbol'];
-            const market = this.markets_by_id[id];
-            const symbol = market['symbol'];
-            result[symbol] = this.parseTicker (ticker, market);
+            const marketId = this.safeString (ticker, 'symbol');
+            if (marketId !== undefined) {
+                if (marketId in this.markets_by_id) {
+                    const market = this.markets_by_id[marketId];
+                    const symbol = market['symbol'];
+                    result[symbol] = this.parseTicker (ticker, market);
+                } else {
+                    result[marketId] = this.parseTicker (ticker);
+                }
+            }
         }
         return result;
     }
@@ -47843,25 +47025,23 @@ module.exports = class hitbtc2 extends hitbtc {
         //         address: '0xd53ed559a6d963af7cb3f3fcd0e7ca499054db8b',
         //     }
         //
+        //     {
+        //         "id": "4f351f4f-a8ee-4984-a468-189ed590ddbd",
+        //         "index": 3112719565,
+        //         "type": "withdraw",
+        //         "status": "success",
+        //         "currency": "BCHOLD",
+        //         "amount": "0.02423133",
+        //         "createdAt": "2019-07-16T16:52:04.494Z",
+        //         "updatedAt": "2019-07-16T16:54:07.753Z"
+        //     }
         const id = this.safeString (transaction, 'id');
         const timestamp = this.parse8601 (this.safeString (transaction, 'createdAt'));
         const updated = this.parse8601 (this.safeString (transaction, 'updatedAt'));
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        if (currencyId in this.currencies_by_id) {
-            currency = this.currencies_by_id[currencyId];
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
         const amount = this.safeFloat (transaction, 'amount');
-        let type = this.safeString (transaction, 'type');
-        if (type === 'payin') {
-            type = 'deposit';
-        } else if (type === 'payout') {
-            type = 'withdrawal';
-        }
         const address = this.safeString (transaction, 'address');
         const txid = this.safeString (transaction, 'hash');
         let fee = undefined;
@@ -47872,6 +47052,7 @@ module.exports = class hitbtc2 extends hitbtc {
                 'currency': code,
             };
         }
+        const type = this.parseTransactionType (this.safeString (transaction, 'type'));
         return {
             'info': transaction,
             'id': id,
@@ -47895,7 +47076,16 @@ module.exports = class hitbtc2 extends hitbtc {
             'failed': 'failed',
             'success': 'ok',
         };
-        return (status in statuses) ? statuses[status] : status;
+        return this.safeString (statuses, status, status);
+    }
+
+    parseTransactionType (type) {
+        const types = {
+            'payin': 'deposit',
+            'payout': 'withdrawal',
+            'withdraw': 'withdrawal',
+        };
+        return this.safeString (types, type, type);
     }
 
     async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
@@ -48348,7 +47538,7 @@ module.exports = class hitbtc2 extends hitbtc {
     }
 };
 
-},{"./base/errors":8,"./base/functions/number":14,"./hitbtc":95}],97:[function(require,module,exports){
+},{"./base/errors":9,"./base/functions/number":15,"./hitbtc":91}],93:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -48591,11 +47781,9 @@ module.exports = class huobipro extends Exchange {
             const market = markets[i];
             const baseId = this.safeString (market, 'base-currency');
             const quoteId = this.safeString (market, 'quote-currency');
-            let base = baseId.toUpperCase ();
-            let quote = quoteId.toUpperCase ();
             const id = baseId + quoteId;
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': market['amount-precision'],
@@ -48605,6 +47793,8 @@ module.exports = class huobipro extends Exchange {
             const taker = (base === 'OMG') ? 0 : 0.2 / 100;
             const minAmount = this.safeFloat (market, 'min-order-amt', Math.pow (10, -precision['amount']));
             const minCost = this.safeFloat (market, 'min-order-value', 0);
+            const state = this.safeString (market, 'state');
+            const active = (state === 'online');
             result.push ({
                 'id': id,
                 'symbol': symbol,
@@ -48612,7 +47802,7 @@ module.exports = class huobipro extends Exchange {
                 'quote': quote,
                 'baseId': baseId,
                 'quoteId': quoteId,
-                'active': true,
+                'active': active,
                 'precision': precision,
                 'taker': taker,
                 'maker': maker,
@@ -48789,7 +47979,7 @@ module.exports = class huobipro extends Exchange {
         if (filledPoints !== undefined) {
             if ((feeCost === undefined) || (feeCost === 0.0)) {
                 feeCost = filledPoints;
-                feeCurrency = this.commonCurrencyCode ('HBPOINT');
+                feeCurrency = this.safeCurrencyCode ('HBPOINT');
             }
         }
         if (feeCost !== undefined) {
@@ -48913,7 +48103,7 @@ module.exports = class huobipro extends Exchange {
             //
             const id = this.safeValue (currency, 'name');
             const precision = this.safeInteger (currency, 'withdraw-precision');
-            const code = this.commonCurrencyCode (id.toUpperCase ());
+            const code = this.safeCurrencyCode (id);
             const active = currency['visible'] && currency['deposit-enabled'] && currency['withdraw-enabled'];
             const name = this.safeString (currency, 'display-name');
             result[code] = {
@@ -48968,12 +48158,7 @@ module.exports = class huobipro extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             let account = undefined;
             if (code in result) {
                 account = result[code];
@@ -49538,7 +48723,7 @@ module.exports = class huobipro extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],98:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],94:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -49571,7 +48756,7 @@ module.exports = class huobiru extends huobipro {
     }
 };
 
-},{"./huobipro.js":97}],99:[function(require,module,exports){
+},{"./huobipro.js":93}],95:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -49667,9 +48852,8 @@ module.exports = class ice3x extends Exchange {
         for (let i = 0; i < currencies.length; i++) {
             const currency = currencies[i];
             const id = this.safeString (currency, 'currency_id');
-            let code = this.safeString (currency, 'iso');
-            code = code.toUpperCase ();
-            code = this.commonCurrencyCode (code);
+            const currencyId = this.safeString (currency, 'iso');
+            const code = this.safeCurrencyCode (currencyId);
             result[code] = {
                 'id': id,
                 'code': code,
@@ -49697,10 +48881,10 @@ module.exports = class ice3x extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
-        if (!Object.keys (this.currencies).length) {
+        if (!Object.keys (this.currencies_by_id).length) {
             this.currencies = await this.fetchCurrencies ();
+            this.currencies_by_id = this.indexBy (this.currencies, 'id');
         }
-        this.currencies_by_id = this.indexBy (this.currencies, 'id');
         const response = await this.publicGetPairList (params);
         const markets = this.safeValue (response['response'], 'entities');
         const result = [];
@@ -49711,8 +48895,8 @@ module.exports = class ice3x extends Exchange {
             const quoteId = this.safeString (market, 'currency_id_to');
             const baseCurrency = this.currencies_by_id[baseId];
             const quoteCurrency = this.currencies_by_id[quoteId];
-            const base = this.commonCurrencyCode (baseCurrency['code']);
-            const quote = this.commonCurrencyCode (quoteCurrency['code']);
+            const base = baseCurrency['code'];
+            const quote = quoteCurrency['code'];
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -49721,7 +48905,7 @@ module.exports = class ice3x extends Exchange {
                 'quote': quote,
                 'baseId': baseId,
                 'quoteId': quoteId,
-                'active': true,
+                'active': undefined,
                 'info': market,
             });
         }
@@ -49868,10 +49052,7 @@ module.exports = class ice3x extends Exchange {
             const balance = balances[i];
             // currency ids are numeric strings
             const currencyId = this.safeString (balance, 'currency_id');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['total'] = this.safeFloat (balance, 'balance');
             result[code] = account;
@@ -50057,7 +49238,7 @@ module.exports = class ice3x extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],100:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],96:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -50140,12 +49321,10 @@ module.exports = class independentreserve extends Exchange {
         const result = [];
         for (let i = 0; i < baseCurrencies.length; i++) {
             const baseId = baseCurrencies[i];
-            const baseIdUppercase = baseId.toUpperCase ();
-            const base = this.commonCurrencyCode (baseIdUppercase);
+            const base = this.safeCurrencyCode (baseId);
             for (let j = 0; j < quoteCurrencies.length; j++) {
                 const quoteId = quoteCurrencies[j];
-                const quoteIdUppercase = quoteId.toUpperCase ();
-                const quote = this.commonCurrencyCode (quoteIdUppercase);
+                const quote = this.safeCurrencyCode (quoteId);
                 const id = baseId + '/' + quoteId;
                 const symbol = base + '/' + quote;
                 result.push ({
@@ -50169,12 +49348,7 @@ module.exports = class independentreserve extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'CurrencyCode');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'AvailableBalance');
             account['total'] = this.safeFloat (balance, 'TotalBalance');
@@ -50472,13 +49646,13 @@ module.exports = class independentreserve extends Exchange {
     }
 };
 
-},{"./base/Exchange":7}],101:[function(require,module,exports){
+},{"./base/Exchange":7}],97:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, ArgumentsRequired, InsufficientFunds, InvalidOrder, OrderNotFound, AuthenticationError } = require ('./base/errors');
+const { ExchangeError, ArgumentsRequired, InsufficientFunds, InvalidOrder, OrderNotFound, AuthenticationError, BadRequest } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -50579,6 +49753,19 @@ module.exports = class indodax extends Exchange {
                     'taker': 0.003,
                 },
             },
+            'exceptions': {
+                'exact': {
+                    'invalid_pair': BadRequest, // {"error":"invalid_pair","error_description":"Invalid Pair"}
+                    'Insufficient balance.': InsufficientFunds,
+                    'invalid order.': OrderNotFound,
+                    'Invalid credentials. API not found or session has expired.': AuthenticationError,
+                    'Invalid credentials. Bad sign.': AuthenticationError,
+                },
+                'broad': {
+                    'Minimum price': InvalidOrder,
+                    'Minimum order': InvalidOrder,
+                },
+            },
         });
     }
 
@@ -50592,12 +49779,7 @@ module.exports = class indodax extends Exchange {
         const currencyIds = Object.keys (free);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (code in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (free, currencyId);
             account['used'] = this.safeFloat (used, currencyId);
@@ -50952,10 +50134,11 @@ module.exports = class indodax extends Exchange {
         if (Array.isArray (response)) {
             return; // public endpoints may return []-arrays
         }
-        if (!('success' in response)) {
+        const error = this.safeValue (response, 'error', '');
+        if (!('success' in response) && error === '') {
             return; // no 'success' property on public responses
         }
-        if (response['success'] === 1) {
+        if (this.safeInteger (response, 'success', 0) === 1) {
             // { success: 1, return: { orders: [] }}
             if (!('return' in response)) {
                 throw new ExchangeError (this.id + ': malformed response: ' + this.json (response));
@@ -50963,27 +50146,21 @@ module.exports = class indodax extends Exchange {
                 return;
             }
         }
-        const message = response['error'];
         const feedback = this.id + ' ' + body;
-        // todo: rewrite this for unified this.exceptions (exact/broad)
-        if (message === 'Insufficient balance.') {
-            throw new InsufficientFunds (feedback);
-        } else if (message === 'invalid order.') {
-            throw new OrderNotFound (feedback); // cancelOrder(1)
-        } else if (message.indexOf ('Minimum price ') >= 0) {
-            throw new InvalidOrder (feedback); // price < limits.price.min, on createLimitBuyOrder ('ETH/BTC', 1, 0)
-        } else if (message.indexOf ('Minimum order ') >= 0) {
-            throw new InvalidOrder (feedback); // cost < limits.cost.min on createLimitBuyOrder ('ETH/BTC', 0, 1)
-        } else if (message === 'Invalid credentials. API not found or session has expired.') {
-            throw new AuthenticationError (feedback); // on bad apiKey
-        } else if (message === 'Invalid credentials. Bad sign.') {
-            throw new AuthenticationError (feedback); // on bad secret
+        const exact = this.exceptions['exact'];
+        if (error in exact) {
+            throw new exact[error] (feedback);
         }
-        throw new ExchangeError (this.id + ': unknown error: ' + this.json (response));
+        const broad = this.exceptions['broad'];
+        const broadKey = this.findBroadlyMatchedKey (broad, error);
+        if (broadKey !== undefined) {
+            throw new broad[broadKey] (feedback);
+        }
+        throw new ExchangeError (feedback); // unknown message
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],102:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],98:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -51152,13 +50329,13 @@ module.exports = class itbit extends Exchange {
         const orderId = this.safeString (trade, 'orderId');
         let feeCost = this.safeFloat (trade, 'commissionPaid');
         const feeCurrencyId = this.safeString (trade, 'commissionCurrency');
-        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const feeCurrency = this.safeCurrencyCode (feeCurrencyId);
         let rebatesApplied = this.safeFloat (trade, 'rebatesApplied');
         if (rebatesApplied !== undefined) {
             rebatesApplied = -rebatesApplied;
         }
         const rebateCurrencyId = this.safeString (trade, 'rebateCurrency');
-        const rebateCurrency = this.commonCurrencyCode (rebateCurrencyId);
+        const rebateCurrency = this.safeCurrencyCode (rebateCurrencyId);
         const price = this.safeFloat2 (trade, 'price', 'rate');
         const amount = this.safeFloat2 (trade, 'currency1Amount', 'amount');
         let cost = undefined;
@@ -51175,8 +50352,8 @@ module.exports = class itbit extends Exchange {
             } else {
                 const baseId = this.safeString (trade, 'currency1');
                 const quoteId = this.safeString (trade, 'currency2');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -51281,7 +50458,7 @@ module.exports = class itbit extends Exchange {
                 'id': this.safeString (item, 'withdrawalId'),
                 'timestamp': timestamp,
                 'datetime': this.iso8601 (timestamp),
-                'currency': this.commonCurrencyCode (currency),
+                'currency': this.safeCurrencyCode (currency),
                 'address': destinationAddress,
                 'tag': undefined,
                 'txid': txnHash,
@@ -51385,12 +50562,7 @@ module.exports = class itbit extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'availableBalance');
             account['total'] = this.safeFloat (balance, 'totalBalance');
@@ -51570,7 +50742,7 @@ module.exports = class itbit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],103:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],99:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -51719,10 +50891,8 @@ module.exports = class kkex extends Exchange {
                     };
                 }
             }
-            let base = baseId.toUpperCase ();
-            let quote = quoteId.toUpperCase ();
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -51889,12 +51059,7 @@ module.exports = class kkex extends Exchange {
         const currencyIds = Object.keys (free);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (free, currencyId);
             account['used'] = this.safeFloat (freezed, currencyId);
@@ -52148,7 +51313,7 @@ module.exports = class kkex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],104:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],100:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -52207,11 +51372,8 @@ module.exports = class kraken extends Exchange {
                     'zendesk': 'https://support.kraken.com/hc/en-us/articles/',
                 },
                 'www': 'https://www.kraken.com',
-                'doc': [
-                    'https://www.kraken.com/en-us/help/api',
-                    'https://github.com/nothingisdead/npm-kraken-api',
-                ],
-                'fees': 'https://www.kraken.com/en-us/help/fees',
+                'doc': 'https://www.kraken.com/features/api',
+                'fees': 'https://www.kraken.com/en-us/features/fee-schedule',
             },
             'fees': {
                 'trading': {
@@ -52349,8 +51511,8 @@ module.exports = class kraken extends Exchange {
                 },
             },
             'commonCurrencies': {
+                'XBT': 'BTC',
                 'XDG': 'DOGE',
-                'FEE': 'KFEE',
             },
             'options': {
                 'cacheDepositMethodsOnFetchDepositAddress': true, // will issue up to two calls in fetchDepositAddress
@@ -52402,7 +51564,7 @@ module.exports = class kraken extends Exchange {
                 const numPieces = pieces.length;
                 if (numPieces === 2) {
                     const amount = parseFloat (pieces[0]);
-                    const code = this.commonCurrencyCode (pieces[1]);
+                    const code = this.safeCurrencyCode (pieces[1]);
                     result[code] = amount;
                 }
             }
@@ -52420,20 +51582,8 @@ module.exports = class kraken extends Exchange {
             const market = response['result'][id];
             const baseId = market['base'];
             const quoteId = market['quote'];
-            let base = baseId;
-            let quote = quoteId;
-            if (base.length > 3) {
-                if ((base[0] === 'X') || (base[0] === 'Z')) {
-                    base = base.slice (1);
-                }
-            }
-            if (quote.length > 3) {
-                if ((quote[0] === 'X') || (quote[0] === 'Z')) {
-                    quote = quote.slice (1);
-                }
-            }
-            base = this.commonCurrencyCode (base);
-            quote = this.commonCurrencyCode (quote);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const darkpool = id.indexOf ('.d') >= 0;
             const symbol = darkpool ? market['altname'] : (base + '/' + quote);
             let maker = undefined;
@@ -52483,6 +51633,15 @@ module.exports = class kraken extends Exchange {
         return result;
     }
 
+    safeCurrencyCode (currencyId, currency = undefined) {
+        if (currencyId.length > 3) {
+            if ((currencyId.indexOf ('X') === 0) || (currencyId.indexOf ('Z') === 0)) {
+                currencyId = currencyId.slice (1);
+            }
+        }
+        return super.safeCurrencyCode (currencyId, currency);
+    }
+
     appendInactiveMarkets (result) {
         // result should be an array to append to
         const precision = { 'amount': 8, 'price': 8 };
@@ -52530,7 +51689,7 @@ module.exports = class kraken extends Exchange {
             // see: https://support.kraken.com/hc/en-us/articles/201893608-What-are-the-withdrawal-fees-
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
-            const code = this.commonCurrencyCode (this.safeString (currency, 'altname'));
+            const code = this.safeCurrencyCode (this.safeString (currency, 'altname'));
             const precision = this.safeInteger (currency, 'decimals');
             // assumes all currencies are active except those listed above
             const active = !this.inArray (code, this.options['inactiveCurrencies']);
@@ -52956,34 +52115,15 @@ module.exports = class kraken extends Exchange {
     }
 
     async fetchBalance (params = {}) {
-        await this.loadMarkets ();
         const response = await this.privatePostBalance (params);
-        const balances = this.safeValue (response, 'result');
-        if (balances === undefined) {
-            throw new ExchangeNotAvailable (this.id + ' fetchBalance failed due to a malformed response ' + this.json (response));
-        }
+        const balances = this.safeValue (response, 'result', {});
         const result = { 'info': balances };
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (code in this.currencies_by_id) {
-                code = this.currencies_by_id[code]['code'];
-            } else {
-                // X-ISO4217-A3 standard currency codes
-                if (code[0] === 'X') {
-                    code = code.slice (1);
-                } else if (code[0] === 'Z') {
-                    code = code.slice (1);
-                }
-                code = this.commonCurrencyCode (code);
-            }
-            const balance = this.safeFloat (balances, currencyId);
-            const account = {
-                'free': balance,
-                'used': 0.0,
-                'total': balance,
-            };
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
+            account['total'] = this.safeFloat (balances, currencyId);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -53066,20 +52206,8 @@ module.exports = class kraken extends Exchange {
         }
         const baseId = id.slice (baseIdStart, baseIdEnd);
         const quoteId = id.slice (quoteIdStart, quoteIdEnd);
-        let base = baseId;
-        let quote = quoteId;
-        if (base.length > 3) {
-            if ((base[0] === 'X') || (base[0] === 'Z')) {
-                base = base.slice (1);
-            }
-        }
-        if (quote.length > 3) {
-            if ((quote[0] === 'X') || (quote[0] === 'Z')) {
-                quote = quote.slice (1);
-            }
-        }
-        base = this.commonCurrencyCode (base);
-        quote = this.commonCurrencyCode (quote);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         const symbol = base + '/' + quote;
         market = {
             'symbol': symbol,
@@ -53367,14 +52495,8 @@ module.exports = class kraken extends Exchange {
         if (timestamp !== undefined) {
             timestamp = timestamp * 1000;
         }
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'asset');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency !== undefined) {
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const address = this.safeString (transaction, 'info');
         const amount = this.safeFloat (transaction, 'amount');
         const status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
@@ -53611,7 +52733,7 @@ module.exports = class kraken extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],105:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],101:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -53657,7 +52779,7 @@ module.exports = class kucoin extends Exchange {
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/57369448-3cc3aa80-7196-11e9-883e-5ebeb35e4f57.jpg',
-                'referral': 'https://www.kucoin.com/ucenter/signup?rcode=E5wkqe',
+                'referral': 'https://www.kucoin.com/?rcode=E5wkqe',
                 'api': {
                     'public': 'https://openapi-v2.kucoin.com',
                     'private': 'https://openapi-v2.kucoin.com',
@@ -53765,7 +52887,7 @@ module.exports = class kucoin extends Exchange {
                 '400006': AuthenticationError,
                 '400007': AuthenticationError,
                 '400008': NotSupported,
-                '400100': ArgumentsRequired,
+                '400100': BadRequest,
                 '411100': AccountSuspended,
                 '415000': BadRequest, // {"code":"415000","msg":"Unsupported Media Type"}
                 '500000': ExchangeError,
@@ -53790,6 +52912,7 @@ module.exports = class kucoin extends Exchange {
             'options': {
                 'version': 'v1',
                 'symbolSeparator': '-',
+                'fetchMyTradesMethod': 'private_get_fills',
             },
         });
     }
@@ -53826,13 +52949,13 @@ module.exports = class kucoin extends Exchange {
         const result = [];
         for (let i = 0; i < data.length; i++) {
             const market = data[i];
-            const id = market['name'];
-            const baseId = market['baseCurrency'];
-            const quoteId = market['quoteCurrency'];
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const id = this.safeString (market, 'name');
+            const baseId = this.safeString (market, 'baseCurrency');
+            const quoteId = this.safeString (market, 'quoteCurrency');
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
-            const active = market['enableTrading'];
+            const active = this.safeValue (market, 'enableTrading');
             const baseMaxSize = this.safeFloat (market, 'baseMaxSize');
             const baseMinSize = this.safeFloat (market, 'baseMinSize');
             const quoteMaxSize = this.safeFloat (market, 'quoteMaxSize');
@@ -53875,18 +52998,20 @@ module.exports = class kucoin extends Exchange {
     async fetchCurrencies (params = {}) {
         const response = await this.publicGetCurrencies (params);
         //
-        // { precision: 10,
-        //   name: 'KCS',
-        //   fullName: 'KCS shares',
-        //   currency: 'KCS' }
+        //     {
+        //         precision: 10,
+        //         name: 'KCS',
+        //         fullName: 'KCS shares',
+        //         currency: 'KCS'
+        //     }
         //
         const responseData = response['data'];
         const result = {};
         for (let i = 0; i < responseData.length; i++) {
             const entry = responseData[i];
             const id = this.safeString (entry, 'name');
-            const name = entry['fullName'];
-            const code = this.commonCurrencyCode (id);
+            const name = this.safeString (entry, 'fullName');
+            const code = this.safeCurrencyCode (id);
             const precision = this.safeInteger (entry, 'precision');
             result[code] = {
                 'id': id,
@@ -53923,7 +53048,7 @@ module.exports = class kucoin extends Exchange {
             const account = data[i];
             const accountId = this.safeString (account, 'id');
             const currencyId = this.safeString (account, 'currency');
-            const code = this.commonCurrencyCode (currencyId);
+            const code = this.safeCurrencyCode (currencyId);
             const type = this.safeString (account, 'type');  // main or trade
             result.push ({
                 'id': accountId,
@@ -53979,8 +53104,8 @@ module.exports = class kucoin extends Exchange {
                 symbol = market['symbol'];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('-');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -54111,7 +53236,7 @@ module.exports = class kucoin extends Exchange {
             request['startAt'] = Math.floor (since / 1000);
         }
         const response = await this.publicGetMarketCandles (this.extend (request, params));
-        const responseData = response['data'];
+        const responseData = this.safeValue (response, 'data', []);
         return this.parseOHLCVs (responseData, market, timeframe, since, limit);
     }
 
@@ -54345,8 +53470,8 @@ module.exports = class kucoin extends Exchange {
                 symbol = market['symbol'];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('-');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
             market = this.safeValue (this.markets_by_id, marketId);
@@ -54363,7 +53488,7 @@ module.exports = class kucoin extends Exchange {
         let price = this.safeFloat (order, 'price');
         const side = this.safeString (order, 'side');
         const feeCurrencyId = this.safeString (order, 'feeCurrency');
-        const feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+        const feeCurrency = this.safeCurrencyCode (feeCurrencyId);
         const feeCost = this.safeFloat (order, 'fee');
         const amount = this.safeFloat (order, 'size');
         const filled = this.safeFloat (order, 'dealSize');
@@ -54413,17 +53538,28 @@ module.exports = class kucoin extends Exchange {
         if (limit !== undefined) {
             request['pageSize'] = limit;
         }
-        let method = 'privateGetFills';
-        if (since !== undefined) {
-            // if since is earlier than 2019-02-18T00:00:00Z
-            if (since < 1550448000000) {
-                request['startAt'] = parseInt (since / 1000);
-                // despite that this endpoint is called `HistOrders`
-                // it returns historical trades instead of orders
-                method = 'privateGetHistOrders';
-            } else {
+        const method = this.options['fetchMyTradesMethod'];
+        let parseResponseData = false;
+        if (method === 'private_get_fills') {
+            // does not return trades earlier than 2019-02-18T00:00:00Z
+            if (since !== undefined) {
+                // only returns trades up to one week after the since param
                 request['startAt'] = since;
             }
+        } else if (method === 'private_get_limit_fills') {
+            // does not return trades earlier than 2019-02-18T00:00:00Z
+            // takes no params
+            // only returns first 1000 trades (not only "in the last 24 hours" as stated in the docs)
+            parseResponseData = true;
+        } else if (method === 'private_get_hist_orders') {
+            // despite that this endpoint is called `HistOrders`
+            // it returns historical trades instead of orders
+            // returns trades earlier than 2019-02-18T00:00:00Z only
+            if (since !== undefined) {
+                request['startAt'] = parseInt (since / 1000);
+            }
+        } else {
+            throw new ExchangeError (this.id + ' invalid fetchClosedOrder method');
         }
         const response = await this[method] (this.extend (request, params));
         //
@@ -54467,7 +53603,12 @@ module.exports = class kucoin extends Exchange {
         //     }
         //
         const data = this.safeValue (response, 'data', {});
-        const trades = this.safeValue (data, 'items', []);
+        let trades = undefined;
+        if (parseResponseData) {
+            trades = data;
+        } else {
+            trades = this.safeValue (data, 'items', []);
+        }
         return this.parseTrades (trades, market, since, limit);
     }
 
@@ -54574,8 +53715,8 @@ module.exports = class kucoin extends Exchange {
                 symbol = market['symbol'];
             } else {
                 const [ baseId, quoteId ] = marketId.split ('-');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -54607,7 +53748,7 @@ module.exports = class kucoin extends Exchange {
         const feeCost = this.safeFloat (trade, 'fee');
         if (feeCost !== undefined) {
             const feeCurrencyId = this.safeString (trade, 'feeCurrency');
-            let feeCurrency = this.commonCurrencyCode (feeCurrencyId);
+            let feeCurrency = this.safeCurrencyCode (feeCurrencyId);
             if (feeCurrency === undefined) {
                 if (market !== undefined) {
                     feeCurrency = (side === 'sell') ? market['quote'] : market['base'];
@@ -54659,10 +53800,18 @@ module.exports = class kucoin extends Exchange {
         }
         const response = await this.privatePostWithdrawals (this.extend (request, params));
         //
-        // { "withdrawalId": "5bffb63303aa675e8bbe18f9" }
+        // https://github.com/ccxt/ccxt/issues/5558
         //
+        //     {
+        //         "code":  200000,
+        //         "data": {
+        //             "withdrawalId":  "abcdefghijklmnopqrstuvwxyz"
+        //         }
+        //     }
+        //
+        const data = this.safeValue (response, 'data', {});
         return {
-            'id': this.safeString (response, 'withdrawalId'),
+            'id': this.safeString (data, 'withdrawalId'),
             'info': response,
         };
     }
@@ -54709,14 +53858,8 @@ module.exports = class kucoin extends Exchange {
         //         "updatedAt": 1546504603000
         //     }
         //
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency !== undefined) {
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         let address = this.safeString (transaction, 'address');
         const amount = this.safeFloat (transaction, 'amount');
         let txid = this.safeString (transaction, 'walletTxId');
@@ -54929,13 +54072,8 @@ module.exports = class kucoin extends Exchange {
         for (let i = 0; i < data.length; i++) {
             const balance = data[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
-            const account = {};
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
             account['total'] = this.safeFloat (balance, 'balance');
             account['free'] = this.safeFloat (balance, 'available');
             account['used'] = this.safeFloat (balance, 'holds');
@@ -55027,18 +54165,7 @@ module.exports = class kucoin extends Exchange {
         //     }
         //
         const currencyId = this.safeString (item, 'currency');
-        let code = undefined;
-        if (currencyId !== undefined) {
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
-        } else {
-            if (currency !== undefined) {
-                code = currency['code'];
-            }
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         const fee = {
             'cost': this.safeFloat (item, 'fee'),
             'code': code,
@@ -55099,7 +54226,9 @@ module.exports = class kucoin extends Exchange {
         // the v2 URL is https://openapi-v2.kucoin.com/api/v1/endpoint
         //                                †                 ↑
         //
-        let endpoint = '/api/' + this.options['version'] + '/' + this.implodeParams (path, params);
+        const version = this.safeString (params, 'version', this.options['version']);
+        params = this.omit (params, 'version');
+        let endpoint = '/api/' + version + '/' + this.implodeParams (path, params);
         const query = this.omit (params, this.extractParams (path));
         let endpart = '';
         headers = headers !== undefined ? headers : {};
@@ -55147,7 +54276,7 @@ module.exports = class kucoin extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],106:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],102:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -55166,7 +54295,7 @@ module.exports = class kucoin2 extends kucoin {
 };
 
 
-},{"./kucoin.js":105}],107:[function(require,module,exports){
+},{"./kucoin.js":101}],103:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -55243,10 +54372,8 @@ module.exports = class kuna extends acx {
                 const slice = id.slice (index);
                 if ((index > 0) && (slice === quoteId)) {
                     const baseId = id.replace (quoteId, '');
-                    let base = baseId.toUpperCase ();
-                    let quote = quoteId.toUpperCase ();
-                    base = this.commonCurrencyCode (base);
-                    quote = this.commonCurrencyCode (quote);
+                    const base = this.safeCurrencyCode (baseId);
+                    const quote = this.safeCurrencyCode (quoteId);
                     const symbol = base + '/' + quote;
                     const precision = {
                         'amount': 6,
@@ -55362,7 +54489,7 @@ module.exports = class kuna extends acx {
     }
 };
 
-},{"./acx.js":4,"./base/errors":8}],108:[function(require,module,exports){
+},{"./acx.js":4,"./base/errors":9}],104:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -55456,18 +54583,9 @@ module.exports = class lakebtc extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
-            const balance = this.safeFloat (balances, currencyId);
-            const account = {
-                'free': balance,
-                'used': 0.0,
-                'total': balance,
-            };
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
+            account['total'] = this.safeFloat (balances, currencyId);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -55660,7 +54778,878 @@ module.exports = class lakebtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],109:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],105:[function(require,module,exports){
+'use strict';
+
+//  ---------------------------------------------------------------------------
+
+const Exchange = require ('./base/Exchange');
+const { ExchangeError, ArgumentsRequired, InvalidNonce, OrderNotFound, InvalidOrder, DDoSProtection, BadRequest, AuthenticationError } = require ('./base/errors');
+const { ROUND } = require ('./base/functions/number');
+
+//  ---------------------------------------------------------------------------
+
+module.exports = class latoken extends Exchange {
+    describe () {
+        return this.deepExtend (super.describe (), {
+            'id': 'latoken',
+            'name': 'Latoken',
+            'countries': [ 'KY' ], // Cayman Islands
+            'version': 'v1',
+            'rateLimit': 2000,
+            'certified': false,
+            'userAgent': this.userAgents['chrome'],
+            'has': {
+                'CORS': false,
+                'publicAPI': true,
+                'pivateAPI': true,
+                'cancelOrder': true,
+                'cancelAllOrders': true,
+                'createMarketOrder': false,
+                'createOrder': true,
+                'fetchBalance': true,
+                'fetchCanceledOrders': true,
+                'fetchClosedOrders': true,
+                'fetchCurrencies': true,
+                'fetchMyTrades': true,
+                'fetchOpenOrders': true,
+                'fetchOrder': false,
+                'fetchOrdersByStatus': true,
+                'fetchOrderBook': true,
+                'fetchTicker': true,
+                'fetchTickers': true,
+                'fetchTime': true,
+                'fetchTrades': true,
+            },
+            'urls': {
+                'logo': 'https://user-images.githubusercontent.com/1294454/61511972-24c39f00-aa01-11e9-9f7c-471f1d6e5214.jpg',
+                'api': 'https://api.latoken.com',
+                'www': 'https://latoken.com',
+                'doc': [
+                    'https://api.latoken.com',
+                ],
+            },
+            'api': {
+                'public': {
+                    'get': [
+                        'ExchangeInfo/time',
+                        'ExchangeInfo/limits',
+                        'ExchangeInfo/pairs',
+                        'ExchangeInfo/pairs/{currency}',
+                        'ExchangeInfo/pair',
+                        'ExchangeInfo/currencies',
+                        'ExchangeInfo/currencies/{symbol}',
+                        'MarketData/tickers',
+                        'MarketData/ticker/{symbol}',
+                        'MarketData/orderBook/{symbol}',
+                        'MarketData/trades/{symbol}',
+                        'MarketData/trades/{symbol}/{limit}',
+                    ],
+                },
+                'private': {
+                    'get': [
+                        'Account/balances',
+                        'Account/balances/{currency}',
+                        'Order/status',
+                        'Order/active',
+                        'Order/get_order',
+                        'Order/trades',
+                    ],
+                    'post': [
+                        'Order/new',
+                        'Order/test-order',
+                        'Order/cancel',
+                        'Order/cancel_all',
+                    ],
+                },
+            },
+            'fees': {
+                'trading': {
+                    'tierBased': false,
+                    'percentage': true,
+                    'maker': 0.1 / 100,
+                    'taker': 0.1 / 100,
+                },
+            },
+            'options': {
+                'createOrderMethod': 'private_post_order_new', // private_post_order_test_order
+            },
+            'exceptions': {
+                'exact': {
+                    'Signature or ApiKey is not valid': AuthenticationError, // { "error": { "message": "Signature or ApiKey is not valid","errorType":"RequestError","statusCode":400 }}
+                    'Request is out of time': InvalidNonce, // { "error": { "message": "Request is out of time", "errorType": "RequestError", "statusCode":400 }}
+                    'Symbol must be specified': BadRequest, // { "error": { "message": "Symbol must be specified","errorType":"RequestError","statusCode":400 }}
+                },
+                'broad': {
+                    'Request limit reached': DDoSProtection, // { "message": "Request limit reached!", "details": "Request limit reached. Maximum allowed: 1 per 1s. Please try again in 1 second(s)." }
+                    'Pair': BadRequest, // { "error": { "message": "Pair 370 is not found","errorType":"RequestError","statusCode":400 }}
+                    'Price needs to be greater than': InvalidOrder, // { "error": { "message": "Price needs to be greater than 0","errorType":"ValidationError","statusCode":400 }}
+                    'Amount needs to be greater than': InvalidOrder, // { "error": { "message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400 }}
+                    'The Symbol field is required': InvalidOrder, // { "error": { "message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400 }}
+                    'OrderType is not valid': InvalidOrder, // { "error": { "message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400 }}
+                    'Side is not valid': InvalidOrder, // { "error": { "message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400 }}
+                    'Cancelable order whit': OrderNotFound, // { "error": { "message": "Cancelable order whit ID 1563460289.571254.704945@0370:1 not found","errorType":"RequestError","statusCode":400 }}
+                    'Order': OrderNotFound, // { "error": { "message": "Order 1563460289.571254.704945@0370:1 is not found","errorType":"RequestError","statusCode":400 }}
+                },
+            },
+        });
+    }
+
+    nonce () {
+        return this.milliseconds ();
+    }
+
+    async fetchTime (params = {}) {
+        const response = await this.publicGetExchangeInfoTime (params);
+        //
+        //     {
+        //         "time": "2019-04-18T9:00:00.0Z",
+        //         "unixTimeSeconds": 1555578000,
+        //         "unixTimeMiliseconds": 1555578000000
+        //     }
+        //
+        return this.safeInteger (response, 'unixTimeMiliseconds');
+    }
+
+    async fetchMarkets (params = {}) {
+        const response = await this.publicGetExchangeInfoPairs (params);
+        //
+        //     [
+        //         {
+        //             "pairId": 502,
+        //             "symbol": "LAETH",
+        //             "baseCurrency": "LA",
+        //             "quotedCurrency": "ETH",
+        //             "makerFee": 0.01,
+        //             "takerFee": 0.01,
+        //             "pricePrecision": 8,
+        //             "amountPrecision": 8,
+        //             "minQty": 0.1
+        //         }
+        //     ]
+        //
+        const result = [];
+        for (let i = 0; i < response.length; i++) {
+            const market = response[i];
+            const id = this.safeString (market, 'symbol');
+            // the exchange shows them inverted
+            const baseId = this.safeString (market, 'baseCurrency');
+            const quoteId = this.safeString (market, 'quotedCurrency');
+            const numericId = this.safeInteger (market, 'pairId');
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
+            const symbol = base + '/' + quote;
+            const precision = {
+                'price': this.safeInteger (market, 'pricePrecision'),
+                'amount': this.safeInteger (market, 'amountPrecision'),
+            };
+            const limits = {
+                'amount': {
+                    'min': this.safeFloat (market, 'minQty'),
+                    'max': undefined,
+                },
+                'price': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+                'cost': {
+                    'min': undefined,
+                    'max': undefined,
+                },
+            };
+            result.push ({
+                'id': id,
+                'numericId': numericId,
+                'info': market,
+                'symbol': symbol,
+                'base': base,
+                'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'active': undefined, // assuming true
+                'precision': precision,
+                'limits': limits,
+            });
+        }
+        return result;
+    }
+
+    async fetchCurrencies (params = {}) {
+        const response = await this.publicGetExchangeInfoCurrencies (params);
+        //
+        //     [
+        //         {
+        //             "currencyId": 102,
+        //             "symbol": "LA",
+        //             "name": "Latoken",
+        //             "precission": 8,
+        //             "type": "ERC20",
+        //             "fee": 0.1
+        //         }
+        //     ]
+        //
+        const result = {};
+        for (let i = 0; i < response.length; i++) {
+            const currency = response[i];
+            const id = this.safeString (currency, 'symbol');
+            const numericId = this.safeInteger (currency, 'currencyId');
+            const code = this.safeCurrencyCode (id);
+            const precision = this.safeInteger (currency, 'precission');
+            const fee = this.safeFloat (currency, 'fee');
+            const active = undefined;
+            result[code] = {
+                'id': id,
+                'numericId': numericId,
+                'code': code,
+                'info': currency,
+                'name': code,
+                'active': active,
+                'fee': fee,
+                'precision': precision,
+                'limits': {
+                    'amount': {
+                        'min': undefined,
+                        'max': undefined,
+                    },
+                    'price': {
+                        'min': undefined,
+                        'max': undefined,
+                    },
+                    'cost': {
+                        'min': undefined,
+                        'max': undefined,
+                    },
+                    'withdraw': {
+                        'min': undefined,
+                        'max': undefined,
+                    },
+                },
+            };
+        }
+        return result;
+    }
+
+    calculateFee (symbol, side, amount, price, takerOrMaker = 'taker') {
+        const market = this.markets[symbol];
+        let key = 'quote';
+        const rate = market[takerOrMaker];
+        let cost = amount * rate;
+        let precision = market['precision']['price'];
+        if (side === 'sell') {
+            cost *= price;
+        } else {
+            key = 'base';
+            precision = market['precision']['amount'];
+        }
+        cost = this.decimalToPrecision (cost, ROUND, precision, this.precisionMode);
+        return {
+            'type': takerOrMaker,
+            'currency': market[key],
+            'rate': rate,
+            'cost': parseFloat (cost),
+        };
+    }
+
+    async fetchBalance (currency = undefined, params = {}) {
+        await this.loadMarkets ();
+        const response = await this.privateGetAccountBalances (params);
+        //
+        //     [
+        //         {
+        //             "currencyId": 102,
+        //             "symbol": "LA",
+        //             "name": "Latoken",
+        //             "amount": 1054.66,
+        //             "available": 900.66,
+        //             "frozen": 154,
+        //             "pending": 0
+        //         }
+        //     ]
+        //
+        const result = {
+            'info': response,
+        };
+        for (let i = 0; i < response.length; i++) {
+            const balance = response[i];
+            const currencyId = this.safeString (balance, 'symbol');
+            const code = this.safeCurrencyCode (currencyId);
+            const frozen = this.safeFloat (balance, 'frozen');
+            const pending = this.safeFloat (balance, 'pending');
+            const used = this.sum (frozen, pending);
+            const account = {
+                'free': this.safeFloat (balance, 'available'),
+                'used': used,
+                'total': this.safeFloat (balance, 'amount'),
+            };
+            result[code] = account;
+        }
+        return this.parseBalance (result);
+    }
+
+    async fetchOrderBook (symbol, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+        };
+        const response = await this.publicGetMarketDataOrderBookSymbol (this.extend (request, params));
+        //
+        //     {
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "spread": 0.07,
+        //         "asks": [
+        //             { "price": 136.3, "amount": 7.024 }
+        //         ],
+        //         "bids": [
+        //             { "price": 136.2, "amount": 6.554 }
+        //         ]
+        //     }
+        //
+        return this.parseOrderBook (response, undefined, 'bids', 'asks', 'price', 'amount');
+    }
+
+    parseTicker (ticker, market = undefined) {
+        const symbol = this.findSymbol (this.safeString (ticker, 'symbol'), market);
+        const open = this.safeFloat (ticker, 'open');
+        const close = this.safeFloat (ticker, 'close');
+        let change = undefined;
+        if (open !== undefined && close !== undefined) {
+            change = close - open;
+        }
+        const percentage = this.safeFloat (ticker, 'priceChange');
+        const timestamp = this.nonce ();
+        return {
+            'symbol': symbol,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'low': this.safeFloat (ticker, 'low'),
+            'high': this.safeFloat (ticker, 'high'),
+            'bid': undefined,
+            'bidVolume': undefined,
+            'ask': undefined,
+            'askVolume': undefined,
+            'vwap': undefined,
+            'open': open,
+            'close': close,
+            'last': close,
+            'previousClose': undefined,
+            'change': change,
+            'percentage': percentage,
+            'average': undefined,
+            'baseVolume': this.safeFloat (ticker, 'volume'),
+            'quoteVolume': undefined,
+            'info': ticker,
+        };
+    }
+
+    async fetchTicker (symbol, params = {}) {
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+        };
+        const response = await this.publicGetMarketDataTickerSymbol (this.extend (request, params));
+        //
+        //     {
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "volume": 1023314.3202,
+        //         "open": 134.82,
+        //         "low": 133.95,
+        //         "high": 136.22,
+        //         "close": 135.12,
+        //         "priceChange": 0.22
+        //     }
+        //
+        return this.parseTicker (response, market);
+    }
+
+    async fetchTickers (symbols = undefined, params = {}) {
+        await this.loadMarkets ();
+        const response = await this.publicGetMarketDataTickers (params);
+        //
+        //     [
+        //         {
+        //             "pairId": 502,
+        //             "symbol": "LAETH",
+        //             "volume": 1023314.3202,
+        //             "open": 134.82,
+        //             "low": 133.95,
+        //             "high": 136.22,
+        //             "close": 135.12,
+        //             "priceChange": 0.22
+        //         }
+        //     ]
+        //
+        const result = {};
+        for (let i = 0; i < response.length; i++) {
+            const ticker = this.parseTicker (response[i]);
+            const symbol = ticker['symbol'];
+            if (symbols === undefined || this.inArray (symbol, symbols)) {
+                result[symbol] = ticker;
+            }
+        }
+        return result;
+    }
+
+    parseTrade (trade, market = undefined) {
+        //
+        // fetchTrades (public)
+        //
+        //     {
+        //         "side":"buy",
+        //         "price":0.022315,
+        //         "amount":0.706,
+        //         "timestamp":1563454655
+        //     }
+        //
+        // fetchMyTrades (private)
+        //
+        //     {
+        //         "id": "1555492358.126073.126767@0502:2",
+        //         "orderId": "1555492358.126073.126767@0502:2",
+        //         "commission": 0.012,
+        //         "side": "buy",
+        //         "price": 136.2,
+        //         "amount": 0.7,
+        //         "time": 1555515807369
+        //     }
+        //
+        const type = undefined;
+        const timestamp = this.safeInteger2 (trade, 'timestamp', 'time');
+        const price = this.safeFloat (trade, 'price');
+        const amount = this.safeFloat (trade, 'amount');
+        const side = this.safeString (trade, 'side');
+        let cost = undefined;
+        if (amount !== undefined) {
+            if (price !== undefined) {
+                cost = amount * price;
+            }
+        }
+        let symbol = undefined;
+        if (market !== undefined) {
+            symbol = market['symbol'];
+        }
+        const id = this.safeString (trade, 'id');
+        const orderId = this.safeString (trade, 'orderId');
+        const feeCost = this.safeFloat (trade, 'commission');
+        let fee = undefined;
+        if (feeCost !== undefined) {
+            fee = {
+                'cost': feeCost,
+                'currency': undefined,
+            };
+        }
+        return {
+            'info': trade,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'symbol': symbol,
+            'id': id,
+            'order': orderId,
+            'type': type,
+            'takerOrMaker': undefined,
+            'side': side,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'fee': fee,
+        };
+    }
+
+    async fetchTrades (symbol, since = undefined, limit = undefined, params = {}) {
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+        };
+        if (limit !== undefined) {
+            request['limit'] = limit; // default 50, max 100
+        }
+        const response = await this.publicGetMarketDataTradesSymbol (this.extend (request, params));
+        //
+        //     {
+        //         "pairId":370,
+        //         "symbol":"ETHBTC",
+        //         "tradeCount":51,
+        //         "trades": [
+        //             {
+        //                 "side":"buy",
+        //                 "price":0.022315,
+        //                 "amount":0.706,
+        //                 "timestamp":1563454655
+        //             }
+        //         ]
+        //     }
+        //
+        const trades = this.safeValue (response, 'trades', []);
+        return this.parseTrades (trades, market, since, limit);
+    }
+
+    async fetchMyTrades (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (symbol === undefined) {
+            throw new ArgumentsRequired (this.id + ' fetchMyTrades requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+        };
+        const response = await this.privateGetOrderTrades (this.extend (request, params));
+        //
+        //     {
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "tradeCount": 1,
+        //         "trades": [
+        //             {
+        //                 "id": "1555492358.126073.126767@0502:2",
+        //                 "orderId": "1555492358.126073.126767@0502:2",
+        //                 "commission": 0.012,
+        //                 "side": "buy",
+        //                 "price": 136.2,
+        //                 "amount": 0.7,
+        //                 "time": 1555515807369
+        //             }
+        //         ]
+        //     }
+        //
+        const trades = this.safeValue (response, 'trades', []);
+        return this.parseTrades (trades, market, since, limit);
+    }
+
+    parseOrderStatus (status) {
+        const statuses = {
+            'active': 'open',
+            'partiallyFilled': 'open',
+            'filled': 'closed',
+            'cancelled': 'canceled',
+        };
+        return this.safeString (statuses, status, status);
+    }
+
+    parseOrder (order, market = undefined) {
+        //
+        // createOrder
+        //
+        //     {
+        //         "orderId":"1563460093.134037.704945@0370:2",
+        //         "cliOrdId":"",
+        //         "pairId":370,
+        //         "symbol":"ETHBTC",
+        //         "side":"sell",
+        //         "orderType":"limit",
+        //         "price":1.0,
+        //         "amount":1.0
+        //     }
+        //
+        // cancelOrder, fetchOrder, fetchOpenOrders, fetchClosedOrders, fetchCanceledOrders
+        //
+        //     {
+        //         "orderId": "1555492358.126073.126767@0502:2",
+        //         "cliOrdId": "myNewOrder",
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "side": "buy",
+        //         "orderType": "limit",
+        //         "price": 136.2,
+        //         "amount": 0.57,
+        //         "orderStatus": "partiallyFilled",
+        //         "executedAmount": 0.27,
+        //         "reaminingAmount": 0.3,
+        //         "timeCreated": 155551580736,
+        //         "timeFilled": 0
+        //     }
+        //
+        const id = this.safeString (order, 'orderId');
+        const timestamp = this.safeValue (order, 'timeCreated');
+        const marketId = this.safeString (order, 'symbol');
+        let symbol = marketId;
+        if (marketId in this.markets_by_id) {
+            market = this.markets_by_id[marketId];
+        }
+        if (market !== undefined) {
+            symbol = market['symbol'];
+        }
+        const side = this.safeString (order, 'side');
+        const type = this.safeString (order, 'orderType');
+        const price = this.safeFloat (order, 'price');
+        const amount = this.safeFloat (order, 'amount');
+        const filled = this.safeFloat (order, 'executedAmount');
+        const remaining = this.safeFloat (order, 'reaminingAmount');
+        const status = this.parseOrderStatus (this.safeString (order, 'orderStatus'));
+        let cost = undefined;
+        if (filled !== undefined) {
+            if (price !== undefined) {
+                cost = filled * price;
+            }
+        }
+        const timeFilled = this.safeInteger (order, 'timeFilled');
+        let lastTradeTimestamp = undefined;
+        if (timeFilled !== undefined && timeFilled > 0) {
+            lastTradeTimestamp = timeFilled;
+        }
+        return {
+            'id': id,
+            'info': order,
+            'timestamp': timestamp,
+            'datetime': this.iso8601 (timestamp),
+            'lastTradeTimestamp': lastTradeTimestamp,
+            'status': status,
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'price': price,
+            'cost': cost,
+            'amount': amount,
+            'filled': filled,
+            'average': undefined,
+            'remaining': remaining,
+            'fee': undefined,
+        };
+    }
+
+    async fetchOpenOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersWithMethod ('private_get_order_active', symbol, since, limit, params);
+    }
+
+    async fetchClosedOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersByStatus ('filled', symbol, since, limit, params);
+    }
+
+    async fetchCanceledOrders (symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        return this.fetchOrdersByStatus ('cancelled', symbol, since, limit, params);
+    }
+
+    async fetchOrdersByStatus (status, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        const request = {
+            'status': status,
+        };
+        return this.fetchOrdersWithMethod ('private_get_order_status', symbol, since, limit, this.extend (request, params));
+    }
+
+    async fetchOrdersWithMethod (method, symbol = undefined, since = undefined, limit = undefined, params = {}) {
+        if (symbol === undefined) {
+            throw ArgumentsRequired (this.id + ' fetchOrdersWithMethod requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        const market = this.market (symbol);
+        const request = {
+            'symbol': market['id'],
+        };
+        if (limit !== undefined) {
+            request['limit'] = limit; // default 100
+        }
+        const response = await this[method] (this.extend (request, params));
+        //
+        //     [
+        //         {
+        //             "orderId": "1555492358.126073.126767@0502:2",
+        //             "cliOrdId": "myNewOrder",
+        //             "pairId": 502,
+        //             "symbol": "LAETH",
+        //             "side": "buy",
+        //             "orderType": "limit",
+        //             "price": 136.2,
+        //             "amount": 0.57,
+        //             "orderStatus": "partiallyFilled",
+        //             "executedAmount": 0.27,
+        //             "reaminingAmount": 0.3,
+        //             "timeCreated": 155551580736,
+        //             "timeFilled": 0
+        //         }
+        //     ]
+        //
+        return this.parseOrders (response, market, since, limit);
+    }
+
+    async fetchOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        const request = {
+            'orderId': id,
+        };
+        const response = await this.privateGetOrderGetOrder (this.extend (request, params));
+        //
+        //     {
+        //         "orderId": "1555492358.126073.126767@0502:2",
+        //         "cliOrdId": "myNewOrder",
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "side": "buy",
+        //         "orderType": "limit",
+        //         "price": 136.2,
+        //         "amount": 0.57,
+        //         "orderStatus": "partiallyFilled",
+        //         "executedAmount": 0.27,
+        //         "reaminingAmount": 0.3,
+        //         "timeCreated": 155551580736,
+        //         "timeFilled": 0
+        //     }
+        //
+        return this.parseOrder (response);
+    }
+
+    async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
+        await this.loadMarkets ();
+        if (type !== 'limit') {
+            throw new ExchangeError (this.id + ' allows limit orders only');
+        }
+        const request = {
+            'symbol': this.marketId (symbol),
+            'side': side,
+            'price': this.priceToPrecision (symbol, price),
+            'amount': this.amountToPrecision (symbol, amount),
+            'orderType': type,
+        };
+        const method = this.safeString (this.options, 'createOrderMethod', 'private_post_order_new');
+        const response = await this[method] (this.extend (request, params));
+        //
+        //     {
+        //         "orderId":"1563460093.134037.704945@0370:2",
+        //         "cliOrdId":"",
+        //         "pairId":370,
+        //         "symbol":"ETHBTC",
+        //         "side":"sell",
+        //         "orderType":"limit",
+        //         "price":1.0,
+        //         "amount":1.0
+        //     }
+        //
+        return this.parseOrder (response);
+    }
+
+    async cancelOrder (id, symbol = undefined, params = {}) {
+        await this.loadMarkets ();
+        const request = {
+            'orderId': id,
+        };
+        const response = await this.privatePostOrderCancel (this.extend (request, params));
+        //
+        //     {
+        //         "orderId": "1555492358.126073.126767@0502:2",
+        //         "cliOrdId": "myNewOrder",
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "side": "buy",
+        //         "orderType": "limit",
+        //         "price": 136.2,
+        //         "amount": 0.57,
+        //         "orderStatus": "partiallyFilled",
+        //         "executedAmount": 0.27,
+        //         "reaminingAmount": 0.3,
+        //         "timeCreated": 155551580736,
+        //         "timeFilled": 0
+        //     }
+        //
+        return this.parseOrder (response);
+    }
+
+    async cancelAllOrders (symbol = undefined, params = {}) {
+        if (symbol === undefined) {
+            throw new ArgumentsRequired (this.id + ' cancelAllOrders requires a symbol argument');
+        }
+        await this.loadMarkets ();
+        const marketId = this.marketId (symbol);
+        const request = {
+            'symbol': marketId,
+        };
+        const response = await this.privatePostOrderCancelAll (this.extend (request, params));
+        //
+        //     {
+        //         "pairId": 502,
+        //         "symbol": "LAETH",
+        //         "cancelledOrders": [
+        //             "1555492358.126073.126767@0502:2"
+        //         ]
+        //     }
+        //
+        const result = [];
+        const canceledOrders = this.safeValue (response, 'cancelledOrders', []);
+        for (let i = 0; i < canceledOrders.length; i++) {
+            const order = this.parseOrder ({
+                'symbol': marketId,
+                'orderId': canceledOrders[i],
+                'orderStatus': 'canceled',
+            });
+            result.push (order);
+        }
+        return result;
+    }
+
+    sign (path, api = 'public', method = 'GET', params = undefined, headers = undefined, body = undefined) {
+        let request = '/api/' + this.version + '/' + this.implodeParams (path, params);
+        let query = this.omit (params, this.extractParams (path));
+        if (api === 'private') {
+            const nonce = this.nonce ();
+            query = this.extend ({
+                'timestamp': nonce,
+            }, query);
+        }
+        const urlencodedQuery = this.urlencode (query);
+        if (Object.keys (query).length) {
+            request += '?' + urlencodedQuery;
+        }
+        if (api === 'private') {
+            this.checkRequiredCredentials ();
+            const signature = this.hmac (this.encode (request), this.encode (this.secret));
+            headers = {
+                'X-LA-KEY': this.apiKey,
+                'X-LA-SIGNATURE': signature,
+            };
+            if (method === 'POST') {
+                headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                body = urlencodedQuery;
+            }
+        }
+        const url = this.urls['api'] + request;
+        return { 'url': url, 'method': method, 'body': body, 'headers': headers };
+    }
+
+    handleErrors (code, reason, url, method, headers, body, response) {
+        if (!response) {
+            return;
+        }
+        //
+        //     { "message": "Request limit reached!", "details": "Request limit reached. Maximum allowed: 1 per 1s. Please try again in 1 second(s)." }
+        //     { "error": { "message": "Pair 370 is not found","errorType":"RequestError","statusCode":400 }}
+        //     { "error": { "message": "Signature or ApiKey is not valid","errorType":"RequestError","statusCode":400 }}
+        //     { "error": { "message": "Request is out of time", "errorType": "RequestError", "statusCode":400 }}
+        //     { "error": { "message": "Price needs to be greater than 0","errorType":"ValidationError","statusCode":400 }}
+        //     { "error": { "message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400 }}
+        //     { "error": { "message": "Cancelable order whit ID 1563460289.571254.704945@0370:1 not found","errorType":"RequestError","statusCode":400 }}
+        //     { "error": { "message": "Symbol must be specified","errorType":"RequestError","statusCode":400 }}
+        //     { "error": { "message": "Order 1563460289.571254.704945@0370:1 is not found","errorType":"RequestError","statusCode":400 }}
+        //
+        const message = this.safeString (response, 'message');
+        const exact = this.exceptions['exact'];
+        const broad = this.exceptions['broad'];
+        const feedback = this.id + ' ' + body;
+        if (message !== undefined) {
+            if (message in exact) {
+                throw new exact[message] (feedback);
+            }
+            const broadKey = this.findBroadlyMatchedKey (broad, message);
+            if (broadKey !== undefined) {
+                throw new broad[broadKey] (feedback);
+            }
+        }
+        const error = this.safeValue (response, 'error', {});
+        const errorMessage = this.safeString (error, 'message');
+        if (errorMessage !== undefined) {
+            if (errorMessage in exact) {
+                throw new exact[errorMessage] (feedback);
+            }
+            const broadKey = this.findBroadlyMatchedKey (broad, errorMessage);
+            if (broadKey !== undefined) {
+                throw new broad[broadKey] (feedback);
+            }
+            throw new ExchangeError (feedback); // unknown message
+        }
+    }
+};
+
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],106:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -55791,8 +55780,8 @@ module.exports = class lbank extends Exchange {
                 baseId = parts[0];
                 quoteId = parts[1];
             }
-            const base = this.commonCurrencyCode (baseId.toUpperCase ());
-            const quote = this.commonCurrencyCode (quoteId.toUpperCase ());
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'quantityAccuracy'),
@@ -55847,8 +55836,8 @@ module.exports = class lbank extends Exchange {
                     baseId = parts[0];
                     quoteId = parts[1];
                 }
-                const base = this.commonCurrencyCode (baseId.toUpperCase ());
-                const quote = this.commonCurrencyCode (quoteId.toUpperCase ());
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
         }
@@ -56050,12 +56039,7 @@ module.exports = class lbank extends Exchange {
         const currencyIds = Object.keys (free);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (free, currencyId);
             account['used'] = this.safeFloat (freeze, currencyId);
@@ -56323,7 +56307,7 @@ module.exports = class lbank extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],110:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],107:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -57165,7 +57149,7 @@ module.exports = class liqui extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],111:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],108:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -57297,7 +57281,7 @@ module.exports = class liquid extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const currency = response[i];
             const id = this.safeString (currency, 'currency');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const active = currency['depositable'] && currency['withdrawable'];
             const amountPrecision = this.safeInteger (currency, 'display_precision');
             const pricePrecision = this.safeInteger (currency, 'quoting_precision');
@@ -57373,8 +57357,8 @@ module.exports = class liquid extends Exchange {
             const id = market['id'].toString ();
             const baseId = market['base_currency'];
             const quoteId = market['quoted_currency'];
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const maker = this.safeFloat (market, 'maker_fee');
             const taker = this.safeFloat (market, 'taker_fee');
@@ -57447,18 +57431,9 @@ module.exports = class liquid extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
-            const total = this.safeFloat (balance, 'balance');
-            const account = {
-                'free': total,
-                'used': 0.0,
-                'total': total,
-            };
+            const code = this.safeCurrencyCode (currencyId);
+            const account = this.account ();
+            account['total'] = this.safeFloat (balance, 'balance');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -57495,7 +57470,7 @@ module.exports = class liquid extends Exchange {
                 if (symbol in this.markets) {
                     market = this.markets[symbol];
                 } else {
-                    symbol = this.commonCurrencyCode (baseId) + '/' + this.commonCurrencyCode (quoteId);
+                    symbol = this.safeCurrencyCode (baseId) + '/' + this.safeCurrencyCode (quoteId);
                 }
             }
         }
@@ -58008,7 +57983,7 @@ module.exports = class liquid extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],112:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],109:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -58154,8 +58129,8 @@ module.exports = class livecoin extends Exchange {
             const market = response[i];
             const id = this.safeString (market, 'symbol');
             const [ baseId, quoteId ] = id.split ('/');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const coinRestrictions = this.safeValue (restrictionsById, symbol);
             const precision = {
@@ -58203,7 +58178,7 @@ module.exports = class livecoin extends Exchange {
             // todo: will need to rethink the fees
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const precision = 8; // default precision, todo: fix "magic constants"
             const walletStatus = this.safeString (currency, 'walletStatus');
             const active = (walletStatus === 'normal');
@@ -58270,7 +58245,7 @@ module.exports = class livecoin extends Exchange {
         ];
         currencies.push ({
             'id': 'RUR',
-            'code': this.commonCurrencyCode ('RUR'),
+            'code': this.safeCurrencyCode ('RUR'),
             'name': 'Russian ruble',
         });
         for (let i = 0; i < currencies.length; i++) {
@@ -58288,12 +58263,7 @@ module.exports = class livecoin extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             let account = undefined;
             if (code in result) {
                 account = result[code];
@@ -58778,7 +58748,6 @@ module.exports = class livecoin extends Exchange {
         //        "externalKey": "....87diPBy......3hTtuwUT78Yi", (address on deposits, tx on withdrawals)
         //        "documentId": 1110662453
         //    },
-        let code = undefined;
         let txid = undefined;
         let address = undefined;
         const id = this.safeString (transaction, 'documentId');
@@ -58787,12 +58756,7 @@ module.exports = class livecoin extends Exchange {
         const type = this.safeString (transaction, 'type').toLowerCase ();
         const currencyId = this.safeString (transaction, 'fixedCurrency');
         const feeCost = this.safeFloat (transaction, 'fee');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency !== undefined) {
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         if (type === 'withdrawal') {
             txid = this.safeString (transaction, 'externalKey');
             address = this.safeString (transaction, 'id');
@@ -58946,7 +58910,7 @@ module.exports = class livecoin extends Exchange {
 };
 
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],113:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],110:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -58976,6 +58940,7 @@ module.exports = class luno extends Exchange {
                 'fetchTradingFees': true,
             },
             'urls': {
+                'referral': 'https://www.luno.com/invite/44893A',
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766607-8c1a69d8-5ede-11e7-930c-540b5eb9be24.jpg',
                 'api': 'https://api.mybitx.com/api',
                 'www': 'https://www.luno.com',
@@ -59040,8 +59005,8 @@ module.exports = class luno extends Exchange {
             const id = market['pair'];
             const baseId = id.slice (0, 3);
             const quoteId = id.slice (3, 6);
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             result.push ({
                 'id': id,
@@ -59064,12 +59029,7 @@ module.exports = class luno extends Exchange {
         for (let i = 0; i < wallets.length; i++) {
             const wallet = wallets[i];
             const currencyId = this.safeString (wallet, 'asset');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const reserved = this.safeFloat (wallet, 'reserved');
             const unconfirmed = this.safeFloat (wallet, 'unconfirmed');
             const balance = this.safeFloat (wallet, 'balance');
@@ -59402,7 +59362,7 @@ module.exports = class luno extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],114:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],111:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -59571,12 +59531,7 @@ module.exports = class lykke extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'AssetId');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['total'] = this.safeFloat (balance, 'Balance');
             account['used'] = this.safeFloat (balance, 'Reserved');
@@ -59636,8 +59591,8 @@ module.exports = class lykke extends Exchange {
             const id = this.safeString (market, 'Id');
             const name = this.safeString (market, 'Name');
             const [ baseId, quoteId ] = name.split ('/');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const precision = {
                 'amount': this.safeInteger (market, 'Accuracy'),
@@ -59864,13 +59819,13 @@ module.exports = class lykke extends Exchange {
     }
 };
 
-},{"./base/Exchange":7}],115:[function(require,module,exports){
+},{"./base/Exchange":7}],112:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, ArgumentsRequired, BadRequest, AuthenticationError, InvalidOrder, InsufficientFunds } = require ('./base/errors');
+const { ExchangeError, ExchangeNotAvailable, ArgumentsRequired, BadRequest, AuthenticationError, InvalidOrder, InsufficientFunds } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -60033,6 +59988,8 @@ module.exports = class mandala extends Exchange {
                         'hmac', // ?side=BUY&market=BTC&trade=ETH&type=STOPLIMIT&volume=0.025&rate=0.032&timeInForce=GTC&stop=2&'
                     ],
                     'post': [
+                        'my-order-history',
+                        'my-order-status',
                         'PlaceOrder',
                         'cancel-my-order',
                         'cancel-all-my-orders',
@@ -60065,6 +60022,7 @@ module.exports = class mandala extends Exchange {
                     'Exception_BadRequest': BadRequest, // {"status":"BadRequest","message":"Exception_BadRequest","data":"Invalid Payload"}
                 },
                 'broad': {
+                    'Some error occurred, try again later.': ExchangeNotAvailable, // {"status":"Error","errorMessage":"Some error occurred, try again later.","data":null}
                 },
             },
             'options': {
@@ -60212,7 +60170,7 @@ module.exports = class mandala extends Exchange {
         for (let i = 0; i < data.length; i++) {
             const currency = data[i];
             const id = this.safeString (currency, 'shortName');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const name = this.safeString (currency, 'fullName');
             const precision = this.safeInteger (currency, 'decimalPrecision');
             let active = true;
@@ -60292,8 +60250,8 @@ module.exports = class mandala extends Exchange {
             const id = ids[i];
             const market = data[id];
             const [ quoteId, baseId ] = id.split ('_');  // they have base/quote reversed with some endpoints
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const baseCurrency = this.safeValue (currenciesById, baseId, {});
             const quoteCurrency = this.safeValue (currenciesById, quoteId, {});
@@ -60351,12 +60309,7 @@ module.exports = class mandala extends Exchange {
         for (let i = 0; i < data.length; i++) {
             const balance = data[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'balance');
             account['used'] = this.safeFloat (balance, 'balanceInTrade');
@@ -60568,8 +60521,8 @@ module.exports = class mandala extends Exchange {
         let symbol = undefined;
         const baseId = this.safeString (trade, 'trade');
         const quoteId = this.safeString (trade, 'market');
-        const base = this.commonCurrencyCode (baseId);
-        const quote = this.commonCurrencyCode (quoteId);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         if (base !== undefined && quote !== undefined) {
             symbol = base + '/' + quote;
         } else {
@@ -60806,8 +60759,8 @@ module.exports = class mandala extends Exchange {
 
     parseSymbol (id) {
         let [ quote, base ] = id.split (this.options['symbolSeparator']);
-        base = this.commonCurrencyCode (base);
-        quote = this.commonCurrencyCode (quote);
+        base = this.safeCurrencyCode (base);
+        quote = this.safeCurrencyCode (quote);
         return base + '/' + quote;
     }
 
@@ -60853,8 +60806,8 @@ module.exports = class mandala extends Exchange {
         const id = this.safeString (order, 'orderId');
         const baseId = this.safeString (order, 'trade');
         const quoteId = this.safeString (order, 'market');
-        const base = this.commonCurrencyCode (baseId);
-        const quote = this.commonCurrencyCode (quoteId);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         let symbol = undefined;
         if (base !== undefined && quote !== undefined) {
             symbol = base + '/' + quote;
@@ -61213,14 +61166,8 @@ module.exports = class mandala extends Exchange {
         const updated = this.parse8601 (this.safeValue (transaction, 'withdrawalConfirmDate'));
         const timestamp = this.parse8601 (this.safeString (transaction, 'withdrawalReqDate', updated));
         const type = ('withdrawalReqDate' in transaction) ? 'withdrawal' : 'deposit';
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'withdrawalType');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency !== undefined) {
-            code = currency['code'];
-        } else {
-            code = this.commonCurrencyCode (currencyId);
-        }
+        const code = this.safeCurrencyCode (currencyId, currency);
         let status = this.parseTransactionStatus (this.safeString (transaction, 'withdrawalStatus'));
         let feeCost = undefined;
         if (type === 'deposit') {
@@ -61300,7 +61247,6 @@ module.exports = class mandala extends Exchange {
         if (currency !== undefined) {
             code = currency['code'];
         }
-        this.checkAddress (address);
         return {
             'currency': code,
             'address': address,
@@ -61464,7 +61410,7 @@ module.exports = class mandala extends Exchange {
             if (method === 'POST') {
                 body = this.json (query);
                 headers['Content-Type'] = 'application/json';
-                headers['publicKey'] = this.apiKey;
+                headers['apiKey'] = this.apiKey;
             } else if (method === 'GET') {
                 if (Object.keys (query).length) {
                     url += '?' + this.urlencode (query);
@@ -61503,7 +61449,7 @@ module.exports = class mandala extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],116:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],113:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -61719,18 +61665,11 @@ module.exports = class mercado extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
-            // const currencyId = this.currencyId (code);
-            const lowercase = currencyId.toLowerCase ();
-            if (lowercase in balances) {
-                const balance = this.safeValue (balances, lowercase, {});
+            const code = this.safeCurrencyCode (currencyId);
+            if (currencyId in balances) {
+                const balance = this.safeValue (balances, currencyId, {});
                 const account = this.account ();
-                account['free'] = parseFloat (balance, 'available');
+                account['free'] = this.safeFloat (balance, 'available');
                 account['total'] = this.safeFloat (balance, 'total');
                 result[code] = account;
             }
@@ -61991,7 +61930,7 @@ module.exports = class mercado extends Exchange {
         await this.loadMarkets ();
         const market = this.market (symbol);
         const request = {
-            'coin_pair': market['base'],
+            'coin_pair': market['id'],
         };
         const response = await this.privatePostListOrders (this.extend (request, params));
         const responseData = this.safeValue (response, 'response_data', {});
@@ -62034,7 +61973,7 @@ module.exports = class mercado extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],117:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],114:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -62082,12 +62021,12 @@ module.exports = class mixcoins extends Exchange {
                 },
             },
             'markets': {
-                'BTC/USD': { 'id': 'btc_usd', 'symbol': 'BTC/USD', 'base': 'BTC', 'quote': 'USD', 'baseId': 'btc', 'quoteId': 'usd', 'maker': 0.0015, 'taker': 0.0025 },
+                'BTC/USDT': { 'id': 'btc_usdt', 'symbol': 'BTC/USDT', 'base': 'BTC', 'quote': 'USDT', 'baseId': 'btc', 'quoteId': 'usdt', 'maker': 0.0015, 'taker': 0.0025 },
                 'ETH/BTC': { 'id': 'eth_btc', 'symbol': 'ETH/BTC', 'base': 'ETH', 'quote': 'BTC', 'baseId': 'eth', 'quoteId': 'btc', 'maker': 0.001, 'taker': 0.0015 },
                 'BCH/BTC': { 'id': 'bch_btc', 'symbol': 'BCH/BTC', 'base': 'BCH', 'quote': 'BTC', 'baseId': 'bch', 'quoteId': 'btc', 'maker': 0.001, 'taker': 0.0015 },
                 'LSK/BTC': { 'id': 'lsk_btc', 'symbol': 'LSK/BTC', 'base': 'LSK', 'quote': 'BTC', 'baseId': 'lsk', 'quoteId': 'btc', 'maker': 0.0015, 'taker': 0.0025 },
-                'BCH/USD': { 'id': 'bch_usd', 'symbol': 'BCH/USD', 'base': 'BCH', 'quote': 'USD', 'baseId': 'bch', 'quoteId': 'usd', 'maker': 0.001, 'taker': 0.0015 },
-                'ETH/USD': { 'id': 'eth_usd', 'symbol': 'ETH/USD', 'base': 'ETH', 'quote': 'USD', 'baseId': 'eth', 'quoteId': 'usd', 'maker': 0.001, 'taker': 0.0015 },
+                'BCH/USDT': { 'id': 'bch_usdt', 'symbol': 'BCH/USDT', 'base': 'BCH', 'quote': 'USDT', 'baseId': 'bch', 'quoteId': 'usdt', 'maker': 0.001, 'taker': 0.0015 },
+                'ETH/USDT': { 'id': 'eth_usdt', 'symbol': 'ETH/USDT', 'base': 'ETH', 'quote': 'USDT', 'baseId': 'eth', 'quoteId': 'usdt', 'maker': 0.001, 'taker': 0.0015 },
             },
         });
     }
@@ -62100,12 +62039,7 @@ module.exports = class mixcoins extends Exchange {
         const currencyIds = Object.keys (balances);
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const balance = this.safeValue (balances, currencyId, {});
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'avail');
@@ -62267,7 +62201,7 @@ module.exports = class mixcoins extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],118:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],115:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -62477,12 +62411,7 @@ module.exports = class negociecoins extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'name');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const openOrders = this.safeFloat (balance, 'openOrders');
             const withdraw = this.safeFloat (balance, 'withdraw');
             const account = {
@@ -62666,7 +62595,7 @@ module.exports = class negociecoins extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],119:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],116:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -62691,6 +62620,7 @@ module.exports = class nova extends Exchange {
                 'fetchDepositAddress': true,
             },
             'urls': {
+                'referral': 'https://novaexchange.com/signup/?re=is8vz2hsl3qxewv1uawd',
                 'logo': 'https://user-images.githubusercontent.com/1294454/30518571-78ca0bca-9b8a-11e7-8840-64b83a4a94b2.jpg',
                 'api': 'https://novaexchange.com/remote',
                 'www': 'https://novaexchange.com',
@@ -62741,8 +62671,8 @@ module.exports = class nova extends Exchange {
             const market = markets[i];
             const id = this.safeString (market, 'marketname');
             const [ quoteId, baseId ] = id.split ('_');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const disabled = this.safeValue (market, 'disabled', false);
             const active = !disabled;
@@ -62859,12 +62789,7 @@ module.exports = class nova extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const lockbox = this.safeFloat (balance, 'amount_lockbox');
             const trades = this.safeFloat (balance, 'amount_trades');
             const account = {
@@ -62984,7 +62909,7 @@ module.exports = class nova extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],120:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],117:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -63115,8 +63040,8 @@ module.exports = class oceanex extends Exchange {
             const id = this.safeValue (market, 'id');
             const name = this.safeValue (market, 'name');
             let [ baseId, quoteId ] = name.split ('/');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             baseId = baseId.toLowerCase ();
             quoteId = quoteId.toLowerCase ();
             const symbol = base + '/' + quote;
@@ -63456,12 +63381,7 @@ module.exports = class oceanex extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeValue (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'balance');
             account['used'] = this.safeFloat (balance, 'locked');
@@ -63496,7 +63416,8 @@ module.exports = class oceanex extends Exchange {
         const request = { 'ids': [id] };
         const response = await this.privateGetOrders (this.extend (request, params));
         const data = this.safeValue (response, 'data');
-        if (data === undefined || data.length === 0) {
+        const dataLength = data.length;
+        if (data === undefined || dataLength === 0) {
             throw new OrderNotFound (this.id + ' could not found matching order');
         }
         return this.parseOrder (data[0], market);
@@ -63686,7 +63607,7 @@ module.exports = class oceanex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],121:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],118:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -63726,7 +63647,7 @@ module.exports = class okcoincny extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":122}],122:[function(require,module,exports){
+},{"./okcoinusd.js":119}],119:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -64144,7 +64065,6 @@ module.exports = class okcoinusd extends Exchange {
             let quoteNumericId = undefined;
             let lowercaseId = undefined;
             let uppercaseBaseId = undefined;
-            let uppercaseQuoteId = undefined;
             const precision = {
                 'amount': this.safeInteger (market, 'maxSizeDigit'),
                 'price': this.safeInteger (market, 'maxPriceDigit'),
@@ -64160,20 +64080,17 @@ module.exports = class okcoinusd extends Exchange {
                 quoteId = parts[1];
                 baseNumericId = this.safeInteger (market, 'baseCurrency');
                 quoteNumericId = this.safeInteger (market, 'quoteCurrency');
-                uppercaseBaseId = baseId.toUpperCase ();
-                uppercaseQuoteId = quoteId.toUpperCase ();
-                base = this.commonCurrencyCode (uppercaseBaseId);
-                quote = this.commonCurrencyCode (uppercaseQuoteId);
+                base = this.safeCurrencyCode (baseId);
+                quote = this.safeCurrencyCode (quoteId);
                 contracts = [{}];
             } else {
                 // futures markets
                 quoteId = this.safeString (market, 'quote');
                 uppercaseBaseId = this.safeString (market, 'symbolDesc');
-                uppercaseQuoteId = quoteId.toUpperCase ();
                 baseId = uppercaseBaseId.toLowerCase ();
                 lowercaseId = baseId + '_' + quoteId;
-                base = this.commonCurrencyCode (uppercaseBaseId);
-                quote = this.commonCurrencyCode (uppercaseQuoteId);
+                base = this.safeCurrencyCode (uppercaseBaseId);
+                quote = this.safeCurrencyCode (quoteId);
             }
             for (let k = 0; k < contracts.length; k++) {
                 const contract = contracts[k];
@@ -64331,10 +64248,8 @@ module.exports = class okcoinusd extends Exchange {
                     market = this.markets_by_id[marketId];
                 } else {
                     const [ baseId, quoteId ] = ticker['symbol'].split ('_');
-                    let base = baseId.toUpperCase ();
-                    let quote = quoteId.toUpperCase ();
-                    base = this.commonCurrencyCode (base);
-                    quote = this.commonCurrencyCode (quote);
+                    const base = this.safeCurrencyCode (baseId);
+                    const quote = this.safeCurrencyCode (quoteId);
                     symbol = base + '/' + quote;
                 }
             }
@@ -64455,7 +64370,7 @@ module.exports = class okcoinusd extends Exchange {
             // 'since': since === undefined ? this.milliseconds () - 86400000 : since,  // default last 24h
         });
         if (since !== undefined) {
-            request['since'] = this.milliseconds () - 86400000; // default last 24h
+            request['since'] = parseInt ((this.milliseconds () - 86400000) / 1000); // default last 24h
         }
         if (limit !== undefined) {
             if (this.options['fetchOHLCVWarning']) {
@@ -64484,12 +64399,7 @@ module.exports = class okcoinusd extends Exchange {
         ids = this.arrayConcat (ids, usedKeys);
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
-            let code = id.toUpperCase ();
-            if (id in this.currencies_by_id) {
-                code = this.currencies_by_id[id]['code'];
-            } else {
-                code = this.commonCurrencyCode (code);
-            }
+            const code = this.safeCurrencyCode (id);
             const account = this.account ();
             account['free'] = this.safeFloat (balances['free'], id);
             account['used'] = this.safeFloat (balances[usedField], id);
@@ -64509,8 +64419,9 @@ module.exports = class okcoinusd extends Exchange {
             'type': orderSide,
         });
         if (market['future']) {
-            request['match_price'] = 0; // match best counter party price? 0 or 1, ignores price if 1
+            request['match_price'] = (type === 'market') ? 1 : 0; // match best counter party price? 0 or 1, ignores price if 1
             request['lever_rate'] = 10; // leverage rate value: 10 or 20 (10 by default)
+            request['type'] = (side === 'buy') ? '1' : '2';
         } else if (type === 'market') {
             if (side === 'buy') {
                 if (!orderPrice) {
@@ -64852,7 +64763,7 @@ module.exports = class okcoinusd extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],123:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],120:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -64918,7 +64829,7 @@ module.exports = class okex extends okcoinusd {
     }
 };
 
-},{"./okcoinusd.js":122}],124:[function(require,module,exports){
+},{"./okcoinusd.js":119}],121:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -65471,8 +65382,8 @@ module.exports = class okex3 extends Exchange {
             }
         }
         const quoteId = this.safeString (market, 'quote_currency');
-        const base = this.commonCurrencyCode (baseId);
-        const quote = this.commonCurrencyCode (quoteId);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         const symbol = spot ? (base + '/' + quote) : id;
         let amountPrecision = this.safeString (market, 'size_increment');
         if (amountPrecision !== undefined) {
@@ -65594,7 +65505,7 @@ module.exports = class okex3 extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const currency = response[i];
             const id = this.safeString (currency, 'currency');
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const precision = 8; // default precision, todo: fix "magic constants"
             const name = this.safeString (currency, 'name');
             const canDeposit = this.safeInteger (currency, 'can_deposit');
@@ -65678,10 +65589,8 @@ module.exports = class okex3 extends Exchange {
             const numParts = parts.length;
             if (numParts === 2) {
                 const [ baseId, quoteId ] = parts;
-                let base = baseId.toUpperCase ();
-                let quote = quoteId.toUpperCase ();
-                base = this.commonCurrencyCode (base);
-                quote = this.commonCurrencyCode (quote);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             } else {
                 symbol = marketId;
@@ -66063,12 +65972,7 @@ module.exports = class okex3 extends Exchange {
         for (let i = 0; i < response.length; i++) {
             const balance = response[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['total'] = this.safeFloat (balance, 'balance');
             account['used'] = this.safeFloat (balance, 'hold');
@@ -66117,8 +66021,8 @@ module.exports = class okex3 extends Exchange {
             let symbol = undefined;
             if (market === undefined) {
                 const [ baseId, quoteId ] = marketId.split ('-');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             } else {
                 symbol = market['symbol'];
@@ -66138,12 +66042,7 @@ module.exports = class okex3 extends Exchange {
                 if (key.indexOf (':') >= 0) {
                     const parts = key.split (':');
                     const currencyId = parts[1];
-                    let code = currencyId;
-                    if (currencyId in this.currencies_by_id) {
-                        code = this.currencies_by_id[currencyId]['code'];
-                    } else {
-                        code = this.commonCurrencyCode (currencyId);
-                    }
+                    const code = this.safeCurrencyCode (currencyId);
                     const account = this.account ();
                     account['total'] = this.safeFloat (marketBalance, 'balance');
                     account['used'] = this.safeFloat (marketBalance, 'hold');
@@ -66194,12 +66093,11 @@ module.exports = class okex3 extends Exchange {
         // their root field name is "info", so our info will contain their info
         const result = { 'info': response };
         const info = this.safeValue (response, 'info', {});
-        const lowercaseIds = Object.keys (info);
-        for (let i = 0; i < lowercaseIds.length; i++) {
-            const lowercaseId = lowercaseIds[i];
-            const id = lowercaseId.toUpperCase ();
-            const code = this.commonCurrencyCode (id);
-            const balance = this.safeValue (info, lowercaseId, {});
+        const ids = Object.keys (info);
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            const code = this.safeCurrencyCode (id);
+            const balance = this.safeValue (info, id, {});
             const account = this.account ();
             // it may be incorrect to use total, free and used for swap accounts
             account['total'] = this.safeFloat (balance, 'equity');
@@ -66944,10 +66842,7 @@ module.exports = class okex3 extends Exchange {
         let tag = this.safeString2 (depositAddress, 'tag', 'payment_id');
         tag = this.safeString (depositAddress, 'memo', tag);
         const currencyId = this.safeString (depositAddress, 'currency');
-        let code = undefined;
-        if (currencyId !== undefined) {
-            code = this.commonCurrencyCode (currencyId.toUpperCase ());
-        }
+        const code = this.safeCurrencyCode (currencyId);
         this.checkAddress (address);
         return {
             'currency': code,
@@ -67140,18 +67035,8 @@ module.exports = class okex3 extends Exchange {
             type = 'deposit';
             address = addressFrom;
         }
-        let currencyId = this.safeString (transaction, 'currency');
-        let code = undefined;
-        if (currencyId !== undefined) {
-            const uppercaseId = currencyId;
-            currencyId = currencyId.toLowerCase ();
-            if (currencyId in this.currencies_by_id) {
-                currency = this.currencies_by_id[currencyId];
-                code = currency['code'];
-            } else {
-                code = this.commonCurrencyCode (uppercaseId);
-            }
-        }
+        const currencyId = this.safeString (transaction, 'currency');
+        const code = this.safeCurrencyCode (currencyId);
         const amount = this.safeFloat (transaction, 'amount');
         const status = this.parseTransactionStatus (this.safeString (transaction, 'status'));
         const txid = this.safeString (transaction, 'txid');
@@ -67615,9 +67500,8 @@ module.exports = class okex3 extends Exchange {
                 }
             } else {
                 if (Object.keys (query).length) {
-                    const jsonQuery = this.json (query);
-                    body = jsonQuery;
-                    auth += jsonQuery;
+                    body = this.json (query);
+                    auth += body;
                 }
                 headers['Content-Type'] = 'application/json';
             }
@@ -67658,7 +67542,7 @@ module.exports = class okex3 extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],125:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],122:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -67911,7 +67795,7 @@ module.exports = class paymium extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],126:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],123:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -68157,8 +68041,8 @@ module.exports = class poloniex extends Exchange {
             const id = keys[i];
             const market = markets[id];
             const [ quoteId, baseId ] = id.split ('_');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             const limits = this.extend (this.limits, {
                 'cost': {
@@ -68193,12 +68077,7 @@ module.exports = class poloniex extends Exchange {
         for (let i = 0; i < currencyIds.length; i++) {
             const currencyId = currencyIds[i];
             const balance = this.safeValue (response, currencyId, {});
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.commonCurrencyCode (currencyId);
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'available');
             account['used'] = this.safeFloat (balance, 'onOrders');
@@ -68253,8 +68132,8 @@ module.exports = class poloniex extends Exchange {
                 symbol = this.markets_by_id[marketId]['symbol'];
             } else {
                 const [ quoteId, baseId ] = marketId.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
             }
             const orderbook = this.parseOrderBook (response[marketId]);
@@ -68318,8 +68197,8 @@ module.exports = class poloniex extends Exchange {
                 symbol = market['symbol'];
             } else {
                 const [ quoteId, baseId ] = id.split ('_');
-                const base = this.commonCurrencyCode (baseId);
-                const quote = this.commonCurrencyCode (quoteId);
+                const base = this.safeCurrencyCode (baseId);
+                const quote = this.safeCurrencyCode (quoteId);
                 symbol = base + '/' + quote;
                 market = { 'symbol': symbol };
             }
@@ -68340,7 +68219,7 @@ module.exports = class poloniex extends Exchange {
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
             const precision = 8; // default precision, todo: fix "magic constants"
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const active = (currency['delisted'] === 0) && !currency['disabled'];
             result[code] = {
                 'id': id,
@@ -68574,8 +68453,8 @@ module.exports = class poloniex extends Exchange {
                         }
                     } else {
                         const [ quoteId, baseId ] = id.split ('_');
-                        const base = this.commonCurrencyCode (baseId);
-                        const quote = this.commonCurrencyCode (quoteId);
+                        const base = this.safeCurrencyCode (baseId);
+                        const quote = this.safeCurrencyCode (quoteId);
                         const symbol = base + '/' + quote;
                         const trades = response[id];
                         for (let j = 0; j < trades.length; j++) {
@@ -69185,15 +69064,8 @@ module.exports = class poloniex extends Exchange {
         if (timestamp !== undefined) {
             timestamp = timestamp * 1000;
         }
-        let code = undefined;
         const currencyId = this.safeString (transaction, 'currency');
-        currency = this.safeValue (this.currencies_by_id, currencyId);
-        if (currency === undefined) {
-            code = this.commonCurrencyCode (currencyId);
-        }
-        if (currency !== undefined) {
-            code = currency['code'];
-        }
+        const code = this.safeCurrencyCode (currencyId);
         let status = this.safeString (transaction, 'status', 'pending');
         let txid = this.safeString (transaction, 'txid');
         if (status !== undefined) {
@@ -69282,7 +69154,7 @@ module.exports = class poloniex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],127:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],124:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -69419,9 +69291,8 @@ module.exports = class rightbtc extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
-        const response = await this.publicGetTradingPairs (params);
         // let zh = await this.publicGetGetAssetsTradingPairsZh ();
-        const markets = response['status']['message'];
+        const markets = await this.publicGetTradingPairs (params);
         const marketIds = Object.keys (markets);
         const result = [];
         for (let i = 0; i < marketIds.length; i++) {
@@ -70054,7 +69925,7 @@ module.exports = class rightbtc extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8,"./base/functions/number":14}],128:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9,"./base/functions/number":15}],125:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -70422,7 +70293,7 @@ module.exports = class southxchange extends Exchange {
     }
 };
 
-},{"./base/Exchange":7}],129:[function(require,module,exports){
+},{"./base/Exchange":7}],126:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -76411,7 +76282,7 @@ module.exports = class southxchange extends Exchange {
 	return CryptoJS;
 
 }));
-},{}],130:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 var fetch = require('../node-fetch/index');
@@ -76446,7 +76317,7 @@ module.exports = function (context) {
   };
 };
 
-},{"../node-fetch/index":131}],131:[function(require,module,exports){
+},{"../node-fetch/index":128}],128:[function(require,module,exports){
 (function (global,Buffer){
 'use strict';
 
@@ -78008,7 +77879,7 @@ exports.Response = Response;
 exports.FetchError = FetchError;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"buffer":171,"http":213,"https":176,"stream":212,"url":219,"zlib":170}],132:[function(require,module,exports){
+},{"buffer":168,"http":210,"https":173,"stream":209,"url":216,"zlib":167}],129:[function(require,module,exports){
 (function (Buffer){
 /*!
  * RSA library for Node.js
@@ -78235,7 +78106,7 @@ module.exports = (function () {
 })();
 
 }).call(this,require("buffer").Buffer)
-},{"./formats/formats.js":139,"./libs/rsa.js":143,"./schemes/schemes.js":145,"./utils":146,"buffer":171}],133:[function(require,module,exports){
+},{"./formats/formats.js":136,"./libs/rsa.js":140,"./schemes/schemes.js":142,"./utils":143,"buffer":168}],130:[function(require,module,exports){
 // Copyright 2011 Mark Cavage <mcavage@gmail.com> All rights reserved.
 
 
@@ -78250,7 +78121,7 @@ module.exports = {
 
 };
 
-},{}],134:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 // Copyright 2011 Mark Cavage <mcavage@gmail.com> All rights reserved.
 
 var errors = require('./errors');
@@ -78273,7 +78144,7 @@ for (var e in errors) {
     module.exports[e] = errors[e];
 }
 
-},{"./errors":133,"./reader":135,"./types":136}],135:[function(require,module,exports){
+},{"./errors":130,"./reader":132,"./types":133}],132:[function(require,module,exports){
 (function (Buffer){
 // Copyright 2011 Mark Cavage <mcavage@gmail.com> All rights reserved.
 
@@ -78539,7 +78410,7 @@ Reader.prototype._readTag = function (tag) {
 module.exports = Reader;
 
 }).call(this,require("buffer").Buffer)
-},{"./errors":133,"./types":136,"assert":166,"buffer":171}],136:[function(require,module,exports){
+},{"./errors":130,"./types":133,"assert":163,"buffer":168}],133:[function(require,module,exports){
 // Copyright 2011 Mark Cavage <mcavage@gmail.com> All rights reserved.
 
 
@@ -78577,7 +78448,7 @@ module.exports = {
   Context: 128
 };
 
-},{}],137:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 // Copyright 2011 Mark Cavage <mcavage@gmail.com> All rights reserved.
 
 // If you have no idea what ASN.1 or BER is, see this:
@@ -78596,7 +78467,7 @@ module.exports = {
   BerReader: Ber.Reader,
 };
 
-},{"./ber/index":134}],138:[function(require,module,exports){
+},{"./ber/index":131}],135:[function(require,module,exports){
 var _ = require('../utils')._;
 var utils = require('../utils');
 
@@ -78669,7 +78540,7 @@ module.exports = {
     }
 };
 
-},{"../utils":146}],139:[function(require,module,exports){
+},{"../utils":143}],136:[function(require,module,exports){
 var _ = require('../utils')._;
 
 module.exports = {
@@ -78702,7 +78573,7 @@ module.exports = {
     },
 };
 
-},{"../utils":146,"./components":138,"./pkcs1":140,"./pkcs8":141}],140:[function(require,module,exports){
+},{"../utils":143,"./components":135,"./pkcs1":137,"./pkcs8":138}],137:[function(require,module,exports){
 (function (Buffer){
 var ber = require('../asn1/index').Ber;
 var _ = require('../utils')._;
@@ -78854,7 +78725,7 @@ module.exports = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../asn1/index":137,"../utils":146,"buffer":171}],141:[function(require,module,exports){
+},{"../asn1/index":134,"../utils":143,"buffer":168}],138:[function(require,module,exports){
 (function (Buffer){
 var ber = require('../asn1/index').Ber;
 var _ = require('../utils')._;
@@ -79045,7 +78916,7 @@ module.exports = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../asn1/index":137,"../utils":146,"buffer":171}],142:[function(require,module,exports){
+},{"../asn1/index":134,"../utils":143,"buffer":168}],139:[function(require,module,exports){
 (function (Buffer){
 /*
  * Basic JavaScript BN library - subset useful for RSA encryption.
@@ -80301,7 +80172,7 @@ BigInteger.prototype.square = bnSquare;
 module.exports = BigInteger;
 
 }).call(this,require("buffer").Buffer)
-},{"../utils":146,"buffer":171}],143:[function(require,module,exports){
+},{"../utils":143,"buffer":168}],140:[function(require,module,exports){
 /*
  * RSA Encryption / Decryption with PKCS1 v2 Padding.
  *
@@ -80450,7 +80321,7 @@ module.exports.Key = (function () {
 })();
 
 
-},{"../schemes/schemes.js":145,"../utils":146,"../utils.js":146,"./jsbn.js":142}],144:[function(require,module,exports){
+},{"../schemes/schemes.js":142,"../utils":143,"../utils.js":143,"./jsbn.js":139}],141:[function(require,module,exports){
 (function (Buffer){
 /**
  * PKCS1 padding and signature scheme
@@ -80627,7 +80498,7 @@ function wordArrayToBuffer(wordArray, length) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"../../crypto-js/crypto-js":129,"../libs/jsbn":142,"buffer":171,"constants":173}],145:[function(require,module,exports){
+},{"../../crypto-js/crypto-js":126,"../libs/jsbn":139,"buffer":168,"constants":170}],142:[function(require,module,exports){
 module.exports = {
     pkcs1: require('./pkcs1'),
 
@@ -80650,7 +80521,7 @@ module.exports = {
     }
 };
 
-},{"./pkcs1":144}],146:[function(require,module,exports){
+},{"./pkcs1":141}],143:[function(require,module,exports){
 /*
  * Utils functions
  *
@@ -80750,7 +80621,7 @@ module.exports.trimSurroundingText = function (data, opening, closing) {
     return data.substring(trimStartIndex, trimEndIndex);
 }
 
-},{}],147:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 var replace = String.prototype.replace;
@@ -80770,7 +80641,7 @@ module.exports = {
     RFC3986: 'RFC3986'
 };
 
-},{}],148:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 var stringify = require('./stringify');
@@ -80783,7 +80654,7 @@ module.exports = {
     stringify: stringify
 };
 
-},{"./formats":147,"./parse":149,"./stringify":150}],149:[function(require,module,exports){
+},{"./formats":144,"./parse":146,"./stringify":147}],146:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -81027,7 +80898,7 @@ module.exports = function (str, opts) {
     return utils.compact(obj);
 };
 
-},{"./utils":151}],150:[function(require,module,exports){
+},{"./utils":148}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -81298,7 +81169,7 @@ module.exports = function (object, opts) {
     return joined.length > 0 ? prefix + joined : '';
 };
 
-},{"./formats":147,"./utils":151}],151:[function(require,module,exports){
+},{"./formats":144,"./utils":148}],148:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty;
@@ -81530,7 +81401,7 @@ module.exports = {
     merge: merge
 };
 
-},{}],152:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 // ----------------------------------------------------------------------------
@@ -82318,7 +82189,7 @@ module.exports = class stronghold extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],153:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],150:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -82352,7 +82223,7 @@ module.exports = class surbitcoin extends foxbit {
     }
 };
 
-},{"./foxbit.js":89}],154:[function(require,module,exports){
+},{"./foxbit.js":86}],151:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -82367,7 +82238,6 @@ module.exports = class theocean extends Exchange {
             'countries': [ 'US' ],
             'rateLimit': 3000,
             'version': 'v1',
-            'certified': true,
             'requiresWeb3': true,
             'timeframes': {
                 '5m': '300',
@@ -83275,7 +83145,7 @@ module.exports = class theocean extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],155:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],152:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -84512,7 +84382,7 @@ module.exports = class therock extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],156:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],153:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -84685,12 +84555,7 @@ module.exports = class tidebit extends Exchange {
         for (let i = 0; i < balances.length; i++) {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
-            let code = currencyId;
-            if (currencyId in this.currencies_by_id) {
-                code = this.currencies_by_id[currencyId]['code'];
-            } else {
-                code = this.safeCurrencyCode (currencyId.toUpperCase ());
-            }
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
             account['free'] = this.safeFloat (balance, 'balance');
             account['used'] = this.safeFloat (balance, 'locked');
@@ -85016,7 +84881,7 @@ module.exports = class tidebit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],157:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],154:[function(require,module,exports){
 'use strict';
 
 const Exchange = require ('./base/Exchange');
@@ -85879,7 +85744,7 @@ module.exports = class tidex extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],158:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],155:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -86684,6 +86549,10 @@ module.exports = class upbit extends Exchange {
             request['unit'] = numMinutes;
             method += 'Unit';
         }
+        if (since !== undefined) {
+            // convert `since` to `to` value
+            request['to'] = this.iso8601 (this.sum (since, timeframePeriod * limit * 1000));
+        }
         const response = await this[method] (this.extend (request, params));
         //
         //     [ {                  market: "BTC-ETH",
@@ -87415,7 +87284,7 @@ module.exports = class upbit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],159:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],156:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -87434,6 +87303,13 @@ module.exports = class vaultoro extends Exchange {
             'version': '1',
             'has': {
                 'CORS': true,
+                'fetchMarkets': true,
+                'fetchOrderBook': true,
+                'fetchBalance': true,
+                'createOrder': true,
+                'cancelOrder': true,
+                'fetchTrades': true,
+                'fetchTicker': false,
             },
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766880-f205e870-5ee9-11e7-8fe2-0d5b15880752.jpg',
@@ -87525,40 +87401,6 @@ module.exports = class vaultoro extends Exchange {
         return this.parseOrderBook (orderbook, undefined, 'bids', 'asks', 'Gold_Price', 'Gold_Amount');
     }
 
-    async fetchTicker (symbol, params = {}) {
-        await this.loadMarkets ();
-        const quote = await this.publicGetBidandask (params);
-        const bidsLength = quote['bids'].length;
-        const bid = quote['bids'][bidsLength - 1];
-        const ask = quote['asks'][0];
-        const response = await this.publicGetMarkets (params);
-        const ticker = this.safeValue (response, 'data');
-        const timestamp = this.milliseconds ();
-        const last = this.safeFloat (ticker, 'LastPrice');
-        return {
-            'symbol': symbol,
-            'timestamp': timestamp,
-            'datetime': this.iso8601 (timestamp),
-            'high': this.safeFloat (ticker, '24hHigh'),
-            'low': this.safeFloat (ticker, '24hLow'),
-            'bid': bid[0],
-            'bidVolume': undefined,
-            'ask': ask[0],
-            'askVolume': undefined,
-            'vwap': undefined,
-            'open': undefined,
-            'close': last,
-            'last': last,
-            'previousClose': undefined,
-            'change': undefined,
-            'percentage': undefined,
-            'average': undefined,
-            'baseVolume': undefined,
-            'quoteVolume': this.safeFloat (ticker, '24hVolume'),
-            'info': ticker,
-        };
-    }
-
     parseTrade (trade, market = undefined) {
         const timestamp = this.parse8601 (this.safeString (trade, 'Time'));
         let symbol = undefined;
@@ -87644,7 +87486,7 @@ module.exports = class vaultoro extends Exchange {
     }
 };
 
-},{"./base/Exchange":7}],160:[function(require,module,exports){
+},{"./base/Exchange":7}],157:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -87678,7 +87520,7 @@ module.exports = class vbtc extends foxbit {
     }
 };
 
-},{"./foxbit.js":89}],161:[function(require,module,exports){
+},{"./foxbit.js":86}],158:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -87798,12 +87640,8 @@ module.exports = class virwox extends Exchange {
             const balance = balances[i];
             const currencyId = this.safeString (balance, 'currency');
             const code = this.safeCurrencyCode (currencyId);
-            const total = this.safeFloat (balance, 'balance');
-            const account = {
-                'free': total,
-                'used': 0.0,
-                'total': total,
-            };
+            const account = this.account ();
+            account['total'] = this.safeFloat (balance, 'balance');
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -87999,7 +87837,7 @@ module.exports = class virwox extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],162:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],159:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -88361,7 +88199,7 @@ module.exports = class xbtce extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],163:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],160:[function(require,module,exports){
 'use strict';
 
 // ---------------------------------------------------------------------------
@@ -89301,7 +89139,7 @@ module.exports = class yobit extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],164:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],161:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -89813,7 +89651,7 @@ module.exports = class zaif extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],165:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],162:[function(require,module,exports){
 'use strict';
 
 //  ---------------------------------------------------------------------------
@@ -90464,7 +90302,7 @@ module.exports = class zb extends Exchange {
     }
 };
 
-},{"./base/Exchange":7,"./base/errors":8}],166:[function(require,module,exports){
+},{"./base/Exchange":7,"./base/errors":9}],163:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -90958,7 +90796,7 @@ var objectKeys = Object.keys || function (obj) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"util/":224}],167:[function(require,module,exports){
+},{"util/":221}],164:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -91074,9 +90912,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],168:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 
-},{}],169:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 (function (process,Buffer){
 'use strict';
 /* eslint camelcase: "off" */
@@ -91488,7 +91326,7 @@ Zlib.prototype._reset = function () {
 
 exports.Zlib = Zlib;
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":193,"assert":166,"buffer":171,"pako/lib/zlib/constants":183,"pako/lib/zlib/deflate.js":185,"pako/lib/zlib/inflate.js":187,"pako/lib/zlib/zstream":191}],170:[function(require,module,exports){
+},{"_process":190,"assert":163,"buffer":168,"pako/lib/zlib/constants":180,"pako/lib/zlib/deflate.js":182,"pako/lib/zlib/inflate.js":184,"pako/lib/zlib/zstream":188}],167:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -92100,7 +91938,7 @@ util.inherits(DeflateRaw, Zlib);
 util.inherits(InflateRaw, Zlib);
 util.inherits(Unzip, Zlib);
 }).call(this,require('_process'))
-},{"./binding":169,"_process":193,"assert":166,"buffer":171,"stream":212,"util":224}],171:[function(require,module,exports){
+},{"./binding":166,"_process":190,"assert":163,"buffer":168,"stream":209,"util":221}],168:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -93816,7 +93654,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":167,"ieee754":177}],172:[function(require,module,exports){
+},{"base64-js":164,"ieee754":174}],169:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -93882,7 +93720,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],173:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports={
   "O_RDONLY": 0,
   "O_WRONLY": 1,
@@ -94093,7 +93931,7 @@ module.exports={
   "UV_UDP_REUSEADDR": 4
 }
 
-},{}],174:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -94204,7 +94042,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":179}],175:[function(require,module,exports){
+},{"../../is-buffer/index.js":176}],172:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -94508,7 +94346,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],176:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 var http = require('http')
 var url = require('url')
 
@@ -94541,7 +94379,7 @@ function validateParams (params) {
   return params
 }
 
-},{"http":213,"url":219}],177:[function(require,module,exports){
+},{"http":210,"url":216}],174:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -94627,7 +94465,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],178:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -94652,7 +94490,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],179:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -94675,14 +94513,14 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],180:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],181:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 'use strict';
 
 
@@ -94789,7 +94627,7 @@ exports.setTyped = function (on) {
 
 exports.setTyped(TYPED_OK);
 
-},{}],182:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 'use strict';
 
 // Note: adler32 takes 12% for level 0 and 2% for level 6.
@@ -94842,7 +94680,7 @@ function adler32(adler, buf, len, pos) {
 
 module.exports = adler32;
 
-},{}],183:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -94912,7 +94750,7 @@ module.exports = {
   //Z_NULL:                 null // Use -1 or null inline, depending on var type
 };
 
-},{}],184:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 'use strict';
 
 // Note: we can't get significant speed boost here.
@@ -94973,7 +94811,7 @@ function crc32(crc, buf, len, pos) {
 
 module.exports = crc32;
 
-},{}],185:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -96849,7 +96687,7 @@ exports.deflatePrime = deflatePrime;
 exports.deflateTune = deflateTune;
 */
 
-},{"../utils/common":181,"./adler32":182,"./crc32":184,"./messages":189,"./trees":190}],186:[function(require,module,exports){
+},{"../utils/common":178,"./adler32":179,"./crc32":181,"./messages":186,"./trees":187}],183:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -97196,7 +97034,7 @@ module.exports = function inflate_fast(strm, start) {
   return;
 };
 
-},{}],187:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -98754,7 +98592,7 @@ exports.inflateSyncPoint = inflateSyncPoint;
 exports.inflateUndermine = inflateUndermine;
 */
 
-},{"../utils/common":181,"./adler32":182,"./crc32":184,"./inffast":186,"./inftrees":188}],188:[function(require,module,exports){
+},{"../utils/common":178,"./adler32":179,"./crc32":181,"./inffast":183,"./inftrees":185}],185:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -99099,7 +98937,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
   return 0;
 };
 
-},{"../utils/common":181}],189:[function(require,module,exports){
+},{"../utils/common":178}],186:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -99133,7 +98971,7 @@ module.exports = {
   '-6':   'incompatible version' /* Z_VERSION_ERROR (-6) */
 };
 
-},{}],190:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -100355,7 +100193,7 @@ exports._tr_flush_block  = _tr_flush_block;
 exports._tr_tally = _tr_tally;
 exports._tr_align = _tr_align;
 
-},{"../utils/common":181}],191:[function(require,module,exports){
+},{"../utils/common":178}],188:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -100404,7 +100242,7 @@ function ZStream() {
 
 module.exports = ZStream;
 
-},{}],192:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -100451,7 +100289,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 }).call(this,require('_process'))
-},{"_process":193}],193:[function(require,module,exports){
+},{"_process":190}],190:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -100637,7 +100475,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],194:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -101174,7 +101012,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],195:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -101260,7 +101098,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],196:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -101347,16 +101185,16 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],197:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":195,"./encode":196}],198:[function(require,module,exports){
+},{"./decode":192,"./encode":193}],195:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":199}],199:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":196}],196:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -101481,7 +101319,7 @@ function forEach(xs, f) {
     f(xs[i], i);
   }
 }
-},{"./_stream_readable":201,"./_stream_writable":203,"core-util-is":174,"inherits":178,"process-nextick-args":192}],200:[function(require,module,exports){
+},{"./_stream_readable":198,"./_stream_writable":200,"core-util-is":171,"inherits":175,"process-nextick-args":189}],197:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -101529,7 +101367,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":202,"core-util-is":174,"inherits":178}],201:[function(require,module,exports){
+},{"./_stream_transform":199,"core-util-is":171,"inherits":175}],198:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -102539,7 +102377,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":199,"./internal/streams/BufferList":204,"./internal/streams/destroy":205,"./internal/streams/stream":206,"_process":193,"core-util-is":174,"events":175,"inherits":178,"isarray":180,"process-nextick-args":192,"safe-buffer":211,"string_decoder/":217,"util":168}],202:[function(require,module,exports){
+},{"./_stream_duplex":196,"./internal/streams/BufferList":201,"./internal/streams/destroy":202,"./internal/streams/stream":203,"_process":190,"core-util-is":171,"events":172,"inherits":175,"isarray":177,"process-nextick-args":189,"safe-buffer":208,"string_decoder/":214,"util":165}],199:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -102754,7 +102592,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":199,"core-util-is":174,"inherits":178}],203:[function(require,module,exports){
+},{"./_stream_duplex":196,"core-util-is":171,"inherits":175}],200:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -103421,7 +103259,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":199,"./internal/streams/destroy":205,"./internal/streams/stream":206,"_process":193,"core-util-is":174,"inherits":178,"process-nextick-args":192,"safe-buffer":211,"util-deprecate":221}],204:[function(require,module,exports){
+},{"./_stream_duplex":196,"./internal/streams/destroy":202,"./internal/streams/stream":203,"_process":190,"core-util-is":171,"inherits":175,"process-nextick-args":189,"safe-buffer":208,"util-deprecate":218}],201:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -103496,7 +103334,7 @@ module.exports = function () {
 
   return BufferList;
 }();
-},{"safe-buffer":211}],205:[function(require,module,exports){
+},{"safe-buffer":208}],202:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -103569,13 +103407,13 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":192}],206:[function(require,module,exports){
+},{"process-nextick-args":189}],203:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":175}],207:[function(require,module,exports){
+},{"events":172}],204:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":208}],208:[function(require,module,exports){
+},{"./readable":205}],205:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -103584,13 +103422,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":199,"./lib/_stream_passthrough.js":200,"./lib/_stream_readable.js":201,"./lib/_stream_transform.js":202,"./lib/_stream_writable.js":203}],209:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":196,"./lib/_stream_passthrough.js":197,"./lib/_stream_readable.js":198,"./lib/_stream_transform.js":199,"./lib/_stream_writable.js":200}],206:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":208}],210:[function(require,module,exports){
+},{"./readable":205}],207:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":203}],211:[function(require,module,exports){
+},{"./lib/_stream_writable.js":200}],208:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -103654,7 +103492,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":171}],212:[function(require,module,exports){
+},{"buffer":168}],209:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -103783,7 +103621,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":175,"inherits":178,"readable-stream/duplex.js":198,"readable-stream/passthrough.js":207,"readable-stream/readable.js":208,"readable-stream/transform.js":209,"readable-stream/writable.js":210}],213:[function(require,module,exports){
+},{"events":172,"inherits":175,"readable-stream/duplex.js":195,"readable-stream/passthrough.js":204,"readable-stream/readable.js":205,"readable-stream/transform.js":206,"readable-stream/writable.js":207}],210:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
@@ -103865,7 +103703,7 @@ http.METHODS = [
 	'UNSUBSCRIBE'
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/request":215,"builtin-status-codes":172,"url":219,"xtend":225}],214:[function(require,module,exports){
+},{"./lib/request":212,"builtin-status-codes":169,"url":216,"xtend":222}],211:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
@@ -103938,7 +103776,7 @@ function isFunction (value) {
 xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],215:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -104248,7 +104086,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":214,"./response":216,"_process":193,"buffer":171,"inherits":178,"readable-stream":208,"to-arraybuffer":218}],216:[function(require,module,exports){
+},{"./capability":211,"./response":213,"_process":190,"buffer":168,"inherits":175,"readable-stream":205,"to-arraybuffer":215}],213:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -104434,7 +104272,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"./capability":214,"_process":193,"buffer":171,"inherits":178,"readable-stream":208}],217:[function(require,module,exports){
+},{"./capability":211,"_process":190,"buffer":168,"inherits":175,"readable-stream":205}],214:[function(require,module,exports){
 'use strict';
 
 var Buffer = require('safe-buffer').Buffer;
@@ -104707,7 +104545,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":211}],218:[function(require,module,exports){
+},{"safe-buffer":208}],215:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -104736,7 +104574,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":171}],219:[function(require,module,exports){
+},{"buffer":168}],216:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -105470,7 +105308,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":220,"punycode":194,"querystring":197}],220:[function(require,module,exports){
+},{"./util":217,"punycode":191,"querystring":194}],217:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -105488,7 +105326,7 @@ module.exports = {
   }
 };
 
-},{}],221:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 (function (global){
 
 /**
@@ -105559,16 +105397,16 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],222:[function(require,module,exports){
-arguments[4][178][0].apply(exports,arguments)
-},{"dup":178}],223:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
+arguments[4][175][0].apply(exports,arguments)
+},{"dup":175}],220:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],224:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -106158,7 +105996,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":223,"_process":193,"inherits":222}],225:[function(require,module,exports){
+},{"./support/isBuffer":220,"_process":190,"inherits":219}],222:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;

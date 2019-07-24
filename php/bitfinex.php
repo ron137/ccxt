@@ -305,6 +305,7 @@ class bitfinex extends Exchange {
                 'UDC' => 'USDC',
                 'UST' => 'USDT',
                 'UTN' => 'UTNP',
+                'VSY' => 'VSYS',
                 'XCH' => 'XCHF',
             ),
             'exceptions' => array (
@@ -415,7 +416,7 @@ class bitfinex extends Exchange {
         $ids = is_array($fees) ? array_keys($fees) : array();
         for ($i = 0; $i < count ($ids); $i++) {
             $id = $ids[$i];
-            $code = $this->safeCurrencyCode ($id);
+            $code = $this->safe_currency_code($id);
             $withdraw[$code] = $this->safe_float($fees, $id);
         }
         return array (
@@ -468,10 +469,18 @@ class bitfinex extends Exchange {
                 continue;
             }
             $id = strtoupper($id);
-            $baseId = mb_substr($id, 0, 3 - 0);
-            $quoteId = mb_substr($id, 3, 6 - 3);
-            $base = $this->safeCurrencyCode ($baseId);
-            $quote = $this->safeCurrencyCode ($quoteId);
+            $baseId = null;
+            $quoteId = null;
+            if (mb_strpos($id, ':') !== false) {
+                $parts = explode(':', $id);
+                $baseId = $parts[0];
+                $quoteId = $parts[1];
+            } else {
+                $baseId = mb_substr($id, 0, 3 - 0);
+                $quoteId = mb_substr($id, 3, 6 - 3);
+            }
+            $base = $this->safe_currency_code($baseId);
+            $quote = $this->safe_currency_code($quoteId);
             $symbol = $base . '/' . $quote;
             $precision = array (
                 'price' => $market['price_precision'],
@@ -539,7 +548,7 @@ class bitfinex extends Exchange {
             $balance = $response[$i];
             if ($balance['type'] === $balanceType) {
                 $currencyId = $this->safe_string($balance, 'currency');
-                $code = $this->safeCurrencyCode ($currencyId);
+                $code = $this->safe_currency_code($currencyId);
                 // bitfinex had BCH previously, now it's BAB, but the old
                 // BCH symbol is kept for backward-compatibility
                 // we need a workaround here so that the old BCH $balance
@@ -609,8 +618,8 @@ class bitfinex extends Exchange {
             } else {
                 $baseId = mb_substr($marketId, 0, 3 - 0);
                 $quoteId = mb_substr($marketId, 3, 6 - 3);
-                $base = $this->safeCurrencyCode ($baseId);
-                $quote = $this->safeCurrencyCode ($quoteId);
+                $base = $this->safe_currency_code($baseId);
+                $quote = $this->safe_currency_code($quoteId);
                 $symbol = $base . '/' . $quote;
             }
         }
@@ -663,7 +672,7 @@ class bitfinex extends Exchange {
         if (is_array($trade) && array_key_exists('fee_amount', $trade)) {
             $feeCost = -$this->safe_float($trade, 'fee_amount');
             $feeCurrencyId = $this->safe_string($trade, 'fee_currency');
-            $feeCurrencyCode = $this->safeCurrencyCode ($feeCurrencyId);
+            $feeCurrencyCode = $this->safe_currency_code($feeCurrencyId);
             $fee = array (
                 'cost' => $feeCost,
                 'currency' => $feeCurrencyCode,
@@ -983,6 +992,8 @@ class bitfinex extends Exchange {
 
     public function parse_transaction ($transaction, $currency = null) {
         //
+        // crypto
+        //
         //     {
         //         "id" => 12042490,
         //         "fee" => "-0.02",
@@ -998,6 +1009,23 @@ class bitfinex extends Exchange {
         //         "timestamp_created" => "1551730523.0"
         //     }
         //
+        // fiat
+        //
+        //     {
+        //         "id" => 12725095,
+        //         "fee" => "-60.0",
+        //         "txid" => null,
+        //         "$type" => "WITHDRAWAL",
+        //         "amount" => "9943.0",
+        //         "method" => "WIRE",
+        //         "$status" => "SENDING",
+        //         "address" => null,
+        //         "$currency" => "EUR",
+        //         "$timestamp" => "1561802484.0",
+        //         "description" => "Name => bob, AccountAddress => some address, Account => someaccountno, Bank => bank address, SWIFT => foo, Country => UK, Details of Payment => withdrawal name, Intermediary Bank Name => , Intermediary Bank Address => , Intermediary Bank City => , Intermediary Bank Country => , Intermediary Bank Account => , Intermediary Bank SWIFT => , Fee => -60.0",
+        //         "timestamp_created" => "1561716066.0"
+        //     }
+        //
         $timestamp = $this->safe_float($transaction, 'timestamp_created');
         if ($timestamp !== null) {
             $timestamp = intval ($timestamp * 1000);
@@ -1007,7 +1035,7 @@ class bitfinex extends Exchange {
             $updated = intval ($updated * 1000);
         }
         $currencyId = $this->safe_string($transaction, 'currency');
-        $code = $this->safeCurrencyCode ($currencyId, $currency);
+        $code = $this->safe_currency_code($currencyId, $currency);
         $type = $this->safe_string($transaction, 'type'); // DEPOSIT or WITHDRAWAL
         if ($type !== null) {
             $type = strtolower($type);
@@ -1040,6 +1068,7 @@ class bitfinex extends Exchange {
 
     public function parse_transaction_status ($status) {
         $statuses = array (
+            'SENDING' => 'pending',
             'CANCELED' => 'canceled',
             'ZEROCONFIRMED' => 'failed', // ZEROCONFIRMED happens e.g. in a double spend attempt (I had one in my movements!)
             'COMPLETED' => 'ok',

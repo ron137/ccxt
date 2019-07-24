@@ -278,8 +278,8 @@ module.exports = class bittrex extends Exchange {
             const id = this.safeString (market, 'MarketName');
             const baseId = this.safeString (market, 'MarketCurrency');
             const quoteId = this.safeString (market, 'BaseCurrency');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             const symbol = base + '/' + quote;
             let pricePrecision = 8;
             if (quote in this.options['pricePrecisionByCode']) {
@@ -327,24 +327,15 @@ module.exports = class bittrex extends Exchange {
         const balances = this.safeValue (response, 'result');
         const result = { 'info': balances };
         const indexed = this.indexBy (balances, 'Currency');
-        const keys = Object.keys (indexed);
-        for (let i = 0; i < keys.length; i++) {
-            const id = keys[i];
-            const currency = this.commonCurrencyCode (id);
+        const currencyIds = Object.keys (indexed);
+        for (let i = 0; i < currencyIds.length; i++) {
+            const currencyId = currencyIds[i];
+            const code = this.safeCurrencyCode (currencyId);
             const account = this.account ();
-            const balance = indexed[id];
-            const free = this.safeFloat (balance, 'Available', 0);
-            const total = this.safeFloat (balance, 'Balance', 0);
-            let used = undefined;
-            if (total !== undefined) {
-                if (free !== undefined) {
-                    used = total - free;
-                }
-            }
-            account['free'] = free;
-            account['used'] = used;
-            account['total'] = total;
-            result[currency] = account;
+            const balance = indexed[currencyId];
+            account['free'] = this.safeFloat (balance, 'Available');
+            account['total'] = this.safeFloat (balance, 'Balance');
+            result[code] = account;
         }
         return this.parseBalance (result);
     }
@@ -445,7 +436,7 @@ module.exports = class bittrex extends Exchange {
             // todo: will need to rethink the fees
             // to add support for multiple withdrawal/deposit methods and
             // differentiated fees for each particular method
-            const code = this.commonCurrencyCode (id);
+            const code = this.safeCurrencyCode (id);
             const precision = 8; // default precision, todo: fix "magic constants"
             const address = this.safeValue (currency, 'BaseAddress');
             const fee = this.safeFloat (currency, 'TxFee'); // todo: redesign
@@ -829,8 +820,8 @@ module.exports = class bittrex extends Exchange {
 
     parseSymbol (id) {
         const [ quoteId, baseId ] = id.split (this.options['symbolSeparator']);
-        const base = this.commonCurrencyCode (baseId);
-        const quote = this.commonCurrencyCode (quoteId);
+        const base = this.safeCurrencyCode (baseId);
+        const quote = this.safeCurrencyCode (quoteId);
         return base + '/' + quote;
     }
 
@@ -884,8 +875,8 @@ module.exports = class bittrex extends Exchange {
         let feeCurrency = undefined;
         if (marketSymbol !== undefined) {
             const [ baseId, quoteId ] = marketSymbol.split ('-');
-            const base = this.commonCurrencyCode (baseId);
-            const quote = this.commonCurrencyCode (quoteId);
+            const base = this.safeCurrencyCode (baseId);
+            const quote = this.safeCurrencyCode (quoteId);
             symbol = base + '/' + quote;
             feeCurrency = quote;
         }

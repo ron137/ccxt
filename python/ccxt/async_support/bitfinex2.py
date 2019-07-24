@@ -217,10 +217,17 @@ class bitfinex2 (bitfinex):
             market = response[i]
             id = self.safe_string(market, 'pair')
             id = id.upper()
-            baseId = id[0:3]
-            quoteId = id[3:6]
-            base = self.safeCurrencyCode(baseId)
-            quote = self.safeCurrencyCode(quoteId)
+            baseId = None
+            quoteId = None
+            if id.find(':') >= 0:
+                parts = id.split(':')
+                baseId = parts[0]
+                quoteId = parts[1]
+            else:
+                baseId = id[0:3]
+                quoteId = id[3:6]
+            base = self.safe_currency_code(baseId)
+            quote = self.safe_currency_code(quoteId)
             symbol = base + '/' + quote
             id = 't' + id
             baseId = self.get_currency_id(baseId)
@@ -254,6 +261,9 @@ class bitfinex2 (bitfinex):
                 'precision': precision,
                 'limits': limits,
                 'info': market,
+                'swap': False,
+                'spot': False,
+                'futures': False,
             })
         return result
 
@@ -272,8 +282,10 @@ class bitfinex2 (bitfinex):
             if accountType == balanceType:
                 if currency[0] == 't':
                     currency = currency[1:]
-                code = self.safeCurrencyCode(currency)
+                code = self.safe_currency_code(currency)
                 account = self.account()
+                # do not fill in zeroes and missing values in the parser
+                # rewrite and unify the following to use the unified parseBalance
                 account['total'] = total
                 if not available:
                     if available == 0:
@@ -430,7 +442,7 @@ class bitfinex2 (bitfinex):
             orderId = trade[3]
             takerOrMaker = 'maker' if (trade[8] == 1) else 'taker'
             feeCost = trade[9]
-            feeCurrency = self.safeCurrencyCode(trade[10])
+            feeCurrency = self.safe_currency_code(trade[10])
             if feeCost is not None:
                 fee = {
                     'cost': abs(feeCost),

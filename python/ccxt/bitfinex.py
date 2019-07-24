@@ -319,6 +319,7 @@ class bitfinex (Exchange):
                 'UDC': 'USDC',
                 'UST': 'USDT',
                 'UTN': 'UTNP',
+                'VSY': 'VSYS',
                 'XCH': 'XCHF',
             },
             'exceptions': {
@@ -428,7 +429,7 @@ class bitfinex (Exchange):
         ids = list(fees.keys())
         for i in range(0, len(ids)):
             id = ids[i]
-            code = self.safeCurrencyCode(id)
+            code = self.safe_currency_code(id)
             withdraw[code] = self.safe_float(fees, id)
         return {
             'info': response,
@@ -477,10 +478,17 @@ class bitfinex (Exchange):
             if not self.in_array(id, ids):
                 continue
             id = id.upper()
-            baseId = id[0:3]
-            quoteId = id[3:6]
-            base = self.safeCurrencyCode(baseId)
-            quote = self.safeCurrencyCode(quoteId)
+            baseId = None
+            quoteId = None
+            if id.find(':') >= 0:
+                parts = id.split(':')
+                baseId = parts[0]
+                quoteId = parts[1]
+            else:
+                baseId = id[0:3]
+                quoteId = id[3:6]
+            base = self.safe_currency_code(baseId)
+            quote = self.safe_currency_code(quoteId)
             symbol = base + '/' + quote
             precision = {
                 'price': market['price_precision'],
@@ -543,7 +551,7 @@ class bitfinex (Exchange):
             balance = response[i]
             if balance['type'] == balanceType:
                 currencyId = self.safe_string(balance, 'currency')
-                code = self.safeCurrencyCode(currencyId)
+                code = self.safe_currency_code(currencyId)
                 # bitfinex had BCH previously, now it's BAB, but the old
                 # BCH symbol is kept for backward-compatibility
                 # we need a workaround here so that the old BCH balance
@@ -602,8 +610,8 @@ class bitfinex (Exchange):
             else:
                 baseId = marketId[0:3]
                 quoteId = marketId[3:6]
-                base = self.safeCurrencyCode(baseId)
-                quote = self.safeCurrencyCode(quoteId)
+                base = self.safe_currency_code(baseId)
+                quote = self.safe_currency_code(quoteId)
                 symbol = base + '/' + quote
         last = self.safe_float(ticker, 'last_price')
         return {
@@ -649,7 +657,7 @@ class bitfinex (Exchange):
         if 'fee_amount' in trade:
             feeCost = -self.safe_float(trade, 'fee_amount')
             feeCurrencyId = self.safe_string(trade, 'fee_currency')
-            feeCurrencyCode = self.safeCurrencyCode(feeCurrencyId)
+            feeCurrencyCode = self.safe_currency_code(feeCurrencyId)
             fee = {
                 'cost': feeCost,
                 'currency': feeCurrencyCode,
@@ -923,6 +931,8 @@ class bitfinex (Exchange):
 
     def parse_transaction(self, transaction, currency=None):
         #
+        # crypto
+        #
         #     {
         #         "id": 12042490,
         #         "fee": "-0.02",
@@ -938,6 +948,23 @@ class bitfinex (Exchange):
         #         "timestamp_created": "1551730523.0"
         #     }
         #
+        # fiat
+        #
+        #     {
+        #         "id": 12725095,
+        #         "fee": "-60.0",
+        #         "txid": null,
+        #         "type": "WITHDRAWAL",
+        #         "amount": "9943.0",
+        #         "method": "WIRE",
+        #         "status": "SENDING",
+        #         "address": null,
+        #         "currency": "EUR",
+        #         "timestamp": "1561802484.0",
+        #         "description": "Name: bob, AccountAddress: some address, Account: someaccountno, Bank: bank address, SWIFT: foo, Country: UK, Details of Payment: withdrawal name, Intermediary Bank Name: , Intermediary Bank Address: , Intermediary Bank City: , Intermediary Bank Country: , Intermediary Bank Account: , Intermediary Bank SWIFT: , Fee: -60.0",
+        #         "timestamp_created": "1561716066.0"
+        #     }
+        #
         timestamp = self.safe_float(transaction, 'timestamp_created')
         if timestamp is not None:
             timestamp = int(timestamp * 1000)
@@ -945,7 +972,7 @@ class bitfinex (Exchange):
         if updated is not None:
             updated = int(updated * 1000)
         currencyId = self.safe_string(transaction, 'currency')
-        code = self.safeCurrencyCode(currencyId, currency)
+        code = self.safe_currency_code(currencyId, currency)
         type = self.safe_string(transaction, 'type')  # DEPOSIT or WITHDRAWAL
         if type is not None:
             type = type.lower()
@@ -975,6 +1002,7 @@ class bitfinex (Exchange):
 
     def parse_transaction_status(self, status):
         statuses = {
+            'SENDING': 'pending',
             'CANCELED': 'canceled',
             'ZEROCONFIRMED': 'failed',  # ZEROCONFIRMED happens e.g. in a double spend attempt(I had one in my movementsnot )
             'COMPLETED': 'ok',
