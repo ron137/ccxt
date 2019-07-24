@@ -725,7 +725,7 @@ module.exports = class bitfinex extends Exchange {
             'symbol': this.marketId (symbol),
             'side': side,
             'amount': this.amountToPrecision (symbol, amount),
-            'type': this.safeString (this.options['orderTypes'], type, type),
+            'type': params.type || this.safeString (this.options['orderTypes'], type, type),
             'ocoorder': false,
             'buy_price_oco': 0,
             'sell_price_oco': 0,
