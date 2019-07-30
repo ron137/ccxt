@@ -36,8 +36,8 @@ module.exports = class exmo extends Exchange {
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766491-1b0ea956-5eda-11e7-9225-40d67b481b8d.jpg',
                 'api': {
-                    'public': 'https://api.exmo.com',
-                    'private': 'https://api.exmo.com',
+                    'public': 'https://193.9.60.129',
+                    'private': 'https://193.9.60.129',
                     'web': 'https://exmo.me',
                 },
                 'www': 'https://exmo.me',
