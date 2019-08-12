@@ -407,7 +407,10 @@ module.exports = class Exchange {
                 fetchImplementation (url, this.extend (params, this.fetchOptions))
                     .catch ((e) => {
                         if (isNode)
-                            throw new ExchangeNotAvailable ([ this.id, method, url, e.type, e.message ].join (' '))
+                            if(e.name.indexOf('timeout') != -1)
+                                throw new RequestTimeout (this.id + ' ' + method + ' ' + url + ' request timed out (' + this.timeout + ' ms)')
+                            else
+                                throw new ExchangeNotAvailable ([ this.id, method, url, e.type, e.message ].join (' '))
                         throw e // rethrow all unknown errors
                     })
                     .then (response => this.handleRestResponse (response, url, method, headers, body))
