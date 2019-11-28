@@ -9,7 +9,7 @@ import hashlib
 from ccxt.base.errors import ArgumentsRequired
 
 
-class negociecoins (Exchange):
+class negociecoins(Exchange):
 
     def describe(self):
         return self.deep_extend(super(negociecoins, self).describe(), {
@@ -72,8 +72,8 @@ class negociecoins (Exchange):
             },
             'fees': {
                 'trading': {
-                    'maker': 0.003,
-                    'taker': 0.004,
+                    'maker': 0.005,
+                    'taker': 0.005,
                 },
                 'funding': {
                     'withdraw': {
@@ -97,7 +97,7 @@ class negociecoins (Exchange):
         })
 
     def parse_ticker(self, ticker, market=None):
-        timestamp = ticker['date'] * 1000
+        timestamp = self.safe_timestamp(ticker, 'date')
         symbol = market['symbol'] if (market is not None) else None
         last = self.safe_float(ticker, 'last')
         return {
@@ -141,7 +141,7 @@ class negociecoins (Exchange):
         return self.parse_order_book(response, None, 'bid', 'ask', 'price', 'quantity')
 
     def parse_trade(self, trade, market=None):
-        timestamp = trade['date'] * 1000
+        timestamp = self.safe_timestamp(trade, 'date')
         price = self.safe_float(trade, 'price')
         amount = self.safe_float(trade, 'amount')
         cost = None
@@ -153,9 +153,7 @@ class negociecoins (Exchange):
             symbol = market['symbol']
         id = self.safe_string(trade, 'tid')
         type = 'limit'
-        side = self.safe_string(trade, 'type')
-        if side is not None:
-            side = side.lower()
+        side = self.safe_string_lower(trade, 'type')
         return {
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),

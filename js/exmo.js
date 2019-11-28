@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ArgumentsRequired, ExchangeError, ExchangeNotAvailable, OrderNotFound, AuthenticationError, InsufficientFunds, InvalidOrder, InvalidNonce, NotSupported } = require ('./base/errors');
+const { ArgumentsRequired, ExchangeError, OrderNotFound, AuthenticationError, InsufficientFunds, InvalidOrder, InvalidNonce, NotSupported, OnMaintenance } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -181,15 +181,8 @@ module.exports = class exmo extends Exchange {
                             { 'pair': 'XLM/RUB', 'min_q': '0.01', 'max_q': '200000', 'min_p': '0.00001', 'max_p': '100000', 'min_a': '0.1', 'max_a': '50000000' },
                             { 'pair': 'EOS/BTC', 'min_q': '0.01', 'max_q': '100000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.001', 'max_a': '100' },
                             { 'pair': 'EOS/USD', 'min_q': '0.01', 'max_q': '100000', 'min_p': '0.01', 'max_p': '1000', 'min_a': '0.5', 'max_a': '500000' },
-                            { 'pair': 'STQ/BTC', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.0001', 'max_a': '100' },
-                            { 'pair': 'STQ/USD', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.0001', 'max_p': '1000', 'min_a': '0.1', 'max_a': '500000' },
-                            { 'pair': 'STQ/EUR', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.0001', 'max_p': '1000', 'min_a': '0.1', 'max_a': '500000' },
-                            { 'pair': 'STQ/RUB', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.00001', 'max_p': '50000', 'min_a': '1', 'max_a': '50000000' },
                             { 'pair': 'BTG/BTC', 'min_q': '0.01', 'max_q': '200000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.001', 'max_a': '100' },
                             { 'pair': 'BTG/USD', 'min_q': '0.01', 'max_q': '200000', 'min_p': '0.001', 'max_p': '1000', 'min_a': '3', 'max_a': '500000' },
-                            { 'pair': 'HBZ/BTC', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.0001', 'max_a': '100' },
-                            { 'pair': 'HBZ/ETH', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.0001', 'max_a': '5000' },
-                            { 'pair': 'HBZ/USD', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.0001', 'max_p': '1000', 'min_a': '0.1', 'max_a': '500000' },
                             { 'pair': 'DXT/BTC', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.0001', 'max_a': '100' },
                             { 'pair': 'DXT/USD', 'min_q': '100', 'max_q': '10000000', 'min_p': '0.0001', 'max_p': '1000', 'min_a': '0.1', 'max_a': '500000' },
                             { 'pair': 'BTCZ/BTC', 'min_q': '100', 'max_q': '100000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.1', 'max_a': '100' },
@@ -254,15 +247,25 @@ module.exports = class exmo extends Exchange {
                             { 'pair': 'DASH/UAH', 'min_q': '0.01', 'max_q': '200000', 'min_p': '0.01', 'max_p': '200000', 'min_a': '10', 'max_a': '15000000' },
                             { 'pair': 'XMR/ETH', 'min_q': '0.03', 'max_q': '1000', 'min_p': '0.00000001', 'max_p': '100', 'min_a': '0.001', 'max_a': '5000' },
                             { 'pair': 'WAVES/ETH', 'min_q': '0.5', 'max_q': '10000', 'min_p': '0.00001', 'max_p': '30', 'min_a': '0.0035', 'max_a': '3500' },
+                            { 'pair': 'DCR/BTC', 'min_q': '0.01', 'max_q': '50000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.001', 'max_a': '100' },
+                            { 'pair': 'DCR/RUB', 'min_q': '0.01', 'max_q': '50000', 'min_p': '0.00001', 'max_p': '100000', 'min_a': '0.5', 'max_a': '3000000' },
+                            { 'pair': 'DCR/UAH', 'min_q': '0.01', 'max_q': '50000', 'min_p': '0.00001', 'max_p': '100000', 'min_a': '0.25', 'max_a': '1000000' },
+                            { 'pair': 'ZAG/BTC', 'min_q': '1', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '0.1', 'min_a': '0.00001', 'max_a': '100' },
+                            { 'pair': 'EXM/BTC', 'min_q': '1', 'max_q': '100000000', 'min_p': '0.00000001', 'max_p': '1', 'min_a': '0.0000001', 'max_a': '100' },
+                            { 'pair': 'VLX/BTC', 'min_q': '1', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '0.1', 'min_a': '0.00001', 'max_a': '100' },
+                            { 'pair': 'BTT/BTC', 'min_q': '1', 'max_q': '10000000', 'min_p': '0.00000001', 'max_p': '0.1', 'min_a': '0.00001', 'max_a': '100' },
+                            { 'pair': 'BTT/RUB', 'min_q': '1', 'max_q': '10000000', 'min_p': '0.000001', 'max_p': '1000', 'min_a': '0.000001', 'max_a': '100' },
+                            { 'pair': 'BTT/UAH', 'min_q': '1', 'max_q': '10000000', 'min_p': '0.000001', 'max_p': '1000', 'min_a': '0.000001', 'max_a': '100' },
                         ],
                         'fees': [
                             {
                                 'group': 'crypto',
                                 'title': 'Криптовалюта',
                                 'items': [
+                                    { 'prov': 'EXM', 'dep': '0%', 'wd': '1 EXM' },
                                     { 'prov': 'BTC', 'dep': '0%', 'wd': '0.0005 BTC' },
                                     { 'prov': 'LTC', 'dep': '0%', 'wd': '0.01 LTC' },
-                                    { 'prov': 'DOGE', 'dep': '0%', 'wd': '1 Doge' },
+                                    { 'prov': 'DOGE', 'dep': '0%', 'wd': '1 DOGE' },
                                     { 'prov': 'DASH', 'dep': '0%', 'wd': '0.01 DASH' },
                                     { 'prov': 'ETH', 'dep': '0%', 'wd': '0.01 ETH' },
                                     { 'prov': 'WAVES', 'dep': '0%', 'wd': '0.001 WAVES' },
@@ -270,15 +273,14 @@ module.exports = class exmo extends Exchange {
                                     { 'prov': 'USDT', 'dep': '0%', 'wd': '5 USDT' },
                                     { 'prov': 'XMR', 'dep': '0%', 'wd': '0.05 XMR' },
                                     { 'prov': 'XRP', 'dep': '0%', 'wd': '0.02 XRP' },
-                                    { 'prov': 'KICK', 'dep': '0 KICK', 'wd': '50 KICK' },
+                                    { 'prov': 'KICK', 'dep': '0%', 'wd': '50 KICK' },
                                     { 'prov': 'ETC', 'dep': '0%', 'wd': '0.01 ETC' },
                                     { 'prov': 'BCH', 'dep': '0%', 'wd': '0.001 BCH' },
                                     { 'prov': 'BTG', 'dep': '0%', 'wd': '0.001 BTG' },
-                                    { 'prov': 'EOS', 'dep': '', 'wd': '0.05 EOS' },
-                                    { 'prov': 'HBZ', 'dep': '65 HBZ', 'wd': '65 HBZ' },
+                                    { 'prov': 'EOS', 'dep': '0%', 'wd': '0.05 EOS' },
+                                    { 'prov': 'BTCZ', 'dep': '0%', 'wd': '5 BTCZ' },
                                     { 'prov': 'DXT', 'dep': '20 DXT', 'wd': '20 DXT' },
-                                    { 'prov': 'STQ', 'dep': '-', 'wd': '100 STQ' },
-                                    { 'prov': 'XLM', 'dep': '0%', 'wd': '-' },
+                                    { 'prov': 'XLM', 'dep': '0%', 'wd': '0.01 XLM' },
                                     { 'prov': 'MNX', 'dep': '0%', 'wd': '0.01 MNX' },
                                     { 'prov': 'OMG', 'dep': '0.1 OMG', 'wd': '0.5 OMG' },
                                     { 'prov': 'TRX', 'dep': '0%', 'wd': '1 TRX' },
@@ -296,11 +298,16 @@ module.exports = class exmo extends Exchange {
                                     { 'prov': 'HB', 'dep': '0%', 'wd': '10 HB' },
                                     { 'prov': 'DAI', 'dep': '0%', 'wd': '1 DAI' },
                                     { 'prov': 'MKR', 'dep': '0%', 'wd': '0.005 MKR' },
-                                    { 'prov': 'MNC', 'dep': '-', 'wd': '15 MNC' },
+                                    { 'prov': 'MNC', 'dep': '0%', 'wd': '15 MNC' },
                                     { 'prov': 'PTI', 'dep': '0%', 'wd': '10 PTI' },
                                     { 'prov': 'ATMCASH', 'dep': '0%', 'wd': '5 ATMCASH' },
                                     { 'prov': 'ETZ', 'dep': '0%', 'wd': '1 ETZ' },
-                                    { 'prov': 'USDC', 'dep': '', 'wd': '0.5 USDC' },
+                                    { 'prov': 'USDC', 'dep': '0%', 'wd': '0.5 USDC' },
+                                    { 'prov': 'ROOBEE', 'dep': '0%', 'wd': '200 ROOBEE' },
+                                    { 'prov': 'DCR', 'dep': '0%', 'wd': '0.01 DCR' },
+                                    { 'prov': 'ZAG', 'dep': '0%', 'wd': '0%' },
+                                    { 'prov': 'BTT', 'dep': '0%', 'wd': '100 BTT' },
+                                    { 'prov': 'VLX', 'dep': '0%', 'wd': '1 VLX' },
                                 ],
                             },
                             {
@@ -380,7 +387,7 @@ module.exports = class exmo extends Exchange {
                 '40005': AuthenticationError, // Authorization error, incorrect signature
                 '40009': InvalidNonce, //
                 '40015': ExchangeError, // API function do not exist
-                '40016': ExchangeNotAvailable, // Maintenance work in progress
+                '40016': OnMaintenance, // {"result":false,"error":"Error 40016: Maintenance work in progress"}
                 '40017': AuthenticationError, // Wrong API Key
                 '50052': InsufficientFunds,
                 '50054': InsufficientFunds,
@@ -655,7 +662,7 @@ module.exports = class exmo extends Exchange {
     }
 
     parseTicker (ticker, market = undefined) {
-        const timestamp = this.safeInteger (ticker, 'updated') * 1000;
+        const timestamp = this.safeTimestamp (ticker, 'updated');
         let symbol = undefined;
         if (market !== undefined) {
             symbol = market['symbol'];
@@ -708,7 +715,7 @@ module.exports = class exmo extends Exchange {
     }
 
     parseTrade (trade, market = undefined) {
-        const timestamp = this.safeInteger (trade, 'date') * 1000;
+        const timestamp = this.safeTimestamp (trade, 'date');
         let fee = undefined;
         let symbol = undefined;
         const id = this.safeString (trade, 'trade_id');
@@ -1028,10 +1035,7 @@ module.exports = class exmo extends Exchange {
         //     }
         //
         let id = this.safeString (order, 'order_id');
-        let timestamp = this.safeInteger (order, 'created');
-        if (timestamp !== undefined) {
-            timestamp *= 1000;
-        }
+        let timestamp = this.safeTimestamp (order, 'created');
         let symbol = undefined;
         const side = this.safeString (order, 'type');
         if (market === undefined) {
@@ -1233,10 +1237,7 @@ module.exports = class exmo extends Exchange {
         //            "txid": "ec46f784ad976fd7f7539089d1a129fe46...",
         //          }
         //
-        let timestamp = this.safeFloat (transaction, 'dt');
-        if (timestamp !== undefined) {
-            timestamp = timestamp * 1000;
-        }
+        const timestamp = this.safeTimestamp (transaction, 'dt');
         let amount = this.safeFloat (transaction, 'amount');
         if (amount !== undefined) {
             amount = Math.abs (amount);
@@ -1364,7 +1365,7 @@ module.exports = class exmo extends Exchange {
         return this.milliseconds ();
     }
 
-    handleErrors (httpCode, reason, url, method, headers, body, response) {
+    handleErrors (httpCode, reason, url, method, headers, body, response, requestHeaders, requestBody) {
         if (response === undefined) {
             return; // fallback to default error handler
         }

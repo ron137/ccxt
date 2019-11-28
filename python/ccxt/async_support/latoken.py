@@ -4,6 +4,7 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.async_support.base.exchange import Exchange
+import math
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import ArgumentsRequired
@@ -15,7 +16,7 @@ from ccxt.base.errors import InvalidNonce
 from ccxt.base.decimal_to_precision import ROUND
 
 
-class latoken (Exchange):
+class latoken(Exchange):
 
     def describe(self):
         return self.deep_extend(super(latoken, self).describe(), {
@@ -29,7 +30,7 @@ class latoken (Exchange):
             'has': {
                 'CORS': False,
                 'publicAPI': True,
-                'pivateAPI': True,
+                'privateAPI': True,
                 'cancelOrder': True,
                 'cancelAllOrders': True,
                 'createMarketOrder': False,
@@ -69,6 +70,7 @@ class latoken (Exchange):
                         'MarketData/tickers',
                         'MarketData/ticker/{symbol}',
                         'MarketData/orderBook/{symbol}',
+                        'MarketData/orderBook/{symbol}/{limit}',
                         'MarketData/trades/{symbol}',
                         'MarketData/trades/{symbol}/{limit}',
                     ],
@@ -98,25 +100,28 @@ class latoken (Exchange):
                     'taker': 0.1 / 100,
                 },
             },
+            'commonCurrencies': {
+                'TSL': 'Treasure SL',
+            },
             'options': {
                 'createOrderMethod': 'private_post_order_new',  # private_post_order_test_order
             },
             'exceptions': {
                 'exact': {
-                    'Signature or ApiKey is not valid': AuthenticationError,  # {"error": {"message": "Signature or ApiKey is not valid","errorType":"RequestError","statusCode":400}}
-                    'Request is out of time': InvalidNonce,  # {"error": {"message": "Request is out of time", "errorType": "RequestError", "statusCode":400}}
-                    'Symbol must be specified': BadRequest,  # {"error": {"message": "Symbol must be specified","errorType":"RequestError","statusCode":400}}
+                    'Signature or ApiKey is not valid': AuthenticationError,
+                    'Request is out of time': InvalidNonce,
+                    'Symbol must be specified': BadRequest,
                 },
                 'broad': {
-                    'Request limit reached': DDoSProtection,  # {"message": "Request limit reachednot ", "details": "Request limit reached. Maximum allowed: 1 per 1s. Please try again in 1 second(s)."}
-                    'Pair': BadRequest,  # {"error": {"message": "Pair 370 is not found","errorType":"RequestError","statusCode":400}}
-                    'Price needs to be greater than': InvalidOrder,  # {"error": {"message": "Price needs to be greater than 0","errorType":"ValidationError","statusCode":400}}
-                    'Amount needs to be greater than': InvalidOrder,  # {"error": {"message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400}}
-                    'The Symbol field is required': InvalidOrder,  # {"error": {"message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400}}
-                    'OrderType is not valid': InvalidOrder,  # {"error": {"message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400}}
-                    'Side is not valid': InvalidOrder,  # {"error": {"message": "Side is not valid, Price needs to be greater than 0, Amount needs to be greater than 0, The Symbol field is required., OrderType is not valid","errorType":"ValidationError","statusCode":400}}
-                    'Cancelable order whit': OrderNotFound,  # {"error": {"message": "Cancelable order whit ID 1563460289.571254.704945@0370:1 not found","errorType":"RequestError","statusCode":400}}
-                    'Order': OrderNotFound,  # {"error": {"message": "Order 1563460289.571254.704945@0370:1 is not found","errorType":"RequestError","statusCode":400}}
+                    'Request limit reached': DDoSProtection,
+                    'Pair': BadRequest,
+                    'Price needs to be greater than': InvalidOrder,
+                    'Amount needs to be greater than': InvalidOrder,
+                    'The Symbol field is required': InvalidOrder,
+                    'OrderType is not valid': InvalidOrder,
+                    'Side is not valid': InvalidOrder,
+                    'Cancelable order whit': OrderNotFound,
+                    'Order': OrderNotFound,
                 },
             },
         })
@@ -173,7 +178,7 @@ class latoken (Exchange):
                     'max': None,
                 },
                 'price': {
-                    'min': None,
+                    'min': math.pow(10, -precision['price']),
                     'max': None,
                 },
                 'cost': {
@@ -249,7 +254,7 @@ class latoken (Exchange):
             }
         return result
 
-    def calculate_fee(self, symbol, side, amount, price, takerOrMaker='taker'):
+    def calculate_fee(self, symbol, type, side, amount, price, takerOrMaker='taker', params={}):
         market = self.markets[symbol]
         key = 'quote'
         rate = market[takerOrMaker]
@@ -307,22 +312,25 @@ class latoken (Exchange):
         market = self.market(symbol)
         request = {
             'symbol': market['id'],
+            'limit': 10,
         }
-        response = await self.publicGetMarketDataOrderBookSymbol(self.extend(request, params))
+        if limit is not None:
+            request['limit'] = limit  # default 10, max 100
+        response = await self.publicGetMarketDataOrderBookSymbolLimit(self.extend(request, params))
         #
         #     {
         #         "pairId": 502,
         #         "symbol": "LAETH",
         #         "spread": 0.07,
         #         "asks": [
-        #             {"price": 136.3, "amount": 7.024}
+        #             {"price": 136.3, "quantity": 7.024}
         #         ],
         #         "bids": [
-        #             {"price": 136.2, "amount": 6.554}
+        #             {"price": 136.2, "quantity": 6.554}
         #         ]
         #     }
         #
-        return self.parse_order_book(response, None, 'bids', 'asks', 'price', 'amount')
+        return self.parse_order_book(response, None, 'bids', 'asks', 'price', 'quantity')
 
     def parse_ticker(self, ticker, market=None):
         symbol = self.find_symbol(self.safe_string(ticker, 'symbol'), market)
@@ -351,8 +359,8 @@ class latoken (Exchange):
             'change': change,
             'percentage': percentage,
             'average': None,
-            'baseVolume': self.safe_float(ticker, 'volume'),
-            'quoteVolume': None,
+            'baseVolume': None,
+            'quoteVolume': self.safe_float(ticker, 'volume'),
             'info': ticker,
         }
 
@@ -407,26 +415,30 @@ class latoken (Exchange):
         # fetchTrades(public)
         #
         #     {
-        #         "side":"buy",
-        #         "price":0.022315,
-        #         "amount":0.706,
-        #         "timestamp":1563454655
+        #         side: 'buy',
+        #         price: 0.33634,
+        #         amount: 0.01,
+        #         timestamp: 1564240008000  # milliseconds
         #     }
         #
         # fetchMyTrades(private)
         #
         #     {
-        #         "id": "1555492358.126073.126767@0502:2",
-        #         "orderId": "1555492358.126073.126767@0502:2",
-        #         "commission": 0.012,
-        #         "side": "buy",
-        #         "price": 136.2,
-        #         "amount": 0.7,
-        #         "time": 1555515807369
+        #         id: '1564223032.892829.3.tg15',
+        #         orderId: '1564223032.671436.707548@1379:1',
+        #         commission: 0,
+        #         side: 'buy',
+        #         price: 0.32874,
+        #         amount: 0.607,
+        #         timestamp: 1564223033  # seconds
         #     }
         #
         type = None
         timestamp = self.safe_integer_2(trade, 'timestamp', 'time')
+        if timestamp is not None:
+            # 03 Jan 2009 - first block
+            if timestamp < 1230940800000:
+                timestamp *= 1000
         price = self.safe_float(trade, 'price')
         amount = self.safe_float(trade, 'amount')
         side = self.safe_string(trade, 'side')
@@ -478,10 +490,10 @@ class latoken (Exchange):
         #         "tradeCount":51,
         #         "trades": [
         #             {
-        #                 "side":"buy",
-        #                 "price":0.022315,
-        #                 "amount":0.706,
-        #                 "timestamp":1563454655
+        #                 side: 'buy',
+        #                 price: 0.33634,
+        #                 amount: 0.01,
+        #                 timestamp: 1564240008000  # milliseconds
         #             }
         #         ]
         #     }
@@ -505,13 +517,13 @@ class latoken (Exchange):
         #         "tradeCount": 1,
         #         "trades": [
         #             {
-        #                 "id": "1555492358.126073.126767@0502:2",
-        #                 "orderId": "1555492358.126073.126767@0502:2",
-        #                 "commission": 0.012,
-        #                 "side": "buy",
-        #                 "price": 136.2,
-        #                 "amount": 0.7,
-        #                 "time": 1555515807369
+        #                 id: '1564223032.892829.3.tg15',
+        #                 orderId: '1564223032.671436.707548@1379:1',
+        #                 commission: 0,
+        #                 side: 'buy',
+        #                 price: 0.32874,
+        #                 amount: 0.607,
+        #                 timestamp: 1564223033  # seconds
         #             }
         #         ]
         #     }
@@ -562,7 +574,7 @@ class latoken (Exchange):
         #     }
         #
         id = self.safe_string(order, 'orderId')
-        timestamp = self.safe_value(order, 'timeCreated')
+        timestamp = self.safe_timestamp(order, 'timeCreated')
         marketId = self.safe_string(order, 'symbol')
         symbol = marketId
         if marketId in self.markets_by_id:
@@ -574,15 +586,18 @@ class latoken (Exchange):
         price = self.safe_float(order, 'price')
         amount = self.safe_float(order, 'amount')
         filled = self.safe_float(order, 'executedAmount')
-        remaining = self.safe_float(order, 'reaminingAmount')
+        remaining = None
+        if amount is not None:
+            if filled is not None:
+                remaining = amount - filled
         status = self.parse_order_status(self.safe_string(order, 'orderStatus'))
         cost = None
         if filled is not None:
             if price is not None:
                 cost = filled * price
-        timeFilled = self.safe_integer(order, 'timeFilled')
+        timeFilled = self.safe_timestamp(order, 'timeFilled')
         lastTradeTimestamp = None
-        if timeFilled is not None and timeFilled > 0:
+        if (timeFilled is not None) and (timeFilled > 0):
             lastTradeTimestamp = timeFilled
         return {
             'id': id,
@@ -780,7 +795,7 @@ class latoken (Exchange):
         url = self.urls['api'] + request
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body, response):
+    def handle_errors(self, code, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if not response:
             return
         #
@@ -795,21 +810,13 @@ class latoken (Exchange):
         #     {"error": {"message": "Order 1563460289.571254.704945@0370:1 is not found","errorType":"RequestError","statusCode":400}}
         #
         message = self.safe_string(response, 'message')
-        exact = self.exceptions['exact']
-        broad = self.exceptions['broad']
         feedback = self.id + ' ' + body
         if message is not None:
-            if message in exact:
-                raise exact[message](feedback)
-            broadKey = self.findBroadlyMatchedKey(broad, message)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
+            self.throw_exactly_matched_exception(self.exceptions['exact'], message, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], message, feedback)
         error = self.safe_value(response, 'error', {})
         errorMessage = self.safe_string(error, 'message')
         if errorMessage is not None:
-            if errorMessage in exact:
-                raise exact[errorMessage](feedback)
-            broadKey = self.findBroadlyMatchedKey(broad, errorMessage)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
+            self.throw_exactly_matched_exception(self.exceptions['exact'], errorMessage, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], errorMessage, feedback)
             raise ExchangeError(feedback)  # unknown message

@@ -8,12 +8,13 @@ import base64
 import hashlib
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import ArgumentsRequired
+from ccxt.base.errors import BadSymbol
 from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
-from ccxt.base.errors import ExchangeNotAvailable
+from ccxt.base.errors import OnMaintenance
 
 
-class coinone (Exchange):
+class coinone(Exchange):
 
     def describe(self):
         return self.deep_extend(super(coinone, self).describe(), {
@@ -86,7 +87,7 @@ class coinone (Exchange):
                 'ZRX/KRW': {'id': 'zrx', 'symbol': 'ZRX/KRW', 'base': 'ZRX', 'quote': 'KRW', 'baseId': 'zrx', 'quoteId': 'krw'},
                 'LUNA/KRW': {'id': 'luna', 'symbol': 'LUNA/KRW', 'base': 'LUNA', 'quote': 'KRW', 'baseId': 'luna', 'quoteId': 'krw'},
                 'ATOM/KRW': {'id': 'atom', 'symbol': 'ATOM/KRW', 'base': 'ATOM', 'quote': 'KRW', 'baseId': 'atom', 'quoteId': 'krw'},
-                'VNT/KRW': {'id': 'vnt', 'symbol': 'vnt/KRW', 'base': 'VNT', 'quote': 'KRW', 'baseId': 'vnt', 'quoteId': 'krw'},
+                'VNT/KRW': {'id': 'vnt', 'symbol': 'VNT/KRW', 'base': 'VNT', 'quote': 'KRW', 'baseId': 'vnt', 'quoteId': 'krw'},
             },
             'fees': {
                 'trading': {
@@ -121,8 +122,9 @@ class coinone (Exchange):
                 },
             },
             'exceptions': {
-                '405': ExchangeNotAvailable,
+                '405': OnMaintenance,  # {"errorCode":"405","status":"maintenance","result":"error"}
                 '104': OrderNotFound,
+                '108': BadSymbol,  # {"errorCode":"108","errorMsg":"Unknown CryptoCurrency","result":"error"}
             },
         })
 
@@ -218,9 +220,7 @@ class coinone (Exchange):
         }
 
     def parse_trade(self, trade, market=None):
-        timestamp = self.safe_integer(trade, 'timestamp')
-        if timestamp is not None:
-            timestamp *= 1000
+        timestamp = self.safe_timestamp(trade, 'timestamp')
         symbol = market['symbol'] if (market is not None) else None
         is_ask = self.safe_string(trade, 'is_ask')
         side = None
@@ -339,10 +339,8 @@ class coinone (Exchange):
 
     def parse_order(self, order, market=None):
         info = self.safe_value(order, 'info')
-        id = self.safe_string(info, 'orderId')
-        if id is not None:
-            id = id.upper()
-        timestamp = self.safe_integer(info, 'timestamp') * 1000
+        id = self.safe_string_upper(info, 'orderId')
+        timestamp = self.safe_timestamp(info, 'timestamp')
         status = self.parse_order_status(self.safe_string(order, 'status'))
         cost = None
         side = self.safe_string(info, 'type')
@@ -454,7 +452,7 @@ class coinone (Exchange):
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body, response):
+    def handle_errors(self, code, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if response is None:
             return
         if 'result' in response:

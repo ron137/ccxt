@@ -14,7 +14,7 @@ from ccxt.base.errors import InvalidOrder
 from ccxt.base.errors import OrderNotFound
 
 
-class upbit (Exchange):
+class upbit(Exchange):
 
     def describe(self):
         return self.deep_extend(super(upbit, self).describe(), {
@@ -55,9 +55,10 @@ class upbit (Exchange):
                 '1w': 'weeks',
                 '1M': 'months',
             },
+            'hostname': 'api.upbit.com',
             'urls': {
                 'logo': 'https://user-images.githubusercontent.com/1294454/49245610-eeaabe00-f423-11e8-9cba-4b0aed794799.jpg',
-                'api': 'https://api.upbit.com',
+                'api': 'https://{hostname}',
                 'www': 'https://upbit.com',
                 'doc': 'https://docs.upbit.com/docs/%EC%9A%94%EC%B2%AD-%EC%88%98-%EC%A0%9C%ED%95%9C',
                 'fees': 'https://upbit.com/service_center/guide',
@@ -125,6 +126,7 @@ class upbit (Exchange):
             },
             'exceptions': {
                 'exact': {
+                    'This key has expired.': AuthenticationError,
                     'Missing request parameter error. Check the required parametersnot ': BadRequest,
                     'side is missing, side does not have a valid value': InvalidOrder,
                 },
@@ -149,9 +151,6 @@ class upbit (Exchange):
                 'tradingFeesByQuoteCurrency': {
                     'KRW': 0.0005,
                 },
-            },
-            'commonCurrencies': {
-                'CPT': 'Contents Protocol',  # conflict with CPT(Cryptaur) https://github.com/ccxt/ccxt/issues/4920
             },
         })
 
@@ -647,9 +646,7 @@ class upbit (Exchange):
         if timestamp is None:
             timestamp = self.parse8601(self.safe_string(trade, 'created_at'))
         side = None
-        askOrBid = self.safe_string_2(trade, 'ask_bid', 'side')
-        if askOrBid is not None:
-            askOrBid = askOrBid.lower()
+        askOrBid = self.safe_string_lower_2(trade, 'ask_bid', 'side')
         if askOrBid == 'ask':
             side = 'sell'
         elif askOrBid == 'bid':
@@ -913,7 +910,7 @@ class upbit (Exchange):
         #         ...,
         #     ]
         #
-        return self.parseTransactions(response, currency, since, limit)
+        return self.parse_transactions(response, currency, since, limit)
 
     def fetch_withdrawals(self, code=None, since=None, limit=None, params={}):
         self.load_markets()
@@ -944,7 +941,7 @@ class upbit (Exchange):
         #         ...,
         #     ]
         #
-        return self.parseTransactions(response, currency, since, limit)
+        return self.parse_transactions(response, currency, since, limit)
 
     def parse_transaction_status(self, status):
         statuses = {
@@ -1388,9 +1385,12 @@ class upbit (Exchange):
         return self.milliseconds()
 
     def sign(self, path, api='public', method='GET', params={}, headers=None, body=None):
-        url = self.urls['api'] + '/' + self.version + '/' + self.implode_params(path, params)
+        url = self.implode_params(self.urls['api'], {
+            'hostname': self.hostname,
+        })
+        url += '/' + self.version + '/' + self.implode_params(path, params)
         query = self.omit(params, self.extract_params(path))
-        if method == 'GET':
+        if method != 'POST':
             if query:
                 url += '?' + self.urlencode(query)
         if api == 'private':
@@ -1406,12 +1406,12 @@ class upbit (Exchange):
             headers = {
                 'Authorization': 'Bearer ' + jwt,
             }
-            if method != 'GET':
+            if (method != 'GET') and (method != 'DELETE'):
                 body = self.json(params)
                 headers['Content-Type'] = 'application/json'
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if response is None:
             return  # fallback to default error handler
         #
@@ -1429,17 +1429,9 @@ class upbit (Exchange):
         if error is not None:
             message = self.safe_string(error, 'message')
             name = self.safe_string(error, 'name')
-            feedback = self.id + ' ' + self.json(response)
-            exact = self.exceptions['exact']
-            if message in exact:
-                raise exact[message](feedback)
-            if name in exact:
-                raise exact[name](feedback)
-            broad = self.exceptions['broad']
-            broadKey = self.findBroadlyMatchedKey(broad, message)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
-            broadKey = self.findBroadlyMatchedKey(broad, name)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
+            feedback = self.id + ' ' + body
+            self.throw_exactly_matched_exception(self.exceptions['exact'], message, feedback)
+            self.throw_exactly_matched_exception(self.exceptions['exact'], name, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], message, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], name, feedback)
             raise ExchangeError(feedback)  # unknown message

@@ -8,7 +8,7 @@ import math
 from ccxt.base.errors import ArgumentsRequired
 
 
-class kuna (acx):
+class kuna(acx):
 
     def describe(self):
         return self.deep_extend(super(kuna, self).describe(), {
@@ -73,7 +73,7 @@ class kuna (acx):
                 quoteId = quotes[j]
                 index = id.find(quoteId)
                 slice = id[index:]
-                if (index > 0) and(slice == quoteId):
+                if (index > 0) and (slice == quoteId):
                     baseId = id.replace(quoteId, '')
                     base = self.safe_currency_code(baseId)
                     quote = self.safe_currency_code(quoteId)

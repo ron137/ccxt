@@ -8,7 +8,7 @@ import math
 from ccxt.base.errors import ExchangeError
 
 
-class coinexchange (Exchange):
+class coinexchange(Exchange):
 
     def describe(self):
         return self.deep_extend(super(coinexchange, self).describe(), {
@@ -548,6 +548,7 @@ class coinexchange (Exchange):
                 'BONPAY': 'BON',
                 'eNAU': 'ENAU',
                 'ETN': 'Ethernex',
+                'FAIR': 'FairCoin',
                 'FRC': 'FireRoosterCoin',
                 'GET': 'GreenEnergyToken',
                 'GDC': 'GoldenCryptoCoin',

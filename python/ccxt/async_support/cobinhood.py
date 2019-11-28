@@ -13,7 +13,7 @@ from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import InvalidNonce
 
 
-class cobinhood (Exchange):
+class cobinhood(Exchange):
 
     def describe(self):
         return self.deep_extend(super(cobinhood, self).describe(), {
@@ -692,7 +692,7 @@ class cobinhood (Exchange):
             'currency': currency['id'],
         }
         response = await self.privateGetWalletDeposits(self.extend(request, params))
-        return self.parseTransactions(response['result']['deposits'], currency)
+        return self.parse_transactions(response['result']['deposits'], currency)
 
     async def fetch_withdrawals(self, code=None, since=None, limit=None, params={}):
         await self.load_markets()
@@ -703,7 +703,7 @@ class cobinhood (Exchange):
             'currency': currency['id'],
         }
         response = await self.privateGetWalletWithdrawals(self.extend(request, params))
-        return self.parseTransactions(response['result']['withdrawals'], currency)
+        return self.parse_transactions(response['result']['withdrawals'], currency)
 
     def parse_transaction_status(self, status):
         statuses = {
@@ -778,7 +778,7 @@ class cobinhood (Exchange):
             body = self.json(query)
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body, response):
+    def handle_errors(self, code, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if code < 400 or code >= 600:
             return
         if body[0] != '{':

@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, ArgumentsRequired, BadRequest, OrderNotFound, InvalidOrder, InvalidNonce, DDoSProtection, InsufficientFunds, AuthenticationError, ExchangeNotAvailable, PermissionDenied, NotSupported } = require ('./base/errors');
+const { ExchangeError, ArgumentsRequired, BadRequest, OrderNotFound, InvalidOrder, InvalidNonce, DDoSProtection, InsufficientFunds, AuthenticationError, ExchangeNotAvailable, PermissionDenied, NotSupported, OnMaintenance } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -147,7 +147,9 @@ module.exports = class gemini extends Exchange {
                     'System': ExchangeError, // We are experiencing technical issues
                     'UnsupportedOption': BadRequest, // This order execution option is not supported.
                 },
-                'broad': {},
+                'broad': {
+                    'The Gemini Exchange is currently undergoing maintenance.': OnMaintenance, // The Gemini Exchange is currently undergoing maintenance. Please check https://status.gemini.com/ for more information.
+                },
             },
             'options': {
                 'fetchMarketsMethod': 'fetch_markets_from_web',
@@ -359,10 +361,7 @@ module.exports = class gemini extends Exchange {
             }
         }
         const type = undefined;
-        let side = this.safeString (trade, 'type');
-        if (side !== undefined) {
-            side = side.toLowerCase ();
-        }
+        const side = this.safeStringLower (trade, 'type');
         let symbol = undefined;
         if (market !== undefined) {
             symbol = market['symbol'];
@@ -450,6 +449,7 @@ module.exports = class gemini extends Exchange {
             symbol = market['symbol'];
         }
         const id = this.safeString (order, 'order_id');
+        const side = this.safeStringLower (order, 'side');
         return {
             'id': id,
             'info': order,
@@ -459,7 +459,7 @@ module.exports = class gemini extends Exchange {
             'status': status,
             'symbol': symbol,
             'type': type,
-            'side': order['side'].toLowerCase (),
+            'side': side,
             'price': price,
             'average': average,
             'cost': cost,
@@ -576,10 +576,7 @@ module.exports = class gemini extends Exchange {
         const currencyId = this.safeString (transaction, 'currency');
         const code = this.safeCurrencyCode (currencyId, currency);
         const address = this.safeString (transaction, 'destination');
-        let type = this.safeString (transaction, 'type');
-        if (type !== undefined) {
-            type = type.toLowerCase ();
-        }
+        const type = this.safeStringLower (transaction, 'type');
         let status = 'pending';
         // When deposits show as Advanced or Complete they are available for trading.
         if (transaction['status']) {
@@ -638,8 +635,12 @@ module.exports = class gemini extends Exchange {
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
-    handleErrors (httpCode, reason, url, method, headers, body, response) {
+    handleErrors (httpCode, reason, url, method, headers, body, response, requestHeaders, requestBody) {
         if (response === undefined) {
+            if (typeof body === 'string') {
+                const feedback = this.id + ' ' + body;
+                this.throwBroadlyMatchedException (this.exceptions['broad'], body, feedback);
+            }
             return; // fallback to default error handler
         }
         //
@@ -654,17 +655,9 @@ module.exports = class gemini extends Exchange {
             const reason = this.safeString (response, 'reason');
             const message = this.safeString (response, 'message');
             const feedback = this.id + ' ' + message;
-            const exact = this.exceptions['exact'];
-            if (reason in exact) {
-                throw new exact[reason] (feedback);
-            } else if (message in exact) {
-                throw new exact[message] (feedback);
-            }
-            const broad = this.exceptions['broad'];
-            const broadKey = this.findBroadlyMatchedKey (broad, message);
-            if (broadKey !== undefined) {
-                throw new broad[broadKey] (feedback);
-            }
+            this.throwExactlyMatchedException (this.exceptions['exact'], reason, feedback);
+            this.throwExactlyMatchedException (this.exceptions['exact'], message, feedback);
+            this.throwBroadlyMatchedException (this.exceptions['broad'], message, feedback);
             throw new ExchangeError (feedback); // unknown message
         }
     }

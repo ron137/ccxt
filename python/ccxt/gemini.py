@@ -4,6 +4,13 @@
 # https://github.com/ccxt/ccxt/blob/master/CONTRIBUTING.md#how-to-contribute-code
 
 from ccxt.base.exchange import Exchange
+
+# -----------------------------------------------------------------------------
+
+try:
+    basestring  # Python 3
+except NameError:
+    basestring = str  # Python 2
 import base64
 import hashlib
 from ccxt.base.errors import ExchangeError
@@ -17,10 +24,11 @@ from ccxt.base.errors import OrderNotFound
 from ccxt.base.errors import NotSupported
 from ccxt.base.errors import DDoSProtection
 from ccxt.base.errors import ExchangeNotAvailable
+from ccxt.base.errors import OnMaintenance
 from ccxt.base.errors import InvalidNonce
 
 
-class gemini (Exchange):
+class gemini(Exchange):
 
     def describe(self):
         return self.deep_extend(super(gemini, self).describe(), {
@@ -161,7 +169,9 @@ class gemini (Exchange):
                     'System': ExchangeError,  # We are experiencing technical issues
                     'UnsupportedOption': BadRequest,  # This order execution option is not supported.
                 },
-                'broad': {},
+                'broad': {
+                    'The Gemini Exchange is currently undergoing maintenance.': OnMaintenance,  # The Gemini Exchange is currently undergoing maintenance. Please check https://status.gemini.com/ for more information.
+                },
             },
             'options': {
                 'fetchMarketsMethod': 'fetch_markets_from_web',
@@ -358,9 +368,7 @@ class gemini (Exchange):
             if amount is not None:
                 cost = price * amount
         type = None
-        side = self.safe_string(trade, 'type')
-        if side is not None:
-            side = side.lower()
+        side = self.safe_string_lower(trade, 'type')
         symbol = None
         if market is not None:
             symbol = market['symbol']
@@ -435,6 +443,7 @@ class gemini (Exchange):
         if market is not None:
             symbol = market['symbol']
         id = self.safe_string(order, 'order_id')
+        side = self.safe_string_lower(order, 'side')
         return {
             'id': id,
             'info': order,
@@ -444,7 +453,7 @@ class gemini (Exchange):
             'status': status,
             'symbol': symbol,
             'type': type,
-            'side': order['side'].lower(),
+            'side': side,
             'price': price,
             'average': average,
             'cost': cost,
@@ -538,16 +547,14 @@ class gemini (Exchange):
         if since is not None:
             request['timestamp'] = since
         response = self.privatePostV1Transfers(self.extend(request, params))
-        return self.parseTransactions(response)
+        return self.parse_transactions(response)
 
     def parse_transaction(self, transaction, currency=None):
         timestamp = self.safe_integer(transaction, 'timestampms')
         currencyId = self.safe_string(transaction, 'currency')
         code = self.safe_currency_code(currencyId, currency)
         address = self.safe_string(transaction, 'destination')
-        type = self.safe_string(transaction, 'type')
-        if type is not None:
-            type = type.lower()
+        type = self.safe_string_lower(transaction, 'type')
         status = 'pending'
         # When deposits show as Advanced or Complete they are available for trading.
         if transaction['status']:
@@ -600,8 +607,11 @@ class gemini (Exchange):
         url = self.urls['api'][api] + url
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, httpCode, reason, url, method, headers, body, response):
+    def handle_errors(self, httpCode, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if response is None:
+            if isinstance(body, basestring):
+                feedback = self.id + ' ' + body
+                self.throw_broadly_matched_exception(self.exceptions['broad'], body, feedback)
             return  # fallback to default error handler
         #
         #     {
@@ -615,15 +625,9 @@ class gemini (Exchange):
             reason = self.safe_string(response, 'reason')
             message = self.safe_string(response, 'message')
             feedback = self.id + ' ' + message
-            exact = self.exceptions['exact']
-            if reason in exact:
-                raise exact[reason](feedback)
-            elif message in exact:
-                raise exact[message](feedback)
-            broad = self.exceptions['broad']
-            broadKey = self.findBroadlyMatchedKey(broad, message)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
+            self.throw_exactly_matched_exception(self.exceptions['exact'], reason, feedback)
+            self.throw_exactly_matched_exception(self.exceptions['exact'], message, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], message, feedback)
             raise ExchangeError(feedback)  # unknown message
 
     def create_deposit_address(self, code, params={}):

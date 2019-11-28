@@ -7,7 +7,7 @@ from ccxt.base.exchange import Exchange
 from ccxt.base.errors import ExchangeError
 
 
-class foxbit (Exchange):
+class foxbit(Exchange):
 
     def describe(self):
         return self.deep_extend(super(foxbit, self).describe(), {
@@ -140,9 +140,7 @@ class foxbit (Exchange):
         }
 
     def parse_trade(self, trade, market=None):
-        timestamp = self.safe_integer(trade, 'date')
-        if timestamp is not None:
-            timestamp *= 1000
+        timestamp = self.safe_timestamp(trade, 'date')
         id = self.safe_string(trade, 'tid')
         symbol = None
         if market is not None:

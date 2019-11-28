@@ -21,7 +21,7 @@ from ccxt.base.errors import InvalidNonce
 from ccxt.base.errors import RequestTimeout
 
 
-class poloniex (Exchange):
+class poloniex(Exchange):
 
     def describe(self):
         return self.deep_extend(super(poloniex, self).describe(), {
@@ -124,8 +124,12 @@ class poloniex (Exchange):
             },
             'fees': {
                 'trading': {
-                    'maker': 0.15 / 100,
-                    'taker': 0.25 / 100,
+                    # https://github.com/ccxt/ccxt/issues/6064
+                    # starting from October 21, 2019 17:00 UTC
+                    # all spot trading fees will be reduced to 0.00%
+                    # until December 31, 2019 23:59 UTC
+                    'maker': 0.0,
+                    'taker': 0.0,
                 },
                 'funding': {},
             },
@@ -218,33 +222,37 @@ class poloniex (Exchange):
 
     def parse_ohlcv(self, ohlcv, market=None, timeframe='5m', since=None, limit=None):
         return [
-            ohlcv['date'] * 1000,
-            ohlcv['open'],
-            ohlcv['high'],
-            ohlcv['low'],
-            ohlcv['close'],
-            ohlcv['quoteVolume'],
+            self.safe_timestamp(ohlcv, 'date'),
+            self.safe_float(ohlcv, 'open'),
+            self.safe_float(ohlcv, 'high'),
+            self.safe_float(ohlcv, 'low'),
+            self.safe_float(ohlcv, 'close'),
+            self.safe_float(ohlcv, 'quoteVolume'),
         ]
 
     def fetch_ohlcv(self, symbol, timeframe='5m', since=None, limit=None, params={}):
         self.load_markets()
         market = self.market(symbol)
-        if since is None:
-            since = 0
         request = {
             'currencyPair': market['id'],
             'period': self.timeframes[timeframe],
-            'start': int(since / 1000),
         }
-        if limit is not None:
-            request['end'] = self.sum(request['start'], limit * self.timeframes[timeframe])
+        if since is None:
+            request['end'] = self.seconds()
+            if limit is None:
+                request['start'] = request['end'] - self.parse_timeframe('1w')  # max range = 1 week
+            else:
+                request['start'] = request['end'] - self.sum(limit) * self.parse_timeframe(timeframe)
         else:
-            request['end'] = self.sum(self.seconds(), 1)
+            request['start'] = int(since / 1000)
+            if limit is not None:
+                end = self.sum(request['start'], limit * self.parse_timeframe(timeframe))
+                request['end'] = end
         response = self.publicGetReturnChartData(self.extend(request, params))
         return self.parse_ohlcvs(response, market, timeframe, since, limit)
 
     def fetch_markets(self, params={}):
-        markets = self.publicGetReturnTicker()
+        markets = self.publicGetReturnTicker(params)
         keys = list(markets.keys())
         result = []
         for i in range(0, len(keys)):
@@ -261,8 +269,10 @@ class poloniex (Exchange):
             })
             isFrozen = self.safe_string(market, 'isFrozen')
             active = (isFrozen != '1')
-            result.append(self.extend(self.fees['trading'], {
+            numericId = self.safe_integer(market, 'id')
+            result.append({
                 'id': id,
+                'numericId': numericId,
                 'symbol': symbol,
                 'baseId': baseId,
                 'quoteId': quoteId,
@@ -271,7 +281,7 @@ class poloniex (Exchange):
                 'active': active,
                 'limits': limits,
                 'info': market,
-            }))
+            })
         return result
 
     def fetch_balance(self, params={}):
@@ -415,8 +425,10 @@ class poloniex (Exchange):
             precision = 8  # default precision, todo: fix "magic constants"
             code = self.safe_currency_code(id)
             active = (currency['delisted'] == 0) and not currency['disabled']
+            numericId = self.safe_integer(currency, 'id')
             result[code] = {
                 'id': id,
+                'numericId': numericId,
                 'code': code,
                 'info': currency,
                 'name': currency['name'],
@@ -486,7 +498,7 @@ class poloniex (Exchange):
         symbol = None
         base = None
         quote = None
-        if (not market) and('currencyPair' in list(trade.keys())):
+        if (not market) and ('currencyPair' in trade):
             currencyPair = trade['currencyPair']
             if currencyPair in self.markets_by_id:
                 market = self.markets_by_id[currencyPair]
@@ -820,7 +832,7 @@ class poloniex (Exchange):
         return self.filter_orders_by_status(orders, 'closed')
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
-        if type == 'market':
+        if type != 'limit':
             raise ExchangeError(self.id + ' allows limit orders only')
         self.load_markets()
         method = 'privatePost' + self.capitalize(side)
@@ -961,7 +973,7 @@ class poloniex (Exchange):
         self.load_markets()
         orders = self.fetch_open_orders(symbol, None, None, params)
         indexed = self.index_by(orders, 'id')
-        return 'open' if (id in list(indexed.keys())) else 'closed'
+        return 'open' if (id in indexed) else 'closed'
 
     def fetch_order_trades(self, id, symbol=None, since=None, limit=None, params={}):
         self.load_markets()
@@ -1094,8 +1106,8 @@ class poloniex (Exchange):
         currency = None
         if code is not None:
             currency = self.currency(code)
-        withdrawals = self.parseTransactions(response['withdrawals'], currency, since, limit)
-        deposits = self.parseTransactions(response['deposits'], currency, since, limit)
+        withdrawals = self.parse_transactions(response['withdrawals'], currency, since, limit)
+        deposits = self.parse_transactions(response['deposits'], currency, since, limit)
         transactions = self.array_concat(deposits, withdrawals)
         return self.filterByCurrencySinceLimit(self.sort_by(transactions, 'timestamp'), code, since, limit)
 
@@ -1106,7 +1118,7 @@ class poloniex (Exchange):
         currency = None
         if code is not None:
             currency = self.currency(code)
-        withdrawals = self.parseTransactions(response['withdrawals'], currency, since, limit)
+        withdrawals = self.parse_transactions(response['withdrawals'], currency, since, limit)
         return self.filterByCurrencySinceLimit(withdrawals, code, since, limit)
 
     def fetch_deposits(self, code=None, since=None, limit=None, params={}):
@@ -1116,7 +1128,7 @@ class poloniex (Exchange):
         currency = None
         if code is not None:
             currency = self.currency(code)
-        deposits = self.parseTransactions(response['deposits'], currency, since, limit)
+        deposits = self.parse_transactions(response['deposits'], currency, since, limit)
         return self.filterByCurrencySinceLimit(deposits, code, since, limit)
 
     def parse_transaction_status(self, status):
@@ -1158,9 +1170,7 @@ class poloniex (Exchange):
         #         "withdrawalNumber": 11162900
         #     }
         #
-        timestamp = self.safe_integer(transaction, 'timestamp')
-        if timestamp is not None:
-            timestamp = timestamp * 1000
+        timestamp = self.safe_timestamp(transaction, 'timestamp')
         currencyId = self.safe_string(transaction, 'currency')
         code = self.safe_currency_code(currencyId)
         status = self.safe_string(transaction, 'status', 'pending')
@@ -1169,7 +1179,7 @@ class poloniex (Exchange):
             parts = status.split(': ')
             numParts = len(parts)
             status = parts[0]
-            if (numParts > 1) and(txid is None):
+            if (numParts > 1) and (txid is None):
                 txid = parts[1]
             status = self.parse_transaction_status(status)
         type = self.safe_string(transaction, 'type')
@@ -1221,18 +1231,13 @@ class poloniex (Exchange):
             }
         return {'url': url, 'method': method, 'body': body, 'headers': headers}
 
-    def handle_errors(self, code, reason, url, method, headers, body, response):
+    def handle_errors(self, code, reason, url, method, headers, body, response, requestHeaders, requestBody):
         if response is None:
             return
         # {"error":"Permission denied."}
         if 'error' in response:
             message = response['error']
-            feedback = self.id + ' ' + self.json(response)
-            exact = self.exceptions['exact']
-            if message in exact:
-                raise exact[message](feedback)
-            broad = self.exceptions['broad']
-            broadKey = self.findBroadlyMatchedKey(broad, message)
-            if broadKey is not None:
-                raise broad[broadKey](feedback)
+            feedback = self.id + ' ' + body
+            self.throw_exactly_matched_exception(self.exceptions['exact'], message, feedback)
+            self.throw_broadly_matched_exception(self.exceptions['broad'], message, feedback)
             raise ExchangeError(feedback)  # unknown message

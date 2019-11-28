@@ -5,13 +5,14 @@
 
 from ccxt.bittrex import bittrex
 import hashlib
+import math
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import InvalidOrder
 
 
-class bleutrade (bittrex):
+class bleutrade(bittrex):
 
     def describe(self):
         timeframes = {
@@ -180,6 +181,10 @@ class bleutrade (bittrex):
                 'Invalid apikey or apisecret': AuthenticationError,
             },
             'options': {
+                # price precision by quote currency code
+                'pricePrecisionByCode': {
+                    'USD': 3,
+                },
                 'parseOrderStatus': True,
                 'disableNonce': False,
                 'symbolSeparator': '_',
@@ -187,6 +192,55 @@ class bleutrade (bittrex):
         })
         # bittrex inheritance override
         result['timeframes'] = timeframes
+        return result
+
+    def fetch_markets(self, params={}):
+        # https://github.com/ccxt/ccxt/issues/5668
+        response = self.publicGetMarkets(params)
+        result = []
+        markets = self.safe_value(response, 'result')
+        for i in range(0, len(markets)):
+            market = markets[i]
+            id = self.safe_string(market, 'MarketName')
+            baseId = self.safe_string(market, 'MarketCurrency')
+            quoteId = self.safe_string(market, 'BaseCurrency')
+            base = self.safe_currency_code(baseId)
+            quote = self.safe_currency_code(quoteId)
+            symbol = base + '/' + quote
+            pricePrecision = 8
+            if quote in self.options['pricePrecisionByCode']:
+                pricePrecision = self.options['pricePrecisionByCode'][quote]
+            precision = {
+                'amount': 8,
+                'price': pricePrecision,
+            }
+            # bittrex uses boolean values, bleutrade uses strings
+            active = self.safe_value(market, 'IsActive', False)
+            if (active != 'false') and active:
+                active = True
+            else:
+                active = False
+            result.append({
+                'id': id,
+                'symbol': symbol,
+                'base': base,
+                'quote': quote,
+                'baseId': baseId,
+                'quoteId': quoteId,
+                'active': active,
+                'info': market,
+                'precision': precision,
+                'limits': {
+                    'amount': {
+                        'min': self.safe_float(market, 'MinTradeSize'),
+                        'max': None,
+                    },
+                    'price': {
+                        'min': math.pow(10, -precision['price']),
+                        'max': None,
+                    },
+                },
+            })
         return result
 
     def parse_order_status(self, status):
@@ -260,7 +314,7 @@ class bleutrade (bittrex):
         self.load_markets()
         method = 'accountGetDeposithistory' if (type == 'deposit') else 'accountGetWithdrawhistory'
         response = getattr(self, method)(params)
-        result = self.parseTransactions(response['result'])
+        result = self.parse_transactions(response['result'])
         return self.filterByCurrencySinceLimit(result, code, since, limit)
 
     def fetch_deposits(self, code=None, since=None, limit=None, params={}):
@@ -479,13 +533,13 @@ class bleutrade (bittrex):
         # We parse different fields in a very specific order.
         # Order might well be closed and then canceled.
         status = None
-        if ('Opened' in list(order.keys())) and order['Opened']:
+        if ('Opened' in order) and order['Opened']:
             status = 'open'
-        if ('Closed' in list(order.keys())) and order['Closed']:
+        if ('Closed' in order) and order['Closed']:
             status = 'closed'
-        if ('CancelInitiated' in list(order.keys())) and order['CancelInitiated']:
+        if ('CancelInitiated' in order) and order['CancelInitiated']:
             status = 'canceled'
-        if ('Status' in list(order.keys())) and self.options['parseOrderStatus']:
+        if ('Status' in order) and self.options['parseOrderStatus']:
             status = self.parse_order_status(self.safe_string(order, 'Status'))
         symbol = None
         marketId = self.safe_string(order, 'Exchange')
@@ -504,9 +558,9 @@ class bleutrade (bittrex):
         if 'Created' in order:
             timestamp = self.parse8601(order['Created'] + '+00:00')
         lastTradeTimestamp = None
-        if ('TimeStamp' in list(order.keys())) and(order['TimeStamp'] is not None):
+        if ('TimeStamp' in order) and (order['TimeStamp'] is not None):
             lastTradeTimestamp = self.parse8601(order['TimeStamp'] + '+00:00')
-        if ('Closed' in list(order.keys())) and(order['Closed'] is not None):
+        if ('Closed' in order) and (order['Closed'] is not None):
             lastTradeTimestamp = self.parse8601(order['Closed'] + '+00:00')
         if timestamp is None:
             timestamp = lastTradeTimestamp
@@ -646,7 +700,7 @@ class bleutrade (bittrex):
             self.check_required_credentials()
             if api == 'account':
                 url += api + '/'
-            if ((api == 'account') and(path != 'withdraw')) or (path == 'openorders'):
+            if ((api == 'account') and (path != 'withdraw')) or (path == 'openorders'):
                 url += method.lower()
             request = {
                 'apikey': self.apiKey,

@@ -109,8 +109,12 @@ module.exports = class poloniex extends Exchange {
             },
             'fees': {
                 'trading': {
-                    'maker': 0.15 / 100,
-                    'taker': 0.25 / 100,
+                    // https://github.com/ccxt/ccxt/issues/6064
+                    // starting from October 21, 2019 17:00 UTC
+                    // all spot trading fees will be reduced to 0.00%
+                    // until December 31, 2019 23:59 UTC
+                    'maker': 0.0,
+                    'taker': 0.0,
                 },
                 'funding': {},
             },
@@ -206,37 +210,42 @@ module.exports = class poloniex extends Exchange {
 
     parseOHLCV (ohlcv, market = undefined, timeframe = '5m', since = undefined, limit = undefined) {
         return [
-            ohlcv['date'] * 1000,
-            ohlcv['open'],
-            ohlcv['high'],
-            ohlcv['low'],
-            ohlcv['close'],
-            ohlcv['quoteVolume'],
+            this.safeTimestamp (ohlcv, 'date'),
+            this.safeFloat (ohlcv, 'open'),
+            this.safeFloat (ohlcv, 'high'),
+            this.safeFloat (ohlcv, 'low'),
+            this.safeFloat (ohlcv, 'close'),
+            this.safeFloat (ohlcv, 'quoteVolume'),
         ];
     }
 
     async fetchOHLCV (symbol, timeframe = '5m', since = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
         const market = this.market (symbol);
-        if (since === undefined) {
-            since = 0;
-        }
         const request = {
             'currencyPair': market['id'],
             'period': this.timeframes[timeframe],
-            'start': parseInt (since / 1000),
         };
-        if (limit !== undefined) {
-            request['end'] = this.sum (request['start'], limit * this.timeframes[timeframe]);
+        if (since === undefined) {
+            request['end'] = this.seconds ();
+            if (limit === undefined) {
+                request['start'] = request['end'] - this.parseTimeframe ('1w'); // max range = 1 week
+            } else {
+                request['start'] = request['end'] - this.sum (limit) * this.parseTimeframe (timeframe);
+            }
         } else {
-            request['end'] = this.sum (this.seconds (), 1);
+            request['start'] = parseInt (since / 1000);
+            if (limit !== undefined) {
+                const end = this.sum (request['start'], limit * this.parseTimeframe (timeframe));
+                request['end'] = end;
+            }
         }
         const response = await this.publicGetReturnChartData (this.extend (request, params));
         return this.parseOHLCVs (response, market, timeframe, since, limit);
     }
 
     async fetchMarkets (params = {}) {
-        const markets = await this.publicGetReturnTicker ();
+        const markets = await this.publicGetReturnTicker (params);
         const keys = Object.keys (markets);
         const result = [];
         for (let i = 0; i < keys.length; i++) {
@@ -253,8 +262,10 @@ module.exports = class poloniex extends Exchange {
             });
             const isFrozen = this.safeString (market, 'isFrozen');
             const active = (isFrozen !== '1');
-            result.push (this.extend (this.fees['trading'], {
+            const numericId = this.safeInteger (market, 'id');
+            result.push ({
                 'id': id,
+                'numericId': numericId,
                 'symbol': symbol,
                 'baseId': baseId,
                 'quoteId': quoteId,
@@ -263,7 +274,7 @@ module.exports = class poloniex extends Exchange {
                 'active': active,
                 'limits': limits,
                 'info': market,
-            }));
+            });
         }
         return result;
     }
@@ -423,8 +434,10 @@ module.exports = class poloniex extends Exchange {
             const precision = 8; // default precision, todo: fix "magic constants"
             const code = this.safeCurrencyCode (id);
             const active = (currency['delisted'] === 0) && !currency['disabled'];
+            const numericId = this.safeInteger (currency, 'id');
             result[code] = {
                 'id': id,
+                'numericId': numericId,
                 'code': code,
                 'info': currency,
                 'name': currency['name'],
@@ -884,7 +897,7 @@ module.exports = class poloniex extends Exchange {
     }
 
     async createOrder (symbol, type, side, amount, price = undefined, params = {}) {
-        if (type === 'market') {
+        if (type !== 'limit') {
             throw new ExchangeError (this.id + ' allows limit orders only');
         }
         await this.loadMarkets ();
@@ -1262,10 +1275,7 @@ module.exports = class poloniex extends Exchange {
         //         "withdrawalNumber": 11162900
         //     }
         //
-        let timestamp = this.safeInteger (transaction, 'timestamp');
-        if (timestamp !== undefined) {
-            timestamp = timestamp * 1000;
-        }
+        const timestamp = this.safeTimestamp (transaction, 'timestamp');
         const currencyId = this.safeString (transaction, 'currency');
         const code = this.safeCurrencyCode (currencyId);
         let status = this.safeString (transaction, 'status', 'pending');
@@ -1334,23 +1344,16 @@ module.exports = class poloniex extends Exchange {
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
-    handleErrors (code, reason, url, method, headers, body, response) {
+    handleErrors (code, reason, url, method, headers, body, response, requestHeaders, requestBody) {
         if (response === undefined) {
             return;
         }
         // {"error":"Permission denied."}
         if ('error' in response) {
             const message = response['error'];
-            const feedback = this.id + ' ' + this.json (response);
-            const exact = this.exceptions['exact'];
-            if (message in exact) {
-                throw new exact[message] (feedback);
-            }
-            const broad = this.exceptions['broad'];
-            const broadKey = this.findBroadlyMatchedKey (broad, message);
-            if (broadKey !== undefined) {
-                throw new broad[broadKey] (feedback);
-            }
+            const feedback = this.id + ' ' + body;
+            this.throwExactlyMatchedException (this.exceptions['exact'], message, feedback);
+            this.throwBroadlyMatchedException (this.exceptions['broad'], message, feedback);
             throw new ExchangeError (feedback); // unknown message
         }
     }

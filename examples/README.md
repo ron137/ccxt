@@ -83,6 +83,22 @@ php -f path/to/example.php # substitute for actual filename here
 
 [Chasing fake volume: a crypto-plague](https://medium.com/@sylvainartplayribes/chasing-fake-volume-a-crypto-plague-ea1a3c1e0b5e) – An article @ Medium on trading volumes analysis.
 
+[TradingBot series — Architecture for a trading bot](https://medium.com/@MattGosden/tradingbot-series-architecture-for-a-trading-bot-ac2352508c82) – An article on building a trading bot using Python, exchange APIs, Backtrader, Telegram and CCXT.
+
+[Create Your Own Python Server to Gather High Granularity Market Data for Cryptocurrencies (And use it to create a Neural Network Trading Bot)](https://blog.goodaudience.com/create-your-own-python-server-to-gather-high-granularity-market-data-for-cryptocurrencies-and-use-8a4b2f46e04c) – A read on collecting and analyzing data with neural neutworks and CCXT.
+
+[How to build an AI crypto robo trader on binance in python with jupyter notebook](https://medium.com/@dumaysacha/how-to-build-an-ai-crypto-robo-trader-on-binance-in-python-with-jupyter-notebook-episode-1-97f26a805722) – An article on creating algorithhmic trading bots with Jupyter Notebooks and CCXT.
+
+[Advanced Cryptocurrency Trading Bot — Python — Open Source](https://medium.com/@BlockchainEng/advanced-cryptocurrency-trading-bot-python-open-source-chapters-5-6-7-72b36b378750) – An article in the course [Creating a Cryptocurrency Trading Bot in Python](https://medium.com/@BlockchainEng/how-to-build-an-automated-cryptocurrency-trading-bot-on-binance-with-python-2cd9b5874e44) by [@BlockchainEngineer](https://medium.com/@BlockchainEng)
+
+[Use of JavaScript for Blockchain Projects](https://medium.com/@WebbyLab/use-of-javascript-for-blockchain-projects-104191b9bb0e) – An overview of the available tools for developers.
+
+[Crypto-Aggregator: My Open Source Alternative to CoinMarketCap](https://www.hackernoon.com/crypto-aggregator-an-open-source-alternative-for-coinmarketcap-3a39d31wt) – An article on how to make your own aggregator similar to CoinMarketCap with Node.js and CCXT.
+
+[Building some node js tools to setup machine learning trading](https://medium.com/@kid.bytes/building-some-node-js-tools-to-setup-machine-learning-trading-pt-2-13f44e1b1df7) – An article in a series on setting up some tools to get started with machine learning for crypto trading.
+
+[Trade and Invest Smarter — The Reinforcement Learning Way](https://towardsdatascience.com/trade-smarter-w-reinforcement-learning-a5e91163f315) – A deep dive into  trading and investing using deep reinforcement learning with Python.
+
 [CCXTが便利な理由！CCXTライブラリをインストールしよう](https://ryota-trade.com/?p=476) – An article in Japanese on getting CCXT up and runining.
 
 [Bitflyerや各取引所の個別APIをCCXTライブラリ経由で直接利用する方法](https://ryota-trade.com/?p=629) – How to use Bitflyer and individual API of each exchange directly via the CCXT library.
@@ -128,11 +144,15 @@ php -f path/to/example.php # substitute for actual filename here
 [数字货币量化交易3 ccxt Custom API命令详解及node版本使用演示](https://www.bilibili.com/video/av21842988)
 – Trading Digital Currencies 3: Details on using custom exchange-specific [implicit methods](https://github.com/ccxt/ccxt/wiki/Manual#implicit-api-methods) in ccxt (video in Chinese)
 
+[币圈程序化交易被使用最多的开源项目：ccxt](https://bihu.com/article/1629320804) – An article explaining what CCXT is.
+
 [Algorithmic Trading - Aula 4](https://www.youtube.com/watch?v=BkKebXrhMGY) – A video introduction to algorithmic trading with CCXT from Curso Algo Trading in Portuguese language.
 
 [Лучшая криптотрейдинг библиотека?](http://medium.com/@vladthelittleone/лучшая-криптотрейдинг-библиотека-67e308f96c1f) – An article in Russian on setting up CCXT to connect and trade with crypto exchanges.
 
 [Présentation de projet - Créer un Bot Telegram de A à Z (+CCXT)](https://www.youtube.com/watch?v=yayJKRtg5M4) – La création d'un bot Telegram en Node.js, qui va rechercher des informations sur les différentes marketpalce de crypto-monnaies, et cela via la librairie CCXT.
+
+[Simple trading bot in JavaScript using ~40 lines of code](https://www.tuicool.com/articles/vqymAj3) – A demo of how to make a trading bot with CCXT.
 
 [Using ccxt and technicalindicators to calculate MACD for BTC/USDT with Node.js](https://runkit.com/dhilipb/macd-for-btc-usdt) – A runkit sample showing how to fetch data and run statistical calculations.
 
