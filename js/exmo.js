@@ -492,9 +492,9 @@ module.exports = class exmo extends Exchange {
     async fetchCurrencies (params = {}) {
         const fees = await this.fetchFundingFees (params);
         // todo redesign the 'fee' property in currencies
-        const ids = Object.keys (fees['withdraw']);
         const limitsByMarketId = this.indexBy (fees['info']['data']['limits'], 'pair');
         const marketIds = Object.keys (limitsByMarketId);
+        let idsSet = new Set ();
         const minAmounts = {};
         const minPrices = {};
         const minCosts = {};
@@ -507,6 +507,8 @@ module.exports = class exmo extends Exchange {
             const [ baseId, quoteId ] = marketId.split ('/');
             const base = this.safeCurrencyCode (baseId);
             const quote = this.safeCurrencyCode (quoteId);
+            idsSet.add(baseId)
+            idsSet.add(quote)
             const maxAmount = this.safeFloat (limit, 'max_q');
             const maxPrice = this.safeFloat (limit, 'max_p');
             const maxCost = this.safeFloat (limit, 'max_a');
@@ -521,6 +523,7 @@ module.exports = class exmo extends Exchange {
             maxCosts[quote] = Math.max (this.safeFloat (maxCosts, quote, maxCost), maxCost);
         }
         const result = {};
+        const ids = Array.from(idsSet);
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
             const code = this.safeCurrencyCode (id);
