@@ -12,6 +12,7 @@ from ccxt.base.errors import ArgumentsRequired
 from ccxt.base.errors import BadRequest
 from ccxt.base.errors import InsufficientFunds
 from ccxt.base.errors import OrderNotFound
+from ccxt.base.errors import DDoSProtection
 
 
 class stex(Exchange):
@@ -187,12 +188,13 @@ class stex(Exchange):
             },
             'exceptions': {
                 'exact': {
-                    # {"success":false,"message":"Wrong parameters","errors":{"candleType":["Invalid Candle Typenot "]}}
+                    # {"success":false,"message":"Wrong parameters","errors":{"candleType":["Invalid Candle Type!"]}}
                     # {"success":false,"message":"Wrong parameters","errors":{"time":["timeStart or timeEnd is less then 1"]}}
                     'Wrong parameters': BadRequest,
                     'Unauthenticated.': AuthenticationError,  # {"message":"Unauthenticated."}
                     'Server Error': ExchangeError,  # {"message": "Server Error"}
                     'This feature is only enabled for users verifies by Cryptonomica': PermissionDenied,  # {"success":false,"message":"This feature is only enabled for users verifies by Cryptonomica"}
+                    'Too Many Attempts.': DDoSProtection,  # {"message": "Too Many Attempts."}
                 },
                 'broad': {
                     'Not enough': InsufficientFunds,  # {"success":false,"message":"Not enough  ETH"}
@@ -324,8 +326,8 @@ class stex(Exchange):
             minBuyPrice = self.safe_float(market, 'min_buy_price')
             minSellPrice = self.safe_float(market, 'min_sell_price')
             minPrice = max(minBuyPrice, minSellPrice)
-            buyFee = self.safe_float(market, 'buy_fee_percent')
-            sellFee = self.safe_float(market, 'sell_fee_percent')
+            buyFee = self.safe_float(market, 'buy_fee_percent') / 100
+            sellFee = self.safe_float(market, 'sell_fee_percent') / 100
             fee = max(buyFee, sellFee)
             result.append({
                 'id': id,
@@ -1623,7 +1625,7 @@ class stex(Exchange):
         if response is None:
             return  # fallback to default error handler
         #
-        #     {"success":false,"message":"Wrong parameters","errors":{"candleType":["Invalid Candle Typenot "]}}
+        #     {"success":false,"message":"Wrong parameters","errors":{"candleType":["Invalid Candle Type!"]}}
         #     {"success":false,"message":"Wrong parameters","errors":{"time":["timeStart or timeEnd is less then 1"]}}
         #     {"success":false,"message":"Not enough  ETH"}
         #

@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ArgumentsRequired, AuthenticationError, ExchangeError, InsufficientFunds, OrderNotFound, PermissionDenied, BadRequest } = require ('./base/errors');
+const { ArgumentsRequired, AuthenticationError, ExchangeError, InsufficientFunds, OrderNotFound, PermissionDenied, BadRequest, DDoSProtection } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -185,6 +185,7 @@ module.exports = class stex extends Exchange {
                     'Unauthenticated.': AuthenticationError, // {"message":"Unauthenticated."}
                     'Server Error': ExchangeError, // { "message": "Server Error" }
                     'This feature is only enabled for users verifies by Cryptonomica': PermissionDenied, // {"success":false,"message":"This feature is only enabled for users verifies by Cryptonomica"}
+                    'Too Many Attempts.': DDoSProtection, // { "message": "Too Many Attempts." }
                 },
                 'broad': {
                     'Not enough': InsufficientFunds, // {"success":false,"message":"Not enough  ETH"}
@@ -319,8 +320,8 @@ module.exports = class stex extends Exchange {
             const minBuyPrice = this.safeFloat (market, 'min_buy_price');
             const minSellPrice = this.safeFloat (market, 'min_sell_price');
             const minPrice = Math.max (minBuyPrice, minSellPrice);
-            const buyFee = this.safeFloat (market, 'buy_fee_percent');
-            const sellFee = this.safeFloat (market, 'sell_fee_percent');
+            const buyFee = this.safeFloat (market, 'buy_fee_percent') / 100;
+            const sellFee = this.safeFloat (market, 'sell_fee_percent') / 100;
             const fee = Math.max (buyFee, sellFee);
             result.push ({
                 'id': id,

@@ -640,11 +640,11 @@ class exmo(Exchange):
         }
         response = self.publicGetOrderBook(self.extend(request, params))
         result = {}
-        ids = list(response.keys())
-        for i in range(0, len(ids)):
-            id = ids[i]
-            symbol = self.find_symbol(id)
-            result[symbol] = self.parse_order_book(response[id], None, 'bid', 'ask')
+        marketIds = list(response.keys())
+        for i in range(0, len(marketIds)):
+            marketId = marketIds[i]
+            symbol = self.markets_by_id[marketId] if (marketId in self.markets_by_id) else marketId
+            result[symbol] = self.parse_order_book(response[marketId], None, 'bid', 'ask')
         return result
 
     def parse_ticker(self, ticker, market=None):
@@ -1287,9 +1287,6 @@ class exmo(Exchange):
                     errorSubParts = errorParts[0].split(' ')
                     numSubParts = len(errorSubParts)
                     code = errorSubParts[1] if (numSubParts > 1) else errorSubParts[0]
-                feedback = self.id + ' ' + self.json(response)
-                exceptions = self.exceptions
-                if code in exceptions:
-                    raise exceptions[code](feedback)
-                else:
-                    raise ExchangeError(feedback)
+                feedback = self.id + ' ' + body
+                self.throw_exactly_matched_exception(self.exceptions, code, feedback)
+                raise ExchangeError(feedback)
