@@ -106,6 +106,7 @@ module.exports = class binance extends Exchange {
                         'futures/transfer',
                         // https://binance-docs.github.io/apidocs/spot/en/#withdraw-sapi
                         'capital/config/getall', // get networks for withdrawing USDT ERC20 vs USDT Omni
+                        'capital/deposit/address',
                     ],
                     'post': [
                         'asset/dust',
@@ -1531,14 +1532,13 @@ module.exports = class binance extends Exchange {
         await this.loadMarkets ();
         const currency = this.currency (code);
         const request = {
-            'asset': currency['id'],
+            'coin': currency['id'],
         };
-        const response = await this.wapiGetDepositAddress (this.extend (request, params));
-        const success = this.safeValue (response, 'success');
-        if ((success === undefined) || !success) {
+        const response = await this.sapiGetCapitalDepositAddress (this.extend (request, params));
+        const address = this.safeString (response, 'address');
+        if ((address === undefined) || !address) {
             throw new InvalidAddress (this.id + ' fetchDepositAddress returned an empty response – create the deposit address in the user settings first.');
         }
-        const address = this.safeString (response, 'address');
         const tag = this.safeString (response, 'addressTag');
         this.checkAddress (address);
         return {
