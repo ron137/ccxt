@@ -782,7 +782,7 @@ module.exports = class binance extends Exchange {
         const timestamp = this.safeInteger2 (trade, 'T', 'time');
         const price = this.safeFloat2 (trade, 'p', 'price');
         const amount = this.safeFloat2 (trade, 'q', 'qty');
-        const id = this.safeString2 (trade, 'a', 'id');
+        const id = this.safeString2 (trade, 'a', 'id') || this.safeString (trade, 'tradeId');
         let side = undefined;
         const orderId = this.safeString (trade, 'orderId');
         if ('m' in trade) {
@@ -973,6 +973,11 @@ module.exports = class binance extends Exchange {
         let trades = undefined;
         const fills = this.safeValue (order, 'fills');
         if (fills !== undefined) {
+            for (let i = 0; i < fills.length; i++) {
+                fills[i].time = timestamp
+                fills[i].orderId = id
+                fills[i].side = side
+            }
             trades = this.parseTrades (fills, market);
             const numTrades = trades.length;
             if (numTrades > 0) {
