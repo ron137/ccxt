@@ -1544,7 +1544,7 @@ module.exports = class binance extends Exchange {
         if ((address === undefined) || !address) {
             throw new InvalidAddress (this.id + ' fetchDepositAddress returned an empty response – create the deposit address in the user settings first.');
         }
-        const tag = this.safeString (response, 'addressTag');
+        const tag = this.safeString2 (response, 'addressTag', 'tag');
         this.checkAddress (address);
         return {
             'currency': code,
