@@ -862,7 +862,7 @@ module.exports = class exmo extends Exchange {
             'trades': undefined,
         };
         this.orders[id] = order;
-        return order;
+        return JSON.parse(JSON.stringify(order));   
     }
 
     async cancelOrder (id, symbol = undefined, params = {}) {
