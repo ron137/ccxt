@@ -868,11 +868,21 @@ module.exports = class exmo extends Exchange {
     async cancelOrder (id, symbol = undefined, params = {}) {
         await this.loadMarkets ();
         const request = { 'order_id': id };
-        const response = await this.privatePostOrderCancel (this.extend (request, params));
-        if (id in this.orders) {
-            this.orders[id]['status'] = 'canceled';
+        try {
+            const response = await this.privatePostOrderCancel (this.extend (request, params));
+            if (id in this.orders) {
+                this.orders[id]['status'] = 'canceled';
+            }
+            return response;
+        } catch (e) {
+            if (e instanceof OrderNotFound) {
+                if (id in this.orders) {
+                    this.orders[id]['status'] = 'closed';
+                }
+            } else {
+                throw e
+            }
         }
-        return response;
     }
 
     async fetchOrder (id, symbol = undefined, params = {}) {
@@ -910,7 +920,7 @@ module.exports = class exmo extends Exchange {
         } catch (e) {
             if (e instanceof OrderNotFound) {
                 if (id in this.orders) {
-                    return this.orders[id];
+                    return JSON.parse(JSON.stringify(this.orders[id]));
                 }
             }
         }
