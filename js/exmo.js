@@ -921,10 +921,13 @@ module.exports = class exmo extends Exchange {
             if (e instanceof OrderNotFound) {
                 if (id in this.orders) {
                     return JSON.parse(JSON.stringify(this.orders[id]));
+                } else {
+                    throw new OrderNotFound (this.id + ' fetchOrder order id ' + id.toString () + ' not found in cache.');
                 }
+            } else {
+                throw e
             }
         }
-        throw new OrderNotFound (this.id + ' fetchOrder order id ' + id.toString () + ' not found in cache.');
     }
 
     async fetchOrderTrades (id, symbol = undefined, since = undefined, limit = undefined, params = {}) {
