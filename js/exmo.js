@@ -1076,6 +1076,10 @@ module.exports = class exmo extends Exchange {
         }
         let price = this.safeFloat (order, 'price');
         let cost = this.safeFloat (order, 'amount');
+        if (cost === undefined) {
+            const costField = (side === 'buy') ? 'out_amount' : 'in_amount';
+            cost = this.safeFloat (order, costField);
+        }
         let filled = 0.0;
         const trades = [];
         const transactions = this.safeValue (order, 'trades', []);
@@ -1101,6 +1105,9 @@ module.exports = class exmo extends Exchange {
                 trades.push (trade);
             }
             lastTradeTimestamp = trades[numTransactions - 1]['timestamp'];
+        }
+        if (filled !== undefined) {
+            filled = this.currencyToPrecision(market.base, filled)
         }
         let remaining = undefined;
         if (amount !== undefined) {
