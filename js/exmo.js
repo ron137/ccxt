@@ -1141,11 +1141,6 @@ module.exports = class exmo extends Exchange {
                 }
             }
         }
-        if (average === undefined) {
-            if (price !== undefined) {
-                average = price
-            }
-        }
         const fee = {
             'cost': feeCost,
             'currency': feeCurrency,
