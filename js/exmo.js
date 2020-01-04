@@ -1107,7 +1107,7 @@ module.exports = class exmo extends Exchange {
             lastTradeTimestamp = trades[numTransactions - 1]['timestamp'];
         }
         if (filled !== undefined) {
-            filled = this.currencyToPrecision(market.base, filled)
+            filled = parseFloat(this.currencyToPrecision(market.base, filled))
         }
         let remaining = undefined;
         if (amount !== undefined) {
