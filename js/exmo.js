@@ -1084,6 +1084,7 @@ module.exports = class exmo extends Exchange {
         const trades = [];
         const transactions = this.safeValue (order, 'trades', []);
         let feeCost = undefined;
+        let feeCurrency = undefined;
         let lastTradeTimestamp = undefined;
         let average = undefined;
         const numTransactions = transactions.length;
@@ -1102,6 +1103,7 @@ module.exports = class exmo extends Exchange {
                 }
                 filled = this.sum (filled, trade['amount']);
                 feeCost = this.sum (feeCost, trade['fee']['cost']);
+                feeCurrency = this.safeString (trade['fee'], 'currency')
                 trades.push (trade);
             }
             lastTradeTimestamp = trades[numTransactions - 1]['timestamp'];
@@ -1122,10 +1124,9 @@ module.exports = class exmo extends Exchange {
         if (market === undefined) {
             market = this.getMarketFromTrades (trades);
         }
-        let feeCurrency = undefined;
+        
         if (market !== undefined) {
             symbol = market['symbol'];
-            feeCurrency = market['quote'];
         }
         if (cost === undefined) {
             if (price !== undefined) {
