@@ -704,6 +704,10 @@ module.exports = class exmo extends Exchange {
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
             const market = this.markets_by_id[id];
+            if (!market) {
+                console.log('No market',id)
+                continue
+            }
             const symbol = market['symbol'];
             const ticker = response[id];
             result[symbol] = this.parseTicker (ticker, market);
