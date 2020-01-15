@@ -876,8 +876,11 @@ module.exports = class exmo extends Exchange {
             return response;
         } catch (e) {
             if (e instanceof OrderNotFound) {
-                if (id in this.orders) {
-                    this.orders[id]['status'] = 'closed';
+                const order = await this.ccxtClient.fetchOrder(id, symbol)
+                if (order.status === 'closed' && id in this.orders) {
+                    this.orders[id] = order;
+                } else {
+                    throw e;
                 }
             } else {
                 throw e
