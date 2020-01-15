@@ -389,6 +389,7 @@ module.exports = class exmo extends Exchange {
                 '40015': ExchangeError, // API function do not exist
                 '40016': OnMaintenance, // {"result":false,"error":"Error 40016: Maintenance work in progress"}
                 '40017': AuthenticationError, // Wrong API Key
+                '40034': DDoSProtection,
                 '50052': InsufficientFunds,
                 '50054': InsufficientFunds,
                 '50304': OrderNotFound, // "Order was not found '123456789'" (fetching order trades for an order that does not have trades yet)
@@ -876,7 +877,7 @@ module.exports = class exmo extends Exchange {
             return response;
         } catch (e) {
             if (e instanceof OrderNotFound) {
-                const order = await this.ccxtClient.fetchOrder(id, symbol)
+                const order = await this.fetchOrder(id, symbol)
                 if (order.status === 'closed' && id in this.orders) {
                     this.orders[id] = order;
                 } else {
