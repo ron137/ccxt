@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { ExchangeError, ExchangeNotAvailable, AuthenticationError, BadRequest, PermissionDenied, InvalidAddress } = require ('./base/errors');
+const { ExchangeError, ExchangeNotAvailable, AuthenticationError, BadRequest, PermissionDenied, InvalidAddress, ArgumentsRequired } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -129,6 +129,8 @@ module.exports = class bithumb extends Exchange {
                         'max': undefined,
                     },
                 },
+                'baseId': undefined,
+                'quoteId': undefined,
             });
         }
         return result;
@@ -147,11 +149,10 @@ module.exports = class bithumb extends Exchange {
             const code = codes[i];
             const account = this.account ();
             const currency = this.currency (code);
-            const currencyId = currency['id'];
-            const lowercase = currencyId.toLowerCase ();
-            account['total'] = this.safeFloat (balances, 'total_' + lowercase);
-            account['used'] = this.safeFloat (balances, 'in_use_' + lowercase);
-            account['free'] = this.safeFloat (balances, 'available_' + lowercase);
+            const lowerCurrencyId = this.safeStringLower (currency, 'id');
+            account['total'] = this.safeFloat (balances, 'total_' + lowerCurrencyId);
+            account['used'] = this.safeFloat (balances, 'in_use_' + lowerCurrencyId);
+            account['free'] = this.safeFloat (balances, 'available_' + lowerCurrencyId);
             result[code] = account;
         }
         return this.parseBalance (result);
@@ -343,18 +344,20 @@ module.exports = class bithumb extends Exchange {
     async cancelOrder (id, symbol = undefined, params = {}) {
         const side_in_params = ('side' in params);
         if (!side_in_params) {
-            throw new ExchangeError (this.id + ' cancelOrder requires a `side` parameter (sell or buy) and a `currency` parameter');
+            throw new ArgumentsRequired (this.id + ' cancelOrder requires a `symbol` argument and a `side` parameter (sell or buy)');
         }
-        const currency = this.safeString (params, 'currency');
-        if (currency === undefined) {
-            throw new ExchangeError (this.id + ' cancelOrder requires a `currency` parameter (a currency id)');
+        if (symbol === undefined) {
+            throw new ArgumentsRequired (this.id + ' cancelOrder requires a `symbol` argument and a `side` parameter (sell or buy)');
         }
+        const market = this.market (symbol);
         const side = (params['side'] === 'buy') ? 'bid' : 'ask';
         params = this.omit (params, [ 'side', 'currency' ]);
+        // https://github.com/ccxt/ccxt/issues/6771
         const request = {
             'order_id': id,
             'type': side,
-            'currency': currency,
+            'order_currency': market['base'],
+            'payment_currency': market['quote'],
         };
         return await this.privatePostTradeCancel (this.extend (request, params));
     }
@@ -371,7 +374,7 @@ module.exports = class bithumb extends Exchange {
         if (currency === 'XRP' || currency === 'XMR') {
             const destination = this.safeString (params, 'destination');
             if ((tag === undefined) && (destination === undefined)) {
-                throw new ExchangeError (this.id + ' ' + code + ' withdraw() requires a tag argument or an extra destination param');
+                throw new ArgumentsRequired (this.id + ' ' + code + ' withdraw() requires a tag argument or an extra destination param');
             } else if (tag !== undefined) {
                 request['destination'] = tag;
             }

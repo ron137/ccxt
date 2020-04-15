@@ -170,6 +170,7 @@ class bitz(Exchange):
                 # https://github.com/ccxt/ccxt/issues/3881
                 # https://support.bit-z.pro/hc/en-us/articles/360007500654-BOX-BOX-Token-
                 'BOX': 'BOX Token',
+                'LEO': 'LeoCoin',
                 'XRB': 'NANO',
                 'PXC': 'Pixiecoin',
                 'VTC': 'VoteCoin',
@@ -632,7 +633,7 @@ class bitz(Exchange):
                 request['to'] = self.sum(since, limit * duration * 1000)
         else:
             if since is not None:
-                raise ExchangeError(self.id + ' fetchOHLCV requires a limit argument if the since argument is specified')
+                raise ArgumentsRequired(self.id + ' fetchOHLCV requires a limit argument if the since argument is specified')
         response = self.marketGetKline(self.extend(request, params))
         #
         #     {   status:    200,
@@ -723,6 +724,7 @@ class bitz(Exchange):
         status = self.parse_order_status(self.safe_string(order, 'status'))
         return {
             'id': id,
+            'clientOrderId': None,
             'datetime': self.iso8601(timestamp),
             'timestamp': timestamp,
             'lastTradeTimestamp': None,
@@ -738,6 +740,7 @@ class bitz(Exchange):
             'trades': None,
             'fee': None,
             'info': order,
+            'average': None,
         }
 
     def create_order(self, symbol, type, side, amount, price=None, params={}):
@@ -1061,7 +1064,7 @@ class bitz(Exchange):
                 'type': type,
             }, transactions[i]))
             result.append(transaction)
-        return self.filterByCurrencySinceLimit(result, code, since, limit)
+        return self.filter_by_currency_since_limit(result, code, since, limit)
 
     def parse_transaction_type(self, type):
         types = {

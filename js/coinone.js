@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const { BadSymbol, ExchangeError, ArgumentsRequired, InvalidOrder, OrderNotFound, OnMaintenance } = require ('./base/errors');
+const { BadSymbol, BadRequest, ExchangeError, ArgumentsRequired, InvalidOrder, OrderNotFound, OnMaintenance } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
 
@@ -117,6 +117,7 @@ module.exports = class coinone extends Exchange {
                 '405': OnMaintenance, // {"errorCode":"405","status":"maintenance","result":"error"}
                 '104': OrderNotFound,
                 '108': BadSymbol, // {"errorCode":"108","errorMsg":"Unknown CryptoCurrency","result":"error"}
+                '107': BadRequest, // {"errorCode":"107","errorMsg":"Parameter error","result":"error"}
             },
         });
     }
@@ -304,6 +305,8 @@ module.exports = class coinone extends Exchange {
             'remaining': amount,
             'status': 'open',
             'fee': undefined,
+            'clientOrderId': undefined,
+            'trades': undefined,
         };
         this.orders[id] = order;
         return order;
@@ -355,6 +358,17 @@ module.exports = class coinone extends Exchange {
     }
 
     parseOrder (order, market = undefined) {
+        //
+        //     {
+        //         "index": "0",
+        //         "orderId": "68665943-1eb5-4e4b-9d76-845fc54f5489",
+        //         "timestamp": "1449037367",
+        //         "price": "444000.0",
+        //         "qty": "0.3456",
+        //         "type": "ask",
+        //         "feeRate": "-0.0015"
+        //     }
+        //
         const info = this.safeValue (order, 'info');
         const id = this.safeStringUpper (info, 'orderId');
         const timestamp = this.safeTimestamp (info, 'timestamp');
@@ -397,6 +411,7 @@ module.exports = class coinone extends Exchange {
         return {
             'info': order,
             'id': id,
+            'clientOrderId': undefined,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': undefined,
@@ -410,6 +425,8 @@ module.exports = class coinone extends Exchange {
             'remaining': remaining,
             'status': status,
             'fee': fee,
+            'average': undefined,
+            'trades': undefined,
         };
     }
 

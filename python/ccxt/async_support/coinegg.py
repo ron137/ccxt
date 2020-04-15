@@ -341,6 +341,7 @@ class coinegg(Exchange):
         id = self.safe_string(order, 'id')
         return {
             'id': id,
+            'clientOrderId': None,
             'datetime': self.iso8601(timestamp),
             'timestamp': timestamp,
             'status': status,
@@ -355,6 +356,7 @@ class coinegg(Exchange):
             'trades': None,
             'fee': None,
             'info': info,
+            'average': None,
         }
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):

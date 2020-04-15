@@ -52,6 +52,7 @@ class bitmart(Exchange):
                 'www': 'https://www.bitmart.com/',
                 'doc': 'https://github.com/bitmartexchange/bitmart-official-api-docs',
                 'referral': 'http://www.bitmart.com/?r=rQCFLh',
+                'fees': 'https://www.bitmart.com/fee/en',
             },
             'requiredCredentials': {
                 'apiKey': True,
@@ -147,6 +148,7 @@ class bitmart(Exchange):
                     'Unknown symbol': BadSymbol,  # {"message":"Unknown symbol"}
                 },
                 'broad': {
+                    'Invalid limit. limit must be in the range': InvalidOrder,
                     'Maximum price is': InvalidOrder,  # {"message":"Maximum price is 0.112695"}
                     # {"message":"Required Integer parameter 'status' is not present"}
                     # {"message":"Required String parameter 'symbol' is not present"}
@@ -159,6 +161,7 @@ class bitmart(Exchange):
             },
             'commonCurrencies': {
                 'ONE': 'Menlo One',
+                'PLA': 'Plair',
             },
         })
 
@@ -253,6 +256,7 @@ class bitmart(Exchange):
                 'precision': precision,
                 'limits': limits,
                 'info': market,
+                'active': None,
             })
         return result
 
@@ -479,13 +483,14 @@ class bitmart(Exchange):
             raise ArgumentsRequired(self.id + ' fetchMyTrades requires a symbol argument')
         self.load_markets()
         market = self.market(symbol)
+        # limit is required, must be in the range(0, 50)
+        maxLimit = 50
+        limit = maxLimit if (limit is None) else min(limit, maxLimit)
         request = {
             'symbol': market['id'],
             'offset': 0,  # current page, starts from 0
-            'limit': 500,
+            'limit': limit,  # required
         }
-        if limit is not None:
-            request['limit'] = limit  # default 500, max 1000
         response = self.privateGetTrades(self.extend(request, params))
         #
         #     {
@@ -644,6 +649,7 @@ class bitmart(Exchange):
         type = None
         return {
             'id': id,
+            'clientOrderId': None,
             'info': order,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),

@@ -15,6 +15,7 @@ module.exports = class poloniex extends Exchange {
             'countries': [ 'US' ],
             'rateLimit': 1000, // up to 6 calls per second
             'certified': true, // 2019-06-07
+            'pro': true,
             'has': {
                 'CORS': false,
                 'createDepositAddress': true,
@@ -109,12 +110,9 @@ module.exports = class poloniex extends Exchange {
             },
             'fees': {
                 'trading': {
-                    // https://github.com/ccxt/ccxt/issues/6064
-                    // starting from October 21, 2019 17:00 UTC
-                    // all spot trading fees will be reduced to 0.00%
-                    // until December 31, 2019 23:59 UTC
-                    'maker': 0.0,
-                    'taker': 0.0,
+                    // starting from Jan 8 2020
+                    'maker': 0.0009,
+                    'taker': 0.0009,
                 },
                 'funding': {},
             },
@@ -231,7 +229,7 @@ module.exports = class poloniex extends Exchange {
             if (limit === undefined) {
                 request['start'] = request['end'] - this.parseTimeframe ('1w'); // max range = 1 week
             } else {
-                request['start'] = request['end'] - this.sum (limit) * this.parseTimeframe (timeframe);
+                request['start'] = request['end'] - limit * this.parseTimeframe (timeframe);
             }
         } else {
             request['start'] = parseInt (since / 1000);
@@ -325,16 +323,14 @@ module.exports = class poloniex extends Exchange {
         return orderbook;
     }
 
-    async fetchOrderBooks (symbols = undefined, params = {}) {
+    async fetchOrderBooks (symbols = undefined, limit = undefined, params = {}) {
         await this.loadMarkets ();
         const request = {
             'currencyPair': 'all',
         };
-        //
-        //     if (limit !== undefined) {
-        //         request['depth'] = limit; // 100
-        //     }
-        //
+        if (limit !== undefined) {
+            request['depth'] = limit; // 100
+        }
         const response = await this.publicGetReturnOrderBook (this.extend (request, params));
         const marketIds = Object.keys (response);
         const result = {};
@@ -428,9 +424,6 @@ module.exports = class poloniex extends Exchange {
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
             const currency = response[id];
-            // todo: will need to rethink the fees
-            // to add support for multiple withdrawal/deposit methods and
-            // differentiated fees for each particular method
             const precision = 8; // default precision, todo: fix "magic constants"
             const code = this.safeCurrencyCode (id);
             const active = (currency['delisted'] === 0) && !currency['disabled'];
@@ -609,7 +602,7 @@ module.exports = class poloniex extends Exchange {
         const request = { 'currencyPair': pair };
         if (since !== undefined) {
             request['start'] = parseInt (since / 1000);
-            request['end'] = this.seconds () + 1; // adding 1 is a fix for #3411
+            request['end'] = this.sum (this.seconds (), 1); // adding 1 is a fix for #3411
         }
         // limit is disabled (does not really work as expected)
         if (limit !== undefined) {
@@ -756,6 +749,7 @@ module.exports = class poloniex extends Exchange {
         //             },
         //         ],
         //         'fee': '0.00000000',
+        //         'clientOrderId': '12345',
         //         'currencyPair': 'BTC_MANA',
         //         // ---------------------------------------------------------
         //         // the following fields are injected by createOrder
@@ -842,9 +836,11 @@ module.exports = class poloniex extends Exchange {
                 'currency': feeCurrencyCode,
             };
         }
+        const clientOrderId = this.safeString (order, 'clientOrderId');
         return {
             'info': order,
             'id': id,
+            'clientOrderId': clientOrderId,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': lastTradeTimestamp,
@@ -979,10 +975,11 @@ module.exports = class poloniex extends Exchange {
         await this.loadMarkets ();
         const method = 'privatePost' + this.capitalize (side);
         const market = this.market (symbol);
+        amount = this.amountToPrecision (symbol, amount);
         const request = {
             'currencyPair': market['id'],
             'rate': this.priceToPrecision (symbol, price),
-            'amount': this.amountToPrecision (symbol, amount),
+            'amount': amount,
         };
         // remember the timestamp before issuing the request
         const timestamp = this.milliseconds ();

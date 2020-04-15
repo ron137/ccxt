@@ -9,6 +9,7 @@ import hashlib
 from ccxt.base.errors import ExchangeError
 from ccxt.base.errors import AuthenticationError
 from ccxt.base.errors import PermissionDenied
+from ccxt.base.errors import ArgumentsRequired
 from ccxt.base.errors import BadRequest
 from ccxt.base.errors import InvalidAddress
 from ccxt.base.errors import ExchangeNotAvailable
@@ -133,6 +134,8 @@ class bithumb(Exchange):
                         'max': None,
                     },
                 },
+                'baseId': None,
+                'quoteId': None,
             })
         return result
 
@@ -149,11 +152,10 @@ class bithumb(Exchange):
             code = codes[i]
             account = self.account()
             currency = self.currency(code)
-            currencyId = currency['id']
-            lowercase = currencyId.lower()
-            account['total'] = self.safe_float(balances, 'total_' + lowercase)
-            account['used'] = self.safe_float(balances, 'in_use_' + lowercase)
-            account['free'] = self.safe_float(balances, 'available_' + lowercase)
+            lowerCurrencyId = self.safe_string_lower(currency, 'id')
+            account['total'] = self.safe_float(balances, 'total_' + lowerCurrencyId)
+            account['used'] = self.safe_float(balances, 'in_use_' + lowerCurrencyId)
+            account['free'] = self.safe_float(balances, 'available_' + lowerCurrencyId)
             result[code] = account
         return self.parse_balance(result)
 
@@ -322,16 +324,18 @@ class bithumb(Exchange):
     async def cancel_order(self, id, symbol=None, params={}):
         side_in_params = ('side' in params)
         if not side_in_params:
-            raise ExchangeError(self.id + ' cancelOrder requires a `side` parameter(sell or buy) and a `currency` parameter')
-        currency = self.safe_string(params, 'currency')
-        if currency is None:
-            raise ExchangeError(self.id + ' cancelOrder requires a `currency` parameter(a currency id)')
+            raise ArgumentsRequired(self.id + ' cancelOrder requires a `symbol` argument and a `side` parameter(sell or buy)')
+        if symbol is None:
+            raise ArgumentsRequired(self.id + ' cancelOrder requires a `symbol` argument and a `side` parameter(sell or buy)')
+        market = self.market(symbol)
         side = 'bid' if (params['side'] == 'buy') else 'ask'
         params = self.omit(params, ['side', 'currency'])
+        # https://github.com/ccxt/ccxt/issues/6771
         request = {
             'order_id': id,
             'type': side,
-            'currency': currency,
+            'order_currency': market['base'],
+            'payment_currency': market['quote'],
         }
         return await self.privatePostTradeCancel(self.extend(request, params))
 
@@ -347,7 +351,7 @@ class bithumb(Exchange):
         if currency == 'XRP' or currency == 'XMR':
             destination = self.safe_string(params, 'destination')
             if (tag is None) and (destination is None):
-                raise ExchangeError(self.id + ' ' + code + ' withdraw() requires a tag argument or an extra destination param')
+                raise ArgumentsRequired(self.id + ' ' + code + ' withdraw() requires a tag argument or an extra destination param')
             elif tag is not None:
                 request['destination'] = tag
         response = await self.privatePostTradeBtcWithdrawal(self.extend(request, params))

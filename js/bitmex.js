@@ -17,6 +17,7 @@ module.exports = class bitmex extends Exchange {
             'version': 'v1',
             'userAgent': undefined,
             'rateLimit': 2000,
+            'pro': true,
             'has': {
                 'CORS': false,
                 'fetchOHLCV': true,
@@ -37,16 +38,22 @@ module.exports = class bitmex extends Exchange {
                 '1d': '1d',
             },
             'urls': {
-                'test': 'https://testnet.bitmex.com',
+                'test': {
+                    'public': 'https://testnet.bitmex.com',
+                    'private': 'https://testnet.bitmex.com',
+                },
                 'logo': 'https://user-images.githubusercontent.com/1294454/27766319-f653c6e6-5ed4-11e7-933d-f0bc3699ae8f.jpg',
-                'api': 'https://www.bitmex.com',
+                'api': {
+                    'public': 'https://www.bitmex.com',
+                    'private': 'https://www.bitmex.com',
+                },
                 'www': 'https://www.bitmex.com',
                 'doc': [
                     'https://www.bitmex.com/app/apiOverview',
                     'https://github.com/BitMEX/api-connectors/tree/master/official-http',
                 ],
                 'fees': 'https://www.bitmex.com/app/fees',
-                'referral': 'https://www.bitmex.com/register/rm3C16',
+                'referral': 'https://www.bitmex.com/register/upZpOX',
             },
             'api': {
                 'public': {
@@ -1104,9 +1111,11 @@ module.exports = class bitmex extends Exchange {
         const id = this.safeString (order, 'orderID');
         const type = this.safeStringLower (order, 'ordType');
         const side = this.safeStringLower (order, 'side');
+        const clientOrderId = this.safeString (order, 'clOrdID');
         return {
             'info': order,
             'id': id,
+            'clientOrderId': clientOrderId,
             'timestamp': timestamp,
             'datetime': this.iso8601 (timestamp),
             'lastTradeTimestamp': lastTradeTimestamp,
@@ -1121,6 +1130,7 @@ module.exports = class bitmex extends Exchange {
             'remaining': remaining,
             'status': status,
             'fee': undefined,
+            'trades': undefined,
         };
     }
 
@@ -1205,7 +1215,15 @@ module.exports = class bitmex extends Exchange {
 
     async cancelOrder (id, symbol = undefined, params = {}) {
         await this.loadMarkets ();
-        const response = await this.privateDeleteOrder (this.extend ({ 'orderID': id }, params));
+        // https://github.com/ccxt/ccxt/issues/6507
+        const clOrdID = this.safeValue (params, 'clOrdID');
+        const request = {};
+        if (clOrdID === undefined) {
+            request['orderID'] = id;
+        } else {
+            request['clOrdID'] = clOrdID;
+        }
+        const response = await this.privateDeleteOrder (this.extend (request, params));
         let order = response[0];
         const error = this.safeString (order, 'error');
         if (error !== undefined) {
@@ -1286,7 +1304,7 @@ module.exports = class bitmex extends Exchange {
                 params = this.omit (params, '_format');
             }
         }
-        const url = this.urls['api'] + query;
+        const url = this.urls['api'][api] + query;
         if (this.apiKey && this.secret) {
             let auth = method + query;
             let expires = this.safeInteger (this.options, 'api-expires');

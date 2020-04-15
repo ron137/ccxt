@@ -160,6 +160,7 @@ module.exports = class bitz extends Exchange {
                 // https://github.com/ccxt/ccxt/issues/3881
                 // https://support.bit-z.pro/hc/en-us/articles/360007500654-BOX-BOX-Token-
                 'BOX': 'BOX Token',
+                'LEO': 'LeoCoin',
                 'XRB': 'NANO',
                 'PXC': 'Pixiecoin',
                 'VTC': 'VoteCoin',
@@ -649,7 +650,7 @@ module.exports = class bitz extends Exchange {
             }
         } else {
             if (since !== undefined) {
-                throw new ExchangeError (this.id + ' fetchOHLCV requires a limit argument if the since argument is specified');
+                throw new ArgumentsRequired (this.id + ' fetchOHLCV requires a limit argument if the since argument is specified');
             }
         }
         const response = await this.marketGetKline (this.extend (request, params));
@@ -753,6 +754,7 @@ module.exports = class bitz extends Exchange {
         const status = this.parseOrderStatus (this.safeString (order, 'status'));
         return {
             'id': id,
+            'clientOrderId': undefined,
             'datetime': this.iso8601 (timestamp),
             'timestamp': timestamp,
             'lastTradeTimestamp': undefined,
@@ -768,6 +770,7 @@ module.exports = class bitz extends Exchange {
             'trades': undefined,
             'fee': undefined,
             'info': order,
+            'average': undefined,
         };
     }
 
